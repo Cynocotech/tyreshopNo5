@@ -149,6 +149,29 @@ Then open:
 
 ---
 
+## Alternative: Use public_html (when you can't change Document Root)
+
+`.htaccess` **cannot change the document root**—that's set by the server. Instead, copy the public files into `public_html` and use a bootstrap `index.php` that loads Laravel from `~/tyre/admin`.
+
+### Option 1: Run the deploy script (recommended)
+
+After `install-cpanel.sh`:
+
+```bash
+cd ~/tyre
+bash deploy-to-public-html.sh
+```
+
+This copies everything from `admin/public` into `public_html`, uses a custom `index.php` that points to `~/tyre/admin`, and creates the storage symlink.
+
+### Option 2: Manual copy
+
+1. Copy all files from `admin/public` into `public_html`.
+2. Replace `public_html/index.php` with `admin/public/index-for-public-html.php`.
+3. Create symlink: `ln -sf ~/tyre/admin/storage/app/public ~/public_html/storage`
+
+---
+
 ## Troubleshooting
 
 - **500 error**: Check `storage/logs/laravel.log` and file permissions.
