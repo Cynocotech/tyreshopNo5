@@ -13,11 +13,22 @@ PUBLIC_HTML="$HOME_DIR/public_html"
 [ -d "$PUBLIC_HTML" ] || { echo "Error: $PUBLIC_HTML not found"; exit 1; }
 
 echo "Copying admin/public -> public_html"
-rsync -a --delete \
-  --exclude='.git' \
-  --exclude='index.php' \
-  --exclude='storage' \
-  "$ADMIN_PUBLIC/" "$PUBLIC_HTML/"
+if command -v rsync &>/dev/null; then
+  rsync -a --delete \
+    --exclude='.git' \
+    --exclude='index.php' \
+    --exclude='storage' \
+    "$ADMIN_PUBLIC/" "$PUBLIC_HTML/"
+else
+  # Fallback: cp when rsync not available (e.g. some cPanel hosts)
+  for f in "$ADMIN_PUBLIC"/*; do
+    [ -e "$f" ] || continue
+    case "$(basename "$f")" in
+      .git|index.php|storage) ;;
+      *) cp -r "$f" "$PUBLIC_HTML/" ;;
+    esac
+  done
+fi
 
 echo "Installing index.php for public_html"
 cp "$ADMIN_PUBLIC/index-for-public-html.php" "$PUBLIC_HTML/index.php"
