@@ -7,7 +7,7 @@
     <title>Admin — {{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('components.cdn-assets')
     <style>
         .admin-sidebar a.active { background: #2563eb; color: white; }
         .admin-sidebar a.active svg { color: white; }
@@ -15,7 +15,8 @@
     @stack('head')
     @isset($head){!! $head !!}@endisset
     @if(request()->routeIs('admin.bookings.index'))
-    @vite('resources/js/bookings.js')
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="{{ asset('js/bookings-cdn.js') }}"></script>
     @endif
 </head>
 <body class="font-sans antialiased bg-slate-50" x-data="{ sidebarOpen: false }">

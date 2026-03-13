@@ -61,13 +61,13 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# --- Step 4: NPM (optional) ---
+# --- Step 4: NPM (optional - app works without it, uses CDN) ---
 echo "[4/6] Frontend assets"
 if [ -n "$NPM" ] && [ -f package.json ]; then
   $NPM ci 2>/dev/null || $NPM install
   $NPM run build
 else
-  echo "  Skipped (npm not found or no package.json)"
+  echo "  Skipped (npm not found - app uses CDN assets, no build needed)"
 fi
 
 # --- Step 5: Permissions ---

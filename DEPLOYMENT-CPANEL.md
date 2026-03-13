@@ -37,7 +37,7 @@ This script will:
 - Create .env from .env.example
 - Install PHP dependencies (composer)
 - Run migrations and caches
-- Build frontend assets (if npm available)
+- Build frontend assets (optional; app works without npm using CDN)
 - Set permissions
 
 Then edit `.env` and point your domain's document root to `~/tyre/admin/public`.
