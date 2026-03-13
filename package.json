@@ -1,0 +1,13 @@
+{
+  "name": "no5-tyre-mot",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev:kill && concurrently -n \"admin,front\" -c \"blue,magenta\" \"cd admin && php artisan serve --port=8000\" \"cd server && node index.js\"",
+    "dev:kill": "lsof -ti :3001 | xargs kill -9 2>/dev/null; lsof -ti :8000 | xargs kill -9 2>/dev/null; true",
+    "front": "cd server && node index.js",
+    "admin": "cd admin && php artisan serve --port=8000"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

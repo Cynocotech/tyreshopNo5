@@ -1,0 +1,208 @@
+{
+    "services": [
+        {
+            "id": "mot-full-service",
+            "value": "MOT + Full Service",
+            "title": "MOT + Full Service",
+            "icon": "🔥",
+            "price": 199,
+            "heroMOTPrice": 19,
+            "priceLabel": "£199 (Special Offer)",
+            "priceDisplay": "£199",
+            "category": "special-offers",
+            "isQuote": false,
+            "keywords": [
+                "MOT test Palmers Green",
+                "car service North London",
+                "MOT and service combo",
+                "cheap MOT near me",
+                "full service £19"
+            ]
+        },
+        {
+            "id": "mot-major-service",
+            "value": "MOT + Major Service",
+            "title": "MOT + Major Service",
+            "icon": "🔥",
+            "price": 199,
+            "heroMOTPrice": null,
+            "priceLabel": "£199 (Special Offer)",
+            "priceDisplay": "£199",
+            "category": "special-offers",
+            "isQuote": false,
+            "keywords": [
+                "major service MOT",
+                "car major service North London",
+                "MOT special offer",
+                "Palmers Green garage",
+                "MOT deal"
+            ]
+        },
+        {
+            "id": "mot-test",
+            "value": "MOT Test",
+            "title": "MOT Test Only",
+            "icon": "🛞",
+            "price": 54.85,
+            "heroMOTPrice": null,
+            "priceLabel": "£54.85",
+            "priceDisplay": "£54.85",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "MOT test Palmers Green",
+                "MOT centre North London",
+                "DVSA MOT test",
+                "MOT near me",
+                "cheap MOT test"
+            ]
+        },
+        {
+            "id": "full-service",
+            "value": "Full Service",
+            "title": "Full Service",
+            "icon": "🔧",
+            "price": 190,
+            "heroMOTPrice": null,
+            "priceLabel": "£190",
+            "priceDisplay": "£190",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "full service North London",
+                "car service Palmers Green",
+                "annual service",
+                "oil change service",
+                "car maintenance"
+            ]
+        },
+        {
+            "id": "major-service",
+            "value": "Major Service",
+            "title": "Major Service",
+            "icon": "🔧",
+            "price": 149,
+            "heroMOTPrice": null,
+            "priceLabel": "£149",
+            "priceDisplay": "£149",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "major service North London",
+                "full car service",
+                "comprehensive service",
+                "Palmers Green garage",
+                "car servicing"
+            ]
+        },
+        {
+            "id": "van-servicing",
+            "value": "Van Servicing",
+            "title": "Van Servicing",
+            "icon": "🚐",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Quote",
+            "priceDisplay": "Free Quote",
+            "category": "servicing-mot",
+            "isQuote": true,
+            "keywords": [
+                "van servicing North London",
+                "LCV service Palmers Green",
+                "commercial vehicle service",
+                "van MOT",
+                "light commercial servicing"
+            ]
+        },
+        {
+            "id": "tyre-fitting",
+            "value": "Tyre Fitting",
+            "title": "Tyre Fitting",
+            "icon": "🛞",
+            "price": 35,
+            "heroMOTPrice": null,
+            "priceLabel": "£35+",
+            "priceDisplay": "£35",
+            "category": "tyres-other",
+            "isQuote": false,
+            "keywords": [
+                "tyre fitting Palmers Green",
+                "tyre replacement North London",
+                "new tyres near me",
+                "tyre specialist",
+                "Michelin Pirelli tyres"
+            ]
+        },
+        {
+            "id": "brakes-discs",
+            "value": "Brakes & Discs",
+            "title": "Brakes & Discs",
+            "icon": "🛑",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Quote",
+            "priceDisplay": "Free Quote",
+            "category": "tyres-other",
+            "isQuote": true,
+            "keywords": [
+                "brake repair North London",
+                "disc brake replacement",
+                "brake pads Palmers Green",
+                "brake service",
+                "car brakes near me"
+            ]
+        },
+        {
+            "id": "exhaust-systems",
+            "value": "Exhaust Systems",
+            "title": "Exhaust Systems",
+            "icon": "💨",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Quote",
+            "priceDisplay": "Free Quote",
+            "category": "tyres-other",
+            "isQuote": true,
+            "keywords": [
+                "exhaust repair North London",
+                "exhaust replacement Palmers Green",
+                "catalytic converter",
+                "exhaust fitting",
+                "car exhaust repair"
+            ]
+        },
+        {
+            "id": "window-tinting",
+            "value": "Window Tinting",
+            "title": "Window Tinting",
+            "icon": "🪟",
+            "price": 99,
+            "heroMOTPrice": null,
+            "priceLabel": "£99",
+            "priceDisplay": "£99",
+            "category": "tyres-other",
+            "isQuote": false,
+            "keywords": [
+                "window tinting North London",
+                "car window film",
+                "UV protection film",
+                "road legal tinting",
+                "privacy glass Palmers Green"
+            ]
+        }
+    ],
+    "categories": {
+        "special-offers": {
+            "label": "🔥 Special Offers",
+            "sortOrder": 1
+        },
+        "servicing-mot": {
+            "label": "Servicing & MOT",
+            "sortOrder": 2
+        },
+        "tyres-other": {
+            "label": "Tyres & Other",
+            "sortOrder": 3
+        }
+    }
+}

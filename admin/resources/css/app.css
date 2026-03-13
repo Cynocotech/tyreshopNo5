@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Booking modal - Call (green) and Email (slate) buttons */
+#booking-modal #booking-modal-actions a.btn-call {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border: none;
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+#booking-modal #booking-modal-actions a.btn-call:hover {
+  background-color: #15803d !important;
+}
+#booking-modal #booking-modal-actions a.btn-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border: none;
+  background-color: #475569 !important;
+  color: #ffffff !important;
+}
+#booking-modal #booking-modal-actions a.btn-email:hover {
+  background-color: #334155 !important;
+}

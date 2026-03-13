@@ -1,0 +1,135 @@
+# N05 Tyre & MOT — cPanel Deployment Guide
+
+**Single Laravel app** — Front page, booking API, and admin panel in one PHP deployment. No Node.js required.
+
+---
+
+## What to Upload
+
+Upload the **`admin`** folder contents to your cPanel. The structure should be:
+
+```
+public_html/          ← cPanel document root (point to admin/public)
+├── index.php         ← Laravel entry (from admin/public)
+├── index.html        ← Front page (from admin/public)
+├── mot-booking.html
+├── css/
+├── js/
+├── blog/
+└── ...
+```
+
+Or upload the **entire `admin`** folder and point document root to **`admin/public`**.
+
+---
+
+## Deployment Steps
+
+### 1. Upload Files
+
+- Upload the entire `admin` folder to your hosting (e.g. via FTP/SFTP or File Manager).
+- Or: Upload only the contents of `admin/`, and ensure the web root points to the `public` subfolder.
+
+### 2. Point Document Root
+
+- In cPanel → **Domains** or **Addon Domains** → set **Document Root** to:
+  ```
+  /home/username/public_html/no5/admin/public
+  ```
+  (Adjust path to match your actual folder structure.)
+
+### 3. Create .env
+
+Copy `.env.example` to `.env` and configure:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://no5mot.co.uk
+
+# Copy from server/.env for production (or use existing values)
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+CHECK_CAR_DETAILS_API_KEY=your_key
+# Or: CHECK_CAR_DETAILS_MOCK=1 for fake vehicle data
+
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtppro.zoho.eu
+MAIL_PORT=587
+MAIL_USERNAME=booking@no5tyreandmot.co.uk
+MAIL_PASSWORD=...
+MAIL_FROM_ADDRESS="booking@no5tyreandmot.co.uk"
+MAIL_FROM_NAME="N05 Tyre & MOT"
+ADMIN_EMAIL=booking@no5tyreandmot.co.uk
+```
+
+### 4. Run Commands (SSH or cPanel Terminal)
+
+```bash
+cd /path/to/admin
+
+composer install --optimize-autoloader --no-dev
+php artisan key:generate
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Build frontend assets for admin panel
+npm ci
+npm run build
+```
+
+### 5. File Permissions
+
+```bash
+chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+### 6. Stripe Webhook (Production)
+
+1. Create webhook in Stripe Dashboard → **Developers** → **Webhooks**.
+2. URL: `https://no5mot.co.uk/api/booking/webhook/stripe`
+3. Events: `checkout.session.completed`
+4. Copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
+
+---
+
+## URLs After Deployment
+
+| Page            | URL                        |
+|-----------------|----------------------------|
+| Front page      | `https://no5mot.co.uk/`    |
+| MOT booking     | `https://no5mot.co.uk/mot-booking.html` |
+| Admin panel     | `https://no5mot.co.uk/admin` |
+| Login           | `https://no5mot.co.uk/login` |
+
+---
+
+## Local Development (PHP Only)
+
+From project root:
+
+```bash
+cd admin
+php artisan serve --port=8000
+```
+
+Then open:
+- Front: http://localhost:8000/
+- Admin: http://localhost:8000/admin
+- Login: http://localhost:8000/login (admin@example.com / password)
+
+---
+
+## Troubleshooting
+
+- **500 error**: Check `storage/logs/laravel.log` and file permissions.
+- **Blank page**: Set `APP_DEBUG=true` temporarily (never leave this on in production).
+- **Booking emails not sent**: Verify SMTP settings in `.env` and run `php artisan config:clear`.
