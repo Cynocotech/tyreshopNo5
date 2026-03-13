@@ -23,7 +23,28 @@ Or upload the **entire `admin`** folder and point document root to **`admin/publ
 
 ---
 
-## Deployment Steps
+## Quick Install (recommended)
+
+From cPanel Terminal, after cloning the repo:
+
+```bash
+cd ~/tyre
+bash install-cpanel.sh
+```
+
+This script will:
+- Find Composer and npm (including cPanel Node.js)
+- Create .env from .env.example
+- Install PHP dependencies (composer)
+- Run migrations and caches
+- Build frontend assets (if npm available)
+- Set permissions
+
+Then edit `.env` and point your domain's document root to `~/tyre/admin/public`.
+
+---
+
+## Deployment Steps (manual)
 
 ### 1. Upload Files
 
