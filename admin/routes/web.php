@@ -59,6 +59,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/export', [ExportController::class, '__invoke'])->name('export')->middleware('throttle:10,1');
     Route::resource('services', ServiceController::class)->names('services');
     Route::resource('products', ProductController::class)->names('products');
+    Route::post('/products/add-stock-by-scan', [ProductController::class, 'addStockByScan'])->name('products.add-stock-by-scan');
     Route::get('/epos', [EposController::class, 'index'])->name('epos.index');
     Route::post('/epos/lookup', [EposController::class, 'lookup'])->name('epos.lookup');
     Route::post('/epos/lookup-booking', [EposController::class, 'lookupByBooking'])->name('epos.lookup-by-booking');

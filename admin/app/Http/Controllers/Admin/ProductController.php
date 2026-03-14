@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductSerial;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -98,5 +99,62 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Product deleted.');
+    }
+
+    /**
+     * Add stock by scanning barcode/QR code.
+     * Works with 2D scanners and QR codes — scanner acts as keyboard, sends barcode + Enter.
+     */
+    public function addStockByScan(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'barcode' => 'required|string|max:500',
+            'quantity' => 'nullable|integer|min:1|max:9999',
+        ]);
+
+        $barcode = trim($validated['barcode']);
+        $quantity = (int) ($validated['quantity'] ?? 1);
+
+        if (!$barcode) {
+            return response()->json(['success' => false, 'message' => 'Barcode is required.']);
+        }
+
+        $product = Product::where('barcode', $barcode)->orWhere('sku', $barcode)->first();
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => "Product not found for barcode/sku: {$barcode}. Add the product first with this barcode.",
+            ], 404);
+        }
+
+        if ($product->requires_serial) {
+            // For serial products: use scanned value as serial (e.g. tyre DOT code, unique ID)
+            $serial = ProductSerial::firstOrCreate(
+                ['product_id' => $product->id, 'serial_number' => $barcode],
+                ['sold' => false]
+            );
+            if ($serial->wasRecentlyCreated) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Serial added: {$barcode} → {$product->name}",
+                    'product' => ['id' => $product->id, 'name' => $product->name, 'stock_type' => 'serial'],
+                ]);
+            }
+            return response()->json([
+                'success' => false,
+                'message' => "Serial {$barcode} already exists for {$product->name}.",
+            ], 422);
+        }
+
+        // Quantity products: increment stock
+        $product->increment('quantity', $quantity);
+        $newQty = (int) $product->quantity;
+
+        return response()->json([
+            'success' => true,
+            'message' => "+{$quantity} added to {$product->name} — stock: {$newQty}",
+            'product' => ['id' => $product->id, 'name' => $product->name, 'quantity' => $newQty, 'stock_type' => 'quantity'],
+        ]);
     }
 }

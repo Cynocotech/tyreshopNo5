@@ -94,8 +94,8 @@
                 @if($product->exists)
                     <div class="mb-3">
                         <div class="flex gap-2 mb-2">
-                            <input type="text" x-ref="serialInput" placeholder="Enter serial number" class="flex-1 rounded border-slate-300"
-                                   @keydown.enter.prevent="addSerial()" x-model="newSerial">
+                            <input type="text" x-ref="serialInput" placeholder="Scan or enter serial number" class="flex-1 rounded border-slate-300"
+                                   @keydown.enter.prevent="addSerial()" x-model="newSerial" title="Focus and scan with 2D/QR scanner">
                             <button type="button" @click="addSerial()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Add Serial</button>
                         </div>
                         <p class="text-xs text-amber-600" x-show="serialError" x-text="serialError"></p>
