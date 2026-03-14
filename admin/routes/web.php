@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/epos/card-payment-status', [EposController::class, 'cardPaymentStatus'])->name('epos.card-payment-status');
     Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
     Route::post('/sales/bulk-delete', [SalesController::class, 'destroyBulk'])->name('sales.bulk-delete');
+    Route::post('/sales/bulk-delete-by-dates', [SalesController::class, 'destroyBulkByDates'])->name('sales.bulk-delete-by-dates');
     Route::get('/sales/journal', [SalesController::class, 'journal'])->name('sales.journal');
     Route::get('/sales/daily', [SalesController::class, 'dailySummary'])->name('sales.daily');
     Route::get('/sales/export', [SalesController::class, 'exportCsv'])->name('sales.export');

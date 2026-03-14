@@ -148,6 +148,19 @@ class SalesController extends Controller
         return redirect()->back()->with('success', "Deleted {$count} sale(s).");
     }
 
+    public function destroyBulkByDates(Request $request): RedirectResponse
+    {
+        $dates = $request->validate(['dates' => 'required|array', 'dates.*' => 'date'])['dates'];
+        $count = Sale::whereNotNull('completed_at')
+            ->whereIn(DB::raw('DATE(completed_at)'), $dates)
+            ->delete();
+        $redirect = redirect()->route('admin.sales.daily', [
+            'from' => $request->input('from', now()->startOfMonth()->format('Y-m-d')),
+            'to' => $request->input('to', now()->format('Y-m-d')),
+        ]);
+        return $redirect->with('success', "Deleted {$count} sale(s) from selected dates.");
+    }
+
     protected function buildSummary(string $from, string $to): array
     {
         $totals = Sale::query()
