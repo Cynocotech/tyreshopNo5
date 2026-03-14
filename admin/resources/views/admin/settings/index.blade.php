@@ -417,6 +417,16 @@
             <p class="text-sm text-slate-600 mb-4">API keys for vehicle lookup, integrations, and third-party services.</p>
 
             <div class="mb-6 pb-4 border-b border-slate-200">
+                <h4 class="font-medium text-slate-700 mb-2">Logto (Authentication)</h4>
+                <p class="text-xs text-slate-500 mb-3">Logto endpoint URL for sign-in, sign-out, and user sessions.</p>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Logto URL</label>
+                    <input type="url" name="logto_url" value="{{ old('logto_url', $settings['logto_url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="https://your-app.logto.app or https://logto.yourdomain.com" autocomplete="url">
+                    <p class="text-xs text-slate-500 mt-1">Your Logto application endpoint (e.g. <code class="bg-slate-100 px-1 rounded">https://foo.logto.app</code>). Leave blank if not using Logto.</p>
+                </div>
+            </div>
+
+            <div class="mb-6 pb-4 border-b border-slate-200">
                 <h4 class="font-medium text-slate-700 mb-2">Vehicle Registration (VRN) Lookup</h4>
                 <p class="text-xs text-slate-500 mb-3">Used for plate lookup on the front page and booking flow. Sign up at <a href="https://api.checkcardetails.co.uk/auth/register" target="_blank" rel="noopener" class="text-blue-600 hover:underline">api.checkcardetails.co.uk</a> for an API key.</p>
                 <div>
