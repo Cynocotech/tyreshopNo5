@@ -1,6 +1,6 @@
 <x-admin-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <span>Bookings Calendar</span>
             <div class="flex items-center gap-2">
                 <a href="{{ route('admin.bookings.canceled') }}" class="inline-flex items-center gap-2 px-3 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300">
@@ -15,8 +15,8 @@
         </div>
     </x-slot>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <div id="bookings-calendar" class="w-full" style="height: 600px;"
+    <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="bookings-calendar" class="w-full min-h-[400px] sm:min-h-[500px] md:min-h-[600px]" style="height: clamp(400px, 80vh, 600px);"
              data-events-url="{{ route('admin.bookings.list') }}"
              data-cancel-base="{{ url('/admin/bookings') }}"></div>
     </div>
