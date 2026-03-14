@@ -263,7 +263,7 @@ function HeroSection(){
     setLookupLoading(true);
     setLookupError('');
     try{
-      const r=await fetch('/api/vehicle/lookup?vrm='+encodeURIComponent(vrm));
+      const r=await fetch('/admin/api/vehicle/lookup?vrm='+encodeURIComponent(vrm));
       const data=await r.json();
       if(r.ok){
         if(!data._fromMock) sessionStorage.setItem('N05_vehicle_'+vrm,JSON.stringify(data));

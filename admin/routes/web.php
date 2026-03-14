@@ -12,16 +12,22 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Api\BookingController as ApiBookingController;
 use App\Http\Controllers\Api\ServicesController;
-use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// API routes (fallback in web - some cPanel setups don't load api.php correctly)
-Route::get('/api/vehicle/lookup', [VehicleController::class, 'lookup']);
-Route::get('/api/booking/available-slots', [\App\Http\Controllers\Api\BookingController::class, 'availableSlots']);
-Route::get('/api/booking/config', [\App\Http\Controllers\Api\BookingController::class, 'config']);
+// Public API under /admin/api (cPanel setups often only route /admin to Laravel)
+Route::prefix('admin')->group(function () {
+    Route::get('api/vehicle/lookup', [VehicleController::class, 'lookup']);
+    Route::get('api/booking/available-slots', [ApiBookingController::class, 'availableSlots']);
+    Route::get('api/booking/config', [ApiBookingController::class, 'config']);
+    Route::post('api/booking/create-checkout-session', [ApiBookingController::class, 'createCheckoutSession']);
+    Route::post('api/booking/confirm-booking', [ApiBookingController::class, 'confirmBooking']);
+    Route::post('api/booking/mot-notify', [ApiBookingController::class, 'motNotify']);
+    Route::post('api/booking/webhook/stripe', [ApiBookingController::class, 'stripeWebhook']);
+});
 
 // Front page (serves index.html at /) — always from repo, no cache
 Route::get('/', function () {
