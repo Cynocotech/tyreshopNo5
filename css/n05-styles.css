@@ -88,12 +88,16 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 .booking-step { margin-bottom: 32px; }
 .booking-step-title { font-weight: 700; font-size: 16px; color: #1B263B; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
-/* Responsive hamburger - React pages (index, mot-booking) */
-.header-hamburger { display: none; }
-.header-nav-desktop { display: flex; }
+/* Responsive hamburger - React pages (index) */
+.site-header { width: 100%; overflow: visible; }
+.header-hamburger { display: none; flex-shrink: 0; }
+.header-nav-desktop { display: flex; flex-shrink: 0; }
 @media(max-width:991px){
   .header-nav-desktop { display: none !important; }
   .header-hamburger { display: flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .site-header .header-mobile-menu {
+    left: 0 !important; right: 0 !important; width: 100% !important;
+  }
   .header-mobile-menu .nav-link,
   .header-mobile-menu .btn-transition { display: block !important; padding: 14px 0; font-size: 16px; }
   .header-mobile-menu .btn-transition { text-align: center; margin-top: 8px; }
