@@ -654,8 +654,11 @@ function App(){
     return ()=>window.removeEventListener('scroll',fn);
   },[]);
   return h('div',{style:{fontFamily:"'Inter',ui-sans-serif,system-ui"}},
-    SHOW_MAINTENANCE_NOTICE ? h('div',{style:{background:'#dc2626',color:'#fff',textAlign:'center',padding:'14px 24px',fontSize:16,fontWeight:700}},
-      '⚠️ ' + MAINTENANCE_MESSAGE) : null,
+    SHOW_MAINTENANCE_NOTICE ? h('div',{style:{position:'fixed',inset:0,zIndex:99999,backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}},
+      h('div',{style:{background:'#fff',padding:'40px 48px',borderRadius:16,boxShadow:'0 25px 50px -12px rgba(0,0,0,0.5)',textAlign:'center',maxWidth:400}},
+        h('div',{style:{fontSize:48,marginBottom:16}},'🔧'),
+        h('h2',{style:{fontSize:24,fontWeight:800,color:'#1B263B',margin:'0 0 12px'}},'Site is on maintenance'),
+        h('p',{style:{fontSize:16,color:'#64748B',margin:0,lineHeight:1.6}},MAINTENANCE_MESSAGE))) : null,
     SHOW_UPDATE_NOTICE ? h('div',{style:{background:'#f59e0b',color:'#fff',textAlign:'center',padding:'10px 20px',fontSize:14,fontWeight:600}},
       '🔧 Site is under update — please be patient') : null,
     h(TopBar),
