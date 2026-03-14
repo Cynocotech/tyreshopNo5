@@ -14,9 +14,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><noscript>Please enable JavaScript to view this site.</noscript></div>
 <script>
-const { useState, useEffect } = React;
+(function(){
+  var root = document.getElementById('root');
+  function showErr(msg){
+    root.innerHTML = '<div style="padding:24px;text-align:center;font-family:sans-serif;background:#1B263B;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;"><h1 style="font-size:24px;margin:0 0 12px;">Loading error</h1><p style="margin:0;color:rgba(255,255,255,0.8);">'+String(msg).replace(/</g,'&lt;')+'</p><p style="margin-top:16px;font-size:13px;">Try disabling ad blockers, or check the console (F12) for details.</p><p style="margin-top:8px;"><a href="tel:07895859505" style="color:#fede00;">Call 07895 859505</a></p></div>';
+  }
+  try {
+    if (typeof React === 'undefined') throw new Error('React failed to load (CDN may be blocked)');
+    if (typeof ReactDOM === 'undefined') throw new Error('ReactDOM failed to load (CDN may be blocked)');
+  } catch(e){
+    console.error('N05:', e);
+    showErr(e.message);
+    return;
+  }
+  var React$ = React, ReactDOM$ = ReactDOM;
+const { useState, useEffect } = React$;
 const h = React.createElement;
 
 const T = {
@@ -771,7 +785,13 @@ function App(){
       });
     });
   } catch(e){}
-  ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+  try {
+    ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+  } catch(e) {
+    console.error('N05 render:', e);
+    showErr(e.message || 'Failed to render app');
+  }
+  })();
 })();
 </script>
 </body>
