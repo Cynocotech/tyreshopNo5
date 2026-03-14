@@ -125,6 +125,7 @@ let FAQS = [
 let FOOTER_MOT_PRICE = '£19';
 let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
+let COMBO_SECTION_BADGE = '🔥 Special Offers';
 
 const AREAS = [
   "Palmers Green","Southgate","Enfield","Edmonton","Winchmore Hill",
@@ -352,7 +353,7 @@ function ComboDeals(){
       h('div',{style:{textAlign:'center',marginBottom:48}},
         h('p',{style:{color:T.yellow,fontWeight:700,fontSize:13,letterSpacing:'.15em',
           textTransform:'uppercase',background:T.navy,display:'inline-block',
-          padding:'4px 16px',borderRadius:50,marginBottom:14}},'🔥 Special Offers'),
+          padding:'4px 16px',borderRadius:50,marginBottom:14}},COMBO_SECTION_BADGE),
         h('h2',{style:{fontWeight:900,fontSize:'clamp(1.8rem,3vw,2.6rem)',
           color:T.navy,margin:'0 0 12px'}},'MOT + Service Combo Deals'),
         h('p',{style:{color:T.gray500,fontSize:16,maxWidth:500,margin:'0 auto'}},
@@ -670,6 +671,7 @@ function App(){
     var saveFromSettings = settings.hero_save && String(settings.hero_save).trim();
     if (heroFromSettings) HERO_BOOK_PRICE = heroFromSettings.indexOf('£') >= 0 ? heroFromSettings : '£' + heroFromSettings;
     if (saveFromSettings) HERO_SAVE = saveFromSettings.indexOf('£') >= 0 ? saveFromSettings : '£' + saveFromSettings;
+    if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
 
     if (byId['mot-full-service']) {
       const combo = byId['mot-full-service'];

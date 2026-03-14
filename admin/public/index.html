@@ -126,6 +126,7 @@ let FOOTER_MOT_PRICE = '£19';
 let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
 let OPENING_HOURS_DISPLAY = 'Mon–Sat: 8am–6pm';
+let COMBO_SECTION_BADGE = '🔥 Special Offers';
 
 const AREAS = [
   "Palmers Green","Southgate","Enfield","Edmonton","Winchmore Hill",
@@ -372,7 +373,7 @@ function ComboDeals(){
       h('div',{style:{textAlign:'center',marginBottom:48}},
         h('p',{style:{color:T.yellow,fontWeight:700,fontSize:13,letterSpacing:'.15em',
           textTransform:'uppercase',background:T.navy,display:'inline-block',
-          padding:'4px 16px',borderRadius:50,marginBottom:14}},'🔥 Special Offers'),
+          padding:'4px 16px',borderRadius:50,marginBottom:14}},COMBO_SECTION_BADGE),
         h('h2',{style:{fontWeight:900,fontSize:'clamp(1.8rem,3vw,2.6rem)',
           color:T.navy,margin:'0 0 12px'}},'MOT + Service Combo Deals'),
         h('p',{style:{color:T.gray500,fontSize:16,maxWidth:500,margin:'0 auto'}},
@@ -684,6 +685,7 @@ function App(){
     const data = await (window.N05ServicesLoader && N05ServicesLoader.loadServices ? N05ServicesLoader.loadServices() : fetch('/data/services.json?v='+Date.now()).then(r=>r.json()));
     const settings = data.settings || {};
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
+    if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
     const map = (window.N05ServicesLoader && N05ServicesLoader.getPriceMap) ? N05ServicesLoader.getPriceMap(data) : { byValue:{}, byId:{} };
     const byId = map.byId || {};
     const byValue = map.byValue || {};
