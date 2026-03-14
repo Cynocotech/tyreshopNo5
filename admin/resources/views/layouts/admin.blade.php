@@ -107,21 +107,25 @@
             </header>
             <div class="p-6">
                 @if (session('success'))
-                    <div role="alert" class="sticky top-0 z-20 mb-4 rounded-xl bg-green-600 text-white px-5 py-4 shadow-lg flex items-center gap-3" id="admin-success-alert">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="font-medium">{{ session('success') }}</span>
-                        <button type="button" onclick="this.closest('[role=alert]').remove()" class="ml-auto p-2 rounded-lg hover:bg-green-700 transition-colors" aria-label="Dismiss">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
+                    <div role="alert" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/90 backdrop-blur-sm" id="admin-success-alert">
+                        <div class="mx-4 max-w-md rounded-2xl bg-green-600 px-8 py-8 shadow-2xl text-center text-white">
+                            <svg class="mx-auto w-16 h-16 mb-4 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="text-xl font-semibold mb-6">{{ session('success') }}</p>
+                            <button type="button" onclick="this.closest('[role=alert]').remove()" class="rounded-xl bg-white/20 px-6 py-3 font-medium hover:bg-white/30 transition-colors">
+                                OK
+                            </button>
+                        </div>
                     </div>
                 @endif
                 @if (session('error'))
-                    <div role="alert" class="sticky top-0 z-20 mb-4 rounded-xl bg-red-600 text-white px-5 py-4 shadow-lg flex items-center gap-3" id="admin-error-alert">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="font-medium">{{ session('error') }}</span>
-                        <button type="button" onclick="this.closest('[role=alert]').remove()" class="ml-auto p-2 rounded-lg hover:bg-red-700 transition-colors" aria-label="Dismiss">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
+                    <div role="alert" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/90 backdrop-blur-sm" id="admin-error-alert">
+                        <div class="mx-4 max-w-md rounded-2xl bg-red-600 px-8 py-8 shadow-2xl text-center text-white">
+                            <svg class="mx-auto w-16 h-16 mb-4 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="text-xl font-semibold mb-6">{{ session('error') }}</p>
+                            <button type="button" onclick="this.closest('[role=alert]').remove()" class="rounded-xl bg-white/20 px-6 py-3 font-medium hover:bg-white/30 transition-colors">
+                                OK
+                            </button>
+                        </div>
                     </div>
                 @endif
                 {{ $slot }}

@@ -128,6 +128,8 @@ let HERO_SAVE = '£31';
 let OPENING_HOURS_DISPLAY = 'Mon–Sat: 8am–6pm';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
 var SHOW_UPDATE_NOTICE = true;
+var SHOW_MAINTENANCE_NOTICE = false;
+var MAINTENANCE_MESSAGE = "Site maintenance — we'll be back shortly";
 let FOOTER_OFFER_TITLE = "Today's Offer";
 let FOOTER_OFFER_SUBTITLE = 'Book Today';
 let FOOTER_OFFER_LABEL = 'MOT + Service';
@@ -674,6 +676,8 @@ function App(){
     return ()=>window.removeEventListener('scroll',fn);
   },[]);
   return h('div',{style:{fontFamily:"'Inter',ui-sans-serif,system-ui"}},
+    SHOW_MAINTENANCE_NOTICE ? h('div',{style:{background:'#dc2626',color:'#fff',textAlign:'center',padding:'14px 24px',fontSize:16,fontWeight:700}},
+      '⚠️ ' + MAINTENANCE_MESSAGE) : null,
     SHOW_UPDATE_NOTICE ? h('div',{style:{background:'#f59e0b',color:'#fff',textAlign:'center',padding:'10px 20px',fontSize:14,fontWeight:600}},
       '🔧 Site is under update — please be patient') : null,
     h(TopBar),
@@ -698,6 +702,8 @@ function App(){
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
     SHOW_UPDATE_NOTICE = (data.settings && data.settings.show_update_notice === '1');
+    SHOW_MAINTENANCE_NOTICE = (data.settings && data.settings.show_maintenance_notice === '1');
+    if (data.settings && data.settings.maintenance_message) MAINTENANCE_MESSAGE = data.settings.maintenance_message;
     var s = data.settings || {};
     if (s.footer_offer_title) FOOTER_OFFER_TITLE = s.footer_offer_title;
     if (s.footer_offer_subtitle) FOOTER_OFFER_SUBTITLE = s.footer_offer_subtitle;

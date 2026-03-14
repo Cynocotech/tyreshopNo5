@@ -43,6 +43,8 @@ class SiteSettingsSeeder extends Seeder
             'footer_offer_btn_text' => 'Book Now →',
             'footer_offer_disclaimer' => '*New bookings only. Excludes commercial vehicles.',
             'show_update_notice' => '1',
+            'show_maintenance_notice' => '0',
+            'maintenance_message' => "Site maintenance — we'll be back shortly",
         ];
         foreach ($settings as $key => $value) {
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
