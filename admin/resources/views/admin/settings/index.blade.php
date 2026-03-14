@@ -218,38 +218,64 @@
             </div>
         </div>
 
-        <div x-show="tab === 'email'" x-cloak>
+        <div x-show="tab === 'email'" x-cloak x-data="{ mailDriver: '{{ old('mail_driver', $settings['mail_driver'] ?? 'smtp') }}' }">
             <h3 class="font-semibold text-slate-800 mb-4">Email / SMTP</h3>
             <p class="text-sm text-slate-600 mb-4">Configure outgoing email (booking confirmations, notifications). Leave blank to use .env values.</p>
             <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">SMTP Host</label>
-                        <input type="text" name="mail_host" value="{{ old('mail_host', $settings['mail_host'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="smtp.example.com">
+                <div class="mb-4 pb-4 border-b border-slate-200">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Mail provider</label>
+                    <div class="flex gap-6">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="mail_driver" value="smtp" {{ old('mail_driver', $settings['mail_driver'] ?? 'smtp') === 'smtp' ? 'checked' : '' }} @change="mailDriver = 'smtp'">
+                            <span>SMTP</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="mail_driver" value="resend" {{ old('mail_driver', $settings['mail_driver'] ?? '') === 'resend' ? 'checked' : '' }} @change="mailDriver = 'resend'">
+                            <span>Resend (API)</span>
+                        </label>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Port</label>
-                        <input type="text" name="mail_port" value="{{ old('mail_port', $settings['mail_port'] ?? '587') }}" class="w-full mt-1 rounded border-slate-300" placeholder="587">
-                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Resend uses HTTPS (port 443) and works when cPanel blocks outbound SMTP. Get an API key at <a href="https://resend.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">resend.com</a> and verify your domain.</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                {{-- Resend section --}}
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200" x-show="mailDriver === 'resend'" x-cloak>
+                        <h4 class="font-medium text-slate-700 mb-2">Resend API</h4>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">API Key</label>
+                            <input type="password" name="mail_resend_api_key" value="" class="w-full mt-1 rounded border-slate-300" placeholder="re_xxxxx — Leave blank to keep current" autocomplete="new-password">
+                            <p class="text-xs text-slate-500 mt-1">Create a key at resend.com. From address below must use a domain you’ve verified in Resend.</p>
+                        </div>
+                    </div>
+                {{-- SMTP section --}}
+                <div x-show="mailDriver === 'smtp'" x-cloak class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">SMTP Host</label>
+                            <input type="text" name="mail_host" value="{{ old('mail_host', $settings['mail_host'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="smtp.example.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Port</label>
+                            <input type="text" name="mail_port" value="{{ old('mail_port', $settings['mail_port'] ?? '587') }}" class="w-full mt-1 rounded border-slate-300" placeholder="587">
+                        </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" x-show="mailDriver === 'smtp'" x-cloak>
                     <div>
                         <label class="block text-sm font-medium text-slate-700">Username</label>
-                        <input type="text" name="mail_username" value="{{ old('mail_username', $settings['mail_username'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" autocomplete="off">
+                            <input type="text" name="mail_username" value="{{ old('mail_username', $settings['mail_username'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" autocomplete="off">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Password</label>
+                            <input type="password" name="mail_password" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
+                            <p class="text-xs text-slate-500 mt-1">Leave blank to keep existing password</p>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Password</label>
-                        <input type="password" name="mail_password" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
-                        <p class="text-xs text-slate-500 mt-1">Leave blank to keep existing password</p>
+                        <label class="block text-sm font-medium text-slate-700">Encryption</label>
+                        <select name="mail_encryption" class="w-full mt-1 rounded border-slate-300">
+                            <option value="" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === '' ? 'selected' : '' }}>None</option>
+                            <option value="tls" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
+                            <option value="ssl" {{ old('mail_encryption', $settings['mail_encryption'] ?? '') === 'ssl' ? 'selected' : '' }}>SSL</option>
+                        </select>
                     </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">Encryption</label>
-                    <select name="mail_encryption" class="w-full mt-1 rounded border-slate-300">
-                        <option value="" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === '' ? 'selected' : '' }}>None</option>
-                        <option value="tls" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
-                        <option value="ssl" {{ old('mail_encryption', $settings['mail_encryption'] ?? '') === 'ssl' ? 'selected' : '' }}>SSL</option>
-                    </select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -399,6 +425,23 @@
                     <p class="text-xs text-slate-500 mt-1">Leave blank to use <code class="bg-slate-100 px-1 rounded">CHECK_CAR_DETAILS_API_KEY</code> from .env (if set).</p>
                 </div>
             </div>
+
+            <div class="mb-6">
+                <h4 class="font-medium text-slate-700 mb-2">Telegram Bot (booking notifications)</h4>
+                <p class="text-xs text-slate-500 mb-3">New MOT/service bookings are sent to your Telegram chat. Create a bot via <a href="https://t.me/BotFather" target="_blank" rel="noopener" class="text-blue-600 hover:underline">@BotFather</a>, then start a chat with it and get your Chat ID (e.g. via <a href="https://t.me/userinfobot" target="_blank" rel="noopener" class="text-blue-600 hover:underline">@userinfobot</a> for direct messages, or for groups use a negative ID).</p>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Bot Token</label>
+                        <input type="password" name="telegram_bot_token" value="" class="w-full mt-1 rounded border-slate-300" placeholder="123456:ABC-DEF..." autocomplete="new-password">
+                        <p class="text-xs text-slate-500 mt-1">Leave blank to keep current token</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Chat ID</label>
+                        <input type="text" name="telegram_chat_id" value="{{ old('telegram_chat_id', $settings['telegram_chat_id'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="123456789 or -1001234567890 for groups">
+                        <p class="text-xs text-slate-500 mt-1">Leave blank to use <code class="bg-slate-100 px-1 rounded">TELEGRAM_CHAT_ID</code> from .env</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <style>[x-cloak]{display:none!important}</style>
@@ -432,6 +475,29 @@
                 <input type="email" name="test_email" value="{{ old('test_email', $settings['admin_email'] ?? Auth::user()?->email ?? '') }}" class="w-full rounded border-slate-300" placeholder="email@example.com" required>
             </div>
             <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test email</button>
+        </form>
+    </div>
+
+    {{-- Test Telegram form --}}
+    <div x-show="tab === 'apis'" x-cloak class="bg-white rounded-lg shadow p-6 mt-4 space-y-4">
+        <h3 class="font-semibold text-slate-800">Test Telegram Bot</h3>
+        <p class="text-sm text-slate-600">Save your Bot Token and Chat ID above first, then send a test message to verify.</p>
+        @if (session('test_telegram_sent'))
+            <div class="p-4 rounded-lg bg-green-50 border border-green-200">
+                <p class="text-green-800 font-medium">✓ Test message sent successfully</p>
+                <p class="text-sm text-green-700 mt-1">Check your Telegram chat.</p>
+            </div>
+        @endif
+        @if (session('test_telegram_error'))
+            <div class="p-4 rounded-lg bg-red-50 border border-red-200">
+                <p class="text-red-800 font-medium">✗ Telegram failed</p>
+                <p class="text-sm text-red-700 mt-2 font-mono text-xs break-all">{{ session('test_telegram_error') }}</p>
+                <p class="text-xs text-red-600 mt-2">Check Bot Token and Chat ID.</p>
+            </div>
+        @endif
+        <form action="{{ route('admin.settings.test-telegram') }}" method="POST">
+            @csrf
+            <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test message</button>
         </form>
     </div>
     </div>

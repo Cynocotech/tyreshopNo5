@@ -75,6 +75,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/settings', [SiteSettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SiteSettingController::class, 'update'])->name('settings.update');
     Route::post('/settings/test-email', [SiteSettingController::class, 'sendTestEmail'])->name('settings.test-email')->middleware('throttle:5,1');
+    Route::post('/settings/test-telegram', [SiteSettingController::class, 'sendTestTelegram'])->name('settings.test-telegram')->middleware('throttle:5,1');
     Route::resource('faqs', FaqController::class)->names('faqs')->except('show');
     Route::resource('areas', AreaController::class)->names('areas')->except('show');
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
