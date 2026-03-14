@@ -11,14 +11,19 @@ use Database\Seeders\ServiceCategorySeeder;
 
 class ServiceCategoryController extends Controller
 {
-    public function index(): View|RedirectResponse
+    public function index(): View
     {
         $categories = ServiceCategory::withCount('services')->orderBy('sort_order')->get();
 
-        // Auto-seed default categories if none exist
+        // Auto-seed default categories if none exist (no redirect - avoids redirect loop if seeder fails)
         if ($categories->isEmpty()) {
-            (new ServiceCategorySeeder)->run();
-            return redirect()->route('admin.categories.index')->with('success', 'Default categories have been created.');
+            try {
+                (new ServiceCategorySeeder)->run();
+                $categories = ServiceCategory::withCount('services')->orderBy('sort_order')->get();
+                session()->flash('success', 'Default categories have been created.');
+            } catch (\Throwable $e) {
+                session()->flash('error', 'No categories yet. Add one below, or run: php artisan db:seed --class=ServiceCategorySeeder');
+            }
         }
 
         return view('admin.categories.index', [
