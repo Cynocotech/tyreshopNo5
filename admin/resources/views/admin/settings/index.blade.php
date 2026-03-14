@@ -9,6 +9,7 @@
             <button type="button" @click="tab = 'hours'" :class="tab === 'hours' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Opening Hours</button>
             <button type="button" @click="tab = 'hero'" :class="tab === 'hero' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Hero & Footer</button>
             <button type="button" @click="tab = 'payment'" :class="tab === 'payment' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Payment Gateways</button>
+            <button type="button" @click="tab = 'apis'" :class="tab === 'apis' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">APIs</button>
         </div>
 
     <form action="{{ route('admin.settings.update') }}" method="POST" class="bg-white rounded-lg shadow p-6 space-y-6">
@@ -323,6 +324,21 @@
                         <input type="checkbox" name="payment_lfat_enabled" value="1" {{ old('payment_lfat_enabled', $settings['payment_lfat_enabled'] ?? '') ? 'checked' : '' }}>
                         <span class="text-sm text-slate-700">Enable LFAT Pay</span>
                     </label>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="tab === 'apis'" x-cloak>
+            <h3 class="font-semibold text-slate-800 mb-4">External APIs</h3>
+            <p class="text-sm text-slate-600 mb-4">API keys for vehicle lookup, integrations, and third-party services.</p>
+
+            <div class="mb-6 pb-4 border-b border-slate-200">
+                <h4 class="font-medium text-slate-700 mb-2">Vehicle Registration (VRN) Lookup</h4>
+                <p class="text-xs text-slate-500 mb-3">Used for plate lookup on the front page and booking flow. Sign up at <a href="https://api.checkcardetails.co.uk/auth/register" target="_blank" rel="noopener" class="text-blue-600 hover:underline">api.checkcardetails.co.uk</a> for an API key.</p>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">API Key</label>
+                    <input type="password" name="vrn_api_key" value="{{ old('vrn_api_key', $settings['vrn_api_key'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Your Check Car Details API key" autocomplete="off">
+                    <p class="text-xs text-slate-500 mt-1">Leave blank to use <code class="bg-slate-100 px-1 rounded">CHECK_CAR_DETAILS_API_KEY</code> from .env (if set).</p>
                 </div>
             </div>
         </div>

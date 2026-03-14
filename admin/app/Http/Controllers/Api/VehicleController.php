@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\SiteSetting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -16,13 +17,13 @@ class VehicleController extends Controller
             return response()->json(['error' => 'VRM (registration) required'], 400);
         }
 
-        $apiKey = config('services.checkcar.api_key');
+        $apiKey = SiteSetting::get('vrn_api_key') ?: config('services.checkcar.api_key');
         $mockMode = config('services.checkcar.mock', false);
 
         if (! $mockMode && ! $apiKey) {
             return response()->json([
                 'error' => 'Vehicle API not configured',
-                'hint' => 'Set CHECK_CAR_DETAILS_API_KEY in .env. Sign up at api.checkcardetails.co.uk/auth/register',
+                'hint' => 'Add your VRN API key in Admin → Settings → APIs. Sign up at api.checkcardetails.co.uk/auth/register',
             ], 503);
         }
 

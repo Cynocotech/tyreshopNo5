@@ -35,6 +35,7 @@ class SiteSettingController extends Controller
             'payment_teya_api_url', 'payment_teya_merchant_id', 'payment_teya_api_key', 'payment_teya_enabled',
             'payment_faster_api_url', 'payment_faster_client_id', 'payment_faster_client_secret', 'payment_faster_enabled',
             'payment_lfat_api_url', 'payment_lfat_api_key', 'payment_lfat_enabled',
+            'vrn_api_key',
         ];
         $checkboxKeys = ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled', 'show_update_notice'];
         foreach ($checkboxKeys as $key) {
