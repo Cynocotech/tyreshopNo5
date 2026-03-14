@@ -476,6 +476,31 @@
             </div>
             <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test email</button>
         </form>
+
+        <hr class="my-6 border-slate-200">
+
+        <h4 class="font-medium text-slate-800 mb-2">Test template design</h4>
+        <p class="text-sm text-slate-600 mb-3">Send a sample booking confirmation email to preview the designed template (matches your site branding).</p>
+        @if (session('test_template_sent'))
+            <div class="p-4 rounded-lg bg-green-50 border border-green-200 mb-4">
+                <p class="text-green-800 font-medium">✓ Template preview sent</p>
+                <p class="text-sm text-green-700 mt-1">Delivered to {{ session('test_template_sent') }}. Check how the design looks.</p>
+            </div>
+        @endif
+        @if (session('test_template_error'))
+            <div class="p-4 rounded-lg bg-red-50 border border-red-200 mb-4">
+                <p class="text-red-800 font-medium">✗ Template send failed</p>
+                <p class="text-sm text-red-700 mt-2 font-mono text-xs break-all">{{ session('test_template_error') }}</p>
+            </div>
+        @endif
+        <form action="{{ route('admin.settings.test-template') }}" method="POST" class="flex flex-wrap items-end gap-3">
+            @csrf
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Send template preview to</label>
+                <input type="email" name="test_email" value="{{ old('test_template_email', $settings['admin_email'] ?? Auth::user()?->email ?? '') }}" class="w-full rounded border-slate-300" placeholder="email@example.com" required>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700">Send test template</button>
+        </form>
     </div>
 
     {{-- Test Telegram form --}}

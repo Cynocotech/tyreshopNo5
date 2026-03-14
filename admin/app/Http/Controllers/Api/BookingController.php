@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\SiteSetting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -238,6 +239,15 @@ class BookingController extends Controller
             'appointmentTime' => $m['appointmentTime'] ?? '-',
             'serviceType' => $m['serviceType'] ?? 'MOT Test',
             'totalAmount' => $m['totalAmount'] ?? '19.00',
+            'siteName' => SiteSetting::get('site_name', 'NO5 Tyre & MOT'),
+            'logoUrl' => SiteSetting::get('logo_url'),
+            'siteUrl' => SiteSetting::get('url', url('/')),
+            'phone' => SiteSetting::get('phone'),
+            'address' => trim(implode(', ', array_filter([
+                SiteSetting::get('address_street'),
+                SiteSetting::get('address_locality'),
+                SiteSetting::get('address_postcode'),
+            ]))),
         ];
         $date = $data['appointmentDate'];
         $time = $data['appointmentTime'];
@@ -292,19 +302,11 @@ class BookingController extends Controller
 
     private function adminEmailHtml(array $d): string
     {
-        return "<h2>New MOT/Service Booking</h2><table style='border-collapse:collapse;'><tr><td style='padding:8px;border:1px solid #eee;'><strong>Booking ID</strong></td><td>{$d['bookingId']}</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Customer</strong></td><td>{$d['customerName']}</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Email</strong></td><td>{$d['customerEmail']}</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Phone</strong></td><td>{$d['customerPhone']}</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Vehicle</strong></td><td>{$d['vehicleMake']} {$d['vehicleModel']} ({$d['vehicleRegistration']})</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Date & Time</strong></td><td>{$d['appointmentDate']} at {$d['appointmentTime']}</td></tr><tr><td style='padding:8px;border:1px solid #eee;'><strong>Service</strong></td><td>{$d['serviceType']}</td></tr></table>";
+        return view('emails.admin-booking-notification', $d)->render();
     }
 
     private function customerEmailHtml(array $d): string
     {
-        $tpl = resource_path('views/emails/booking-confirmation.blade.php');
-        if (File::exists($tpl)) {
-            $html = File::get($tpl);
-            foreach ($d as $k => $v) {
-                $html = str_replace('{{' . $k . '}}', (string) $v, $html);
-            }
-            return $html;
-        }
-        return $this->adminEmailHtml($d);
+        return view('emails.booking-confirmation', $d)->render();
     }
 }

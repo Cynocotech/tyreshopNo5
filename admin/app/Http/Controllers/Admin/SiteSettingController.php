@@ -115,6 +115,49 @@ class SiteSettingController extends Controller
         }
     }
 
+    public function sendTestTemplate(Request $request): RedirectResponse
+    {
+        $request->validate(['test_email' => 'required|email']);
+        $to = $request->input('test_email');
+
+        $sample = [
+            'bookingId' => 'N05-SAMPLE',
+            'customerName' => 'John Smith',
+            'customerEmail' => $to,
+            'customerPhone' => '07700 900123',
+            'vehicleRegistration' => 'AB12 CDE',
+            'vehicleMake' => 'Ford',
+            'vehicleModel' => 'Focus',
+            'appointmentDate' => now()->addDays(3)->format('Y-m-d'),
+            'appointmentTime' => '10:00',
+            'serviceType' => 'MOT Test',
+            'totalAmount' => '19.00',
+            'siteName' => SiteSetting::get('site_name', 'NO5 Tyre & MOT'),
+            'logoUrl' => SiteSetting::get('logo_url'),
+            'siteUrl' => SiteSetting::get('url', url('/')),
+            'phone' => SiteSetting::get('phone', ''),
+        ];
+
+        try {
+            $html = view('emails.booking-confirmation', $sample)->render();
+            Mail::html(
+                $html,
+                fn ($mail) => $mail
+                    ->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to($to)
+                    ->subject('Test template — Booking confirmation design')
+            );
+            return redirect()->route('admin.settings.index', ['tab' => 'email'])
+                ->with('success', 'Test template sent to ' . $to . '. Check how the design looks.')
+                ->with('test_template_sent', $to);
+        } catch (\Throwable $e) {
+            Log::error('Admin test template failed', ['to' => $to, 'error' => $e->getMessage()]);
+            return redirect()->route('admin.settings.index', ['tab' => 'email'])
+                ->with('error', 'Failed to send test template — ' . $e->getMessage())
+                ->with('test_template_error', $e->getMessage());
+        }
+    }
+
     public function sendTestTelegram(): RedirectResponse
     {
         $token = config('services.telegram.bot_token');
