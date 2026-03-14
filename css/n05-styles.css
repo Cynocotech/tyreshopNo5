@@ -88,6 +88,19 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 .booking-step { margin-bottom: 32px; }
 .booking-step-title { font-weight: 700; font-size: 16px; color: #1B263B; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
+/* Mobile hamburger menu */
+@media(max-width:768px){
+  .header-nav-desktop{display:none!important}
+  .header-hamburger{display:flex!important;align-items:center;justify-content:center}
+  .header-mobile-menu .nav-link,
+  .header-mobile-menu .btn-transition{display:block!important;padding:14px 0;font-size:16px;border-radius:0}
+  .header-mobile-menu .btn-transition{text-align:center;margin-top:8px}
+  .header-tagline{display:none!important}
+}
+@media(min-width:769px){
+  .header-mobile-menu,.header-mobile-overlay{display:none!important}
+}
+
 @media(max-width:1024px){
   .hero-grid{grid-template-columns:1fr!important}
   .stats-grid{display:none!important}

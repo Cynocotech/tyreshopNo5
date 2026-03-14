@@ -161,6 +161,7 @@ function TopBar(){
 }
 
 function Header({scrolled}){
+  const [menuOpen,setMenuOpen]=useState(false);
   return h('header',{style:{
     position:'sticky',top:0,zIndex:100,
     background:scrolled?'rgba(17,25,39,0.97)':T.navy,
@@ -169,17 +170,37 @@ function Header({scrolled}){
     transition:'all .3s ease',
   }},
     h('div',{style:{maxWidth:1280,margin:'0 auto',padding:'16px 24px',
-      display:'flex',alignItems:'center',justifyContent:'space-between'}},
+      display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative'}},
       h('a',{href:'index.html',style:{display:'flex',alignItems:'center',gap:12,textDecoration:'none'}},
         h('img',{src:LOGO_URL,alt:'N05 Tyre & MOT Service',style:{height:44,width:'auto'}}),
-        h('div',{style:{color:T.yellow,fontSize:11}},'Palmers Green · North London'),
+        h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},'Palmers Green · North London'),
       ),
-      h('nav',{style:{display:'flex',alignItems:'center',gap:24}},
+      h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:500}},l.label)),
         h('a',{href:'mot-booking.html',className:'btn-transition anim-pulse-cta',style:{
           background:T.yellow,color:T.navy,padding:'10px 22px',borderRadius:50,
           fontWeight:800,fontSize:14,textDecoration:'none',display:'inline-block',
+        }},'Book Now')
+      ),
+      h('button',{
+        type:'button',
+        className:'header-hamburger',
+        'aria-label':menuOpen?'Close menu':'Open menu',
+        onClick:function(){ setMenuOpen(function(o){ return !o; }); },
+        style:{display:'none',background:'none',border:'none',padding:8,cursor:'pointer',color:'#fff'}
+      },h('svg',{width:24,height:24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2},
+        h('path',{d:'M4 6h16M4 12h16M4 18h16'})),
+      menuOpen && h('div',{
+        className:'header-mobile-menu',
+        style:{position:'absolute',top:'100%',left:0,right:0,background:T.navy,boxShadow:'0 10px 40px rgba(0,0,0,.3)',padding:'16px 24px 24px',zIndex:50},
+        onClick:function(){ setMenuOpen(false); }
+      },
+        ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
+          style:{display:'block',color:'rgba(255,255,255,.9)',fontSize:16,fontWeight:500,padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,.1)'}},l.label)),
+        h('a',{href:'mot-booking.html',className:'btn-transition anim-pulse-cta',style:{
+          display:'block',textAlign:'center',background:T.yellow,color:T.navy,padding:'14px 22px',borderRadius:50,
+          fontWeight:800,fontSize:16,textDecoration:'none',marginTop:16,
         }},'Book Now')
       )
     )
