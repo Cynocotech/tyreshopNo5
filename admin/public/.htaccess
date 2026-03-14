@@ -25,6 +25,9 @@
     # Serve index.html for root
     RewriteRule ^$ index.html [L]
 
+    # Always serve /data/services.json from Laravel (admin panel database)
+    RewriteRule ^data/services\.json$ index.php [L,QSA]
+
     # Serve .html for clean URLs (skip API and existing files)
     RewriteCond %{REQUEST_URI} !^/api
     RewriteCond %{REQUEST_FILENAME} !-f
