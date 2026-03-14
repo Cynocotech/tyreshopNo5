@@ -101,6 +101,10 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 @media(max-width:640px){
   .services-grid{grid-template-columns:1fr!important}
   .footer-grid{grid-template-columns:1fr!important}
+  .combo-grid{grid-template-columns:1fr!important}
+  .usps-grid{grid-template-columns:1fr!important}
+  .plate-container{max-width:100%}
+  .plate-input-field{width:100%;max-width:260px;font-size:1.8rem}
 }
 
 /* Page layouts (Car Servicing, Tyres, Other Services, Blog, Contact) */

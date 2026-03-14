@@ -57,7 +57,7 @@ class ServicesController extends Controller
             'footer_offer_was_price' => SiteSetting::get('footer_offer_was_price', '£50'),
             'footer_offer_save' => SiteSetting::get('footer_offer_save', 'Save £31+'),
             'footer_offer_feature' => SiteSetting::get('footer_offer_feature', '🚗 Free collection & delivery'),
-            'footer_offer_btn_text' => SiteSetting::get('footer_offer_btn_text', 'Book Now →'),
+            'footer_offer_btn' => SiteSetting::get('footer_offer_btn') ?? SiteSetting::get('footer_offer_btn_text', 'Book Now →'),
             'footer_offer_disclaimer' => SiteSetting::get('footer_offer_disclaimer', '*New bookings only. Excludes commercial vehicles.'),
             'combo_section_title' => SiteSetting::get('combo_section_title', 'Special Offer'),
             'combo_section_intro' => SiteSetting::get('combo_section_intro', 'Book your MOT together with a service and pay just £19 — saving at least £31.'),
