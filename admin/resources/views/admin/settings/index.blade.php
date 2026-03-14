@@ -185,7 +185,7 @@
                     <div class="space-y-3">
                         <div>
                             <label class="block text-sm font-medium text-slate-600">Section Title</label>
-                            <input type="text" name="combo_section_title" value="{{ old('combo_section_title', $settings['combo_section_title'] ?? 'MOT + Service Combo Deals') }}" class="w-full mt-1 rounded border-slate-300" placeholder="MOT + Service Combo Deals">
+                            <input type="text" name="combo_section_title" value="{{ old('combo_section_title', $settings['combo_section_title'] ?? 'Special Offer') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Special Offer">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-600">Intro Text</label>

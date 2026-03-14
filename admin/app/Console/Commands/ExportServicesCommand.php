@@ -39,6 +39,12 @@ class ExportServicesCommand extends Command
                 'isQuote' => $s->is_quote,
                 'keywords' => $s->keywords ?? [],
                 'sortOrder' => $s->sort_order,
+                'comboBadge' => $s->combo_badge,
+                'comboSubtitle' => $s->combo_subtitle,
+                'comboFeatures' => $s->combo_features ?? [],
+                'comboSaving' => $s->combo_saving,
+                'comboDisplayPrice' => $s->combo_display_price,
+                'isComboHot' => (bool) $s->is_combo_hot,
             ];
         }
 

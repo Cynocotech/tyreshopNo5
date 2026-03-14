@@ -75,6 +75,12 @@ class ImportServicesCommand extends Command
                 'is_quote' => (bool) ($svc['isQuote'] ?? false),
                 'keywords' => $svc['keywords'] ?? [],
                 'sort_order' => $svc['sortOrder'] ?? $i,
+                'combo_badge' => $svc['comboBadge'] ?? null,
+                'combo_subtitle' => $svc['comboSubtitle'] ?? null,
+                'combo_features' => $svc['comboFeatures'] ?? null,
+                'combo_saving' => $svc['comboSaving'] ?? null,
+                'combo_display_price' => $svc['comboDisplayPrice'] ?? null,
+                'is_combo_hot' => (bool) ($svc['isComboHot'] ?? false),
             ];
 
             Service::updateOrCreate(

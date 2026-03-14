@@ -1,24 +1,52 @@
 {
     "services": [
         {
-            "id": "mot-full-service",
-            "value": "MOT + Full Service",
-            "title": "MOT + Full Service",
-            "icon": "🔥",
-            "price": 199,
-            "heroMOTPrice": 19,
-            "priceLabel": "£199 (Special Offer)",
-            "priceDisplay": "£199",
-            "category": "special-offers",
+            "id": "free-tyre-safety-check",
+            "value": "Free Tyre Safety Check",
+            "title": "FREE TYRE SAFETY CHECK",
+            "icon": "🛞",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Free",
+            "priceDisplay": "Free",
+            "category": "tyres-other",
             "isQuote": false,
             "keywords": [
-                "MOT test Palmers Green",
-                "car service North London",
-                "MOT and service combo",
-                "cheap MOT near me",
-                "full service £19"
+                "tyre check",
+                "free safety check",
+                "tyre inspection"
             ],
-            "sortOrder": 0
+            "sortOrder": 0,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "free-mot-due-check",
+            "value": "Free MOT Due Check",
+            "title": "FREE MOT DUE CHECK",
+            "icon": "📋",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Free",
+            "priceDisplay": "Free",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "MOT due",
+                "free MOT check",
+                "MOT expiry"
+            ],
+            "sortOrder": 1,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
             "id": "mot-major-service",
@@ -38,47 +66,68 @@
                 "Palmers Green garage",
                 "MOT deal"
             ],
-            "sortOrder": 1
+            "sortOrder": 1,
+            "comboBadge": "SAVE AT LEAST £31",
+            "comboSubtitle": "Special Offer",
+            "comboFeatures": [
+                "Full MOT Test",
+                "Everything in a Full Service",
+                "Full vehicle component check & all required maintenance",
+                "Level top-ups & filter replacements",
+                "Service book stamped",
+                "Free same-day collection & delivery"
+            ],
+            "comboSaving": "Save £31+",
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
-            "id": "mot-test",
-            "value": "MOT Test",
-            "title": "MOT Test Only",
+            "id": "free-car-inspection",
+            "value": "Free Car Inspection",
+            "title": "FREE CAR INSPECTION",
+            "icon": "🔍",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Free",
+            "priceDisplay": "Free",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "car inspection",
+                "free check",
+                "vehicle inspection"
+            ],
+            "sortOrder": 2,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "new-budget-tyre",
+            "value": "New Budget Tyre",
+            "title": "NEW BUDGET TYRE",
             "icon": "🛞",
-            "price": 54.85,
+            "price": 49,
             "heroMOTPrice": null,
-            "priceLabel": "£54.85",
-            "priceDisplay": "£54.85",
-            "category": "servicing-mot",
-            "isQuote": false,
+            "priceLabel": "From £49",
+            "priceDisplay": "From £49",
+            "category": "tyres-other",
+            "isQuote": true,
             "keywords": [
-                "MOT test Palmers Green",
-                "MOT centre North London",
-                "DVSA MOT test",
-                "MOT near me",
-                "cheap MOT test"
+                "budget tyres",
+                "cheap tyres",
+                "tyre fitting"
             ],
-            "sortOrder": 2
-        },
-        {
-            "id": "full-service",
-            "value": "Full Service",
-            "title": "Full Service",
-            "icon": "🔧",
-            "price": 190,
-            "heroMOTPrice": null,
-            "priceLabel": "£190",
-            "priceDisplay": "£190",
-            "category": "servicing-mot",
-            "isQuote": false,
-            "keywords": [
-                "full service North London",
-                "car service Palmers Green",
-                "annual service",
-                "oil change service",
-                "car maintenance"
-            ],
-            "sortOrder": 3
+            "sortOrder": 3,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
             "id": "major-service",
@@ -98,7 +147,61 @@
                 "Palmers Green garage",
                 "car servicing"
             ],
-            "sortOrder": 4
+            "sortOrder": 4,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "tyre-puncture-repair",
+            "value": "Tyre Puncture Repair",
+            "title": "Tyre puncture repair",
+            "icon": "🛞",
+            "price": 10,
+            "heroMOTPrice": null,
+            "priceLabel": "From £10",
+            "priceDisplay": "From £10",
+            "category": "tyres-other",
+            "isQuote": true,
+            "keywords": [
+                "puncture repair",
+                "tyre repair",
+                "flat tyre"
+            ],
+            "sortOrder": 4,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "free-tyre-pressure",
+            "value": "Free Tyre Pressure",
+            "title": "FREE TYRE PRESSURE",
+            "icon": "🛞",
+            "price": 0,
+            "heroMOTPrice": null,
+            "priceLabel": "Free",
+            "priceDisplay": "Free",
+            "category": "tyres-other",
+            "isQuote": false,
+            "keywords": [
+                "tyre pressure",
+                "free",
+                "pressure check"
+            ],
+            "sortOrder": 5,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
             "id": "van-servicing",
@@ -118,7 +221,42 @@
                 "van MOT",
                 "light commercial servicing"
             ],
-            "sortOrder": 5
+            "sortOrder": 5,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "mot-full-service",
+            "value": "MOT & Full Service Deal",
+            "title": "MOT & FULL SERVICE DEAL",
+            "icon": "🔥",
+            "price": 199.99,
+            "heroMOTPrice": 19,
+            "priceLabel": "£199.99",
+            "priceDisplay": "£199.99",
+            "category": "special-offers",
+            "isQuote": false,
+            "keywords": [
+                "MOT and service",
+                "full service deal",
+                "MOT combo"
+            ],
+            "sortOrder": 6,
+            "comboBadge": "SAVE AT LEAST £31",
+            "comboSubtitle": "Special Offer",
+            "comboFeatures": [
+                "Full MOT Test",
+                "Full Service: oil\/air filter, brakes, steering, suspension, tyre pressure, pollen filter & fluids",
+                "Spark plugs checked (replacement at extra cost if needed)",
+                "Free same-day collection & delivery"
+            ],
+            "comboSaving": "Save £31+",
+            "comboDisplayPrice": null,
+            "isComboHot": true
         },
         {
             "id": "tyre-fitting",
@@ -138,27 +276,61 @@
                 "tyre specialist",
                 "Michelin Pirelli tyres"
             ],
-            "sortOrder": 6
+            "sortOrder": 6,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
-            "id": "brakes-discs",
-            "value": "Brakes & Discs",
-            "title": "Brakes & Discs",
-            "icon": "🛑",
-            "price": 0,
+            "id": "mot-test",
+            "value": "MOT Test",
+            "title": "MOT",
+            "icon": "🛞",
+            "price": 45,
             "heroMOTPrice": null,
-            "priceLabel": "Quote",
-            "priceDisplay": "Free Quote",
+            "priceLabel": "£45",
+            "priceDisplay": "£45",
+            "category": "servicing-mot",
+            "isQuote": false,
+            "keywords": [
+                "MOT test",
+                "MOT centre",
+                "DVSA MOT"
+            ],
+            "sortOrder": 7,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "battery-replacement",
+            "value": "Battery Replacement",
+            "title": "Battery replacement",
+            "icon": "🔋",
+            "price": 30,
+            "heroMOTPrice": null,
+            "priceLabel": "From £30",
+            "priceDisplay": "From £30",
             "category": "tyres-other",
             "isQuote": true,
             "keywords": [
-                "brake repair North London",
-                "disc brake replacement",
-                "brake pads Palmers Green",
-                "brake service",
-                "car brakes near me"
+                "car battery",
+                "battery replacement",
+                "flat battery"
             ],
-            "sortOrder": 7
+            "sortOrder": 8,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
             "id": "exhaust-systems",
@@ -178,7 +350,37 @@
                 "exhaust fitting",
                 "car exhaust repair"
             ],
-            "sortOrder": 8
+            "sortOrder": 8,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "brakes-discs",
+            "value": "Brake Pads & Discs",
+            "title": "Brake pads & discs",
+            "icon": "🛑",
+            "price": 40,
+            "heroMOTPrice": null,
+            "priceLabel": "From £40",
+            "priceDisplay": "From £40",
+            "category": "servicing-mot",
+            "isQuote": true,
+            "keywords": [
+                "brake pads",
+                "brake discs",
+                "brake repair"
+            ],
+            "sortOrder": 9,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         },
         {
             "id": "window-tinting",
@@ -198,7 +400,109 @@
                 "road legal tinting",
                 "privacy glass Palmers Green"
             ],
-            "sortOrder": 9
+            "sortOrder": 9,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "full-service",
+            "value": "Full Service",
+            "title": "Full Service",
+            "icon": "🔧",
+            "price": 189,
+            "heroMOTPrice": null,
+            "priceLabel": "From £189",
+            "priceDisplay": "From £189",
+            "category": "servicing-mot",
+            "isQuote": true,
+            "keywords": [
+                "full service",
+                "annual service",
+                "car service"
+            ],
+            "sortOrder": 10,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "oil-change-only",
+            "value": "Oil Change Only",
+            "title": "Oil change only",
+            "icon": "🛢️",
+            "price": 70,
+            "heroMOTPrice": null,
+            "priceLabel": "From £70",
+            "priceDisplay": "From £70",
+            "category": "servicing-mot",
+            "isQuote": true,
+            "keywords": [
+                "oil change",
+                "engine oil",
+                "oil service"
+            ],
+            "sortOrder": 11,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "headlight-bulb-fitting",
+            "value": "Headlight Bulb Fitting",
+            "title": "Headlight bulb fitting",
+            "icon": "💡",
+            "price": 10,
+            "heroMOTPrice": null,
+            "priceLabel": "£10",
+            "priceDisplay": "£10",
+            "category": "tyres-other",
+            "isQuote": false,
+            "keywords": [
+                "headlight bulb",
+                "bulb fitting",
+                "car lights"
+            ],
+            "sortOrder": 12,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
+        },
+        {
+            "id": "air-conditioning-regas",
+            "value": "Air Conditioning REGAS",
+            "title": "Air conditioning REGAS",
+            "icon": "❄️",
+            "price": 60,
+            "heroMOTPrice": null,
+            "priceLabel": "From £60",
+            "priceDisplay": "From £60",
+            "category": "tyres-other",
+            "isQuote": true,
+            "keywords": [
+                "air con",
+                "regas",
+                "air conditioning"
+            ],
+            "sortOrder": 13,
+            "comboBadge": null,
+            "comboSubtitle": null,
+            "comboFeatures": [],
+            "comboSaving": null,
+            "comboDisplayPrice": null,
+            "isComboHot": false
         }
     ],
     "categories": {

@@ -25,6 +25,7 @@ class Service extends Model
         'combo_features',
         'combo_saving',
         'is_combo_hot',
+        'combo_display_price',
     ];
 
     protected function casts(): array

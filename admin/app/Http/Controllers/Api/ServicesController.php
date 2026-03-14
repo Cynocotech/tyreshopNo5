@@ -41,6 +41,7 @@ class ServicesController extends Controller
                 'comboFeatures' => $s->combo_features ?? [],
                 'comboSaving' => $s->combo_saving,
                 'isComboHot' => (bool) $s->is_combo_hot,
+                'comboDisplayPrice' => $s->combo_display_price,
             ];
         }
 
@@ -60,7 +61,7 @@ class ServicesController extends Controller
             'footer_offer_feature' => SiteSetting::get('footer_offer_feature', '🚗 Free collection & delivery'),
             'footer_offer_btn_text' => SiteSetting::get('footer_offer_btn_text', 'Book Now →'),
             'footer_offer_disclaimer' => SiteSetting::get('footer_offer_disclaimer', '*New bookings only. Excludes commercial vehicles.'),
-            'combo_section_title' => SiteSetting::get('combo_section_title', 'MOT + Service Combo Deals'),
+            'combo_section_title' => SiteSetting::get('combo_section_title', 'Special Offer'),
             'combo_section_intro' => SiteSetting::get('combo_section_intro', 'Book your MOT together with a service and pay just £19 — saving at least £31.'),
             'combo_combined_desc' => SiteSetting::get('combo_combined_desc', 'MOT Test + Service combined'),
         ];

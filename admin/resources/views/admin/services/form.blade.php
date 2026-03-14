@@ -73,9 +73,15 @@
                             <input type="text" name="combo_subtitle" value="{{ old('combo_subtitle', $service->combo_subtitle) }}" class="w-full rounded border-slate-300" placeholder="Special Offer">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Saving Text</label>
-                        <input type="text" name="combo_saving" value="{{ old('combo_saving', $service->combo_saving) }}" class="w-full rounded border-slate-300" placeholder="Save £31+">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Price on combo card</label>
+                            <input type="text" name="combo_display_price" value="{{ old('combo_display_price', $service->combo_display_price) }}" class="w-full rounded border-slate-300" placeholder="e.g. £199 or £19 — leave blank to use Price Display">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Saving Text</label>
+                            <input type="text" name="combo_saving" value="{{ old('combo_saving', $service->combo_saving) }}" class="w-full rounded border-slate-300" placeholder="Save £31+">
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Features (one per line)</label>

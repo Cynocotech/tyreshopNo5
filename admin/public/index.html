@@ -102,7 +102,7 @@ let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
 let OPENING_HOURS_DISPLAY = 'Mon–Sat: 8am–6pm';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
-let COMBO_SECTION_TITLE = 'MOT + Service Combo Deals';
+let COMBO_SECTION_TITLE = 'Special Offer';
 let COMBO_SECTION_INTRO = "Book your MOT together with a service and pay just £19 — saving at least £31.";
 let COMBO_COMBINED_DESC = 'MOT Test + Service combined';
 var SHOW_UPDATE_NOTICE = true;
@@ -710,7 +710,7 @@ function App(){
         title: svc.title,
         subtitle: svc.comboSubtitle || 'Special Offer',
         includes: (svc.comboFeatures && svc.comboFeatures.length) ? svc.comboFeatures : (ex.features || []),
-        price: svc.priceDisplay || '£19',
+        price: (svc.comboDisplayPrice && String(svc.comboDisplayPrice).trim()) ? String(svc.comboDisplayPrice).trim() : (svc.priceDisplay || ''),
         saving: svc.comboSaving || 'Save £31+',
         hot: !!svc.isComboHot
       });

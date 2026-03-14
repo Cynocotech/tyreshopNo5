@@ -37,6 +37,12 @@ class ExportController extends Controller
                 'category' => $s->category?->slug ?? '',
                 'isQuote' => $s->is_quote,
                 'keywords' => $s->keywords ?? [],
+                'comboBadge' => $s->combo_badge,
+                'comboSubtitle' => $s->combo_subtitle,
+                'comboFeatures' => $s->combo_features ?? [],
+                'comboSaving' => $s->combo_saving,
+                'comboDisplayPrice' => $s->combo_display_price,
+                'isComboHot' => (bool) $s->is_combo_hot,
             ];
         }
 

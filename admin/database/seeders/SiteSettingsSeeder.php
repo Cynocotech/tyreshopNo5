@@ -45,7 +45,7 @@ class SiteSettingsSeeder extends Seeder
             'show_update_notice' => '1',
             'show_maintenance_notice' => '0',
             'maintenance_message' => "Site maintenance — we'll be back shortly",
-            'combo_section_title' => 'MOT + Service Combo Deals',
+            'combo_section_title' => 'Special Offer',
             'combo_section_intro' => "Book your MOT together with a service and pay just £19 — saving at least £31.",
             'combo_combined_desc' => 'MOT Test + Service combined',
         ];

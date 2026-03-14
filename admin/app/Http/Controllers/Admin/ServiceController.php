@@ -45,6 +45,7 @@ class ServiceController extends Controller
             'combo_subtitle' => 'nullable|string|max:255',
             'combo_features' => 'nullable|string',
             'combo_saving' => 'nullable|string|max:100',
+            'combo_display_price' => 'nullable|string|max:50',
             'is_combo_hot' => 'boolean',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
@@ -83,6 +84,7 @@ class ServiceController extends Controller
             'combo_subtitle' => 'nullable|string|max:255',
             'combo_features' => 'nullable|string',
             'combo_saving' => 'nullable|string|max:100',
+            'combo_display_price' => 'nullable|string|max:50',
             'is_combo_hot' => 'boolean',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
