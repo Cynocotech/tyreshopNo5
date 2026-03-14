@@ -94,7 +94,7 @@
             <div x-show="!requiresSerial" x-cloak class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Quantity (stock)</label>
-                    <input type="number" name="quantity" min="0" value="{{ old('quantity', $product->quantity ?? 0) }}" class="w-32 rounded border-slate-300">
+                    <input type="number" name="quantity" min="0" value="{{ old('quantity', $product->quantity ?? 0) }}" class="w-32 rounded border-slate-300" :disabled="requiresSerial">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Low stock alert at</label>
@@ -103,9 +103,8 @@
                 </div>
             </div>
 
-            {{-- For serial products: low_stock_threshold --}}
+            {{-- For serial products: low_stock_threshold (quantity stays 0 — quantity input above is disabled when requires serial) --}}
             <div x-show="requiresSerial" x-cloak class="border border-slate-200 rounded-lg p-4 bg-slate-50 mb-4">
-                <input type="hidden" name="quantity" value="0">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Low stock alert at</label>
                     <input type="number" name="low_stock_threshold" min="0" value="{{ old('low_stock_threshold', $product->low_stock_threshold ?? 5) }}" class="w-24 rounded border-slate-300" placeholder="5">
