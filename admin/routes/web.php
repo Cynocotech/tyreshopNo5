@@ -67,6 +67,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('/epos/create-card-payment', [EposController::class, 'createCardPayment'])->name('epos.create-card-payment');
     Route::get('/epos/card-payment-status', [EposController::class, 'cardPaymentStatus'])->name('epos.card-payment-status');
     Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+    Route::post('/sales/bulk-delete', [SalesController::class, 'destroyBulk'])->name('sales.bulk-delete');
     Route::get('/sales/journal', [SalesController::class, 'journal'])->name('sales.journal');
     Route::get('/sales/daily', [SalesController::class, 'dailySummary'])->name('sales.daily');
     Route::get('/sales/export', [SalesController::class, 'exportCsv'])->name('sales.export');
@@ -82,6 +83,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/bulk-delete', [AdminBookingController::class, 'destroyBulk'])->name('bookings.bulk-delete');
     Route::get('/bookings/canceled', [AdminBookingController::class, 'canceled'])->name('bookings.canceled');
     Route::get('/bookings/list', [AdminBookingController::class, 'list'])->name('bookings.list');
     Route::get('/bookings/{booking}/invoice', [AdminBookingController::class, 'invoice'])->name('bookings.invoice');

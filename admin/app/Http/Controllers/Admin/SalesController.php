@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -138,6 +139,13 @@ class SalesController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
+    }
+
+    public function destroyBulk(Request $request): RedirectResponse
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'integer|exists:sales,id'])['ids'];
+        $count = Sale::whereIn('id', $ids)->delete();
+        return redirect()->back()->with('success', "Deleted {$count} sale(s).");
     }
 
     protected function buildSummary(string $from, string $to): array

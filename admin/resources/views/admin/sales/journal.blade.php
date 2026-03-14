@@ -10,6 +10,14 @@
         <a href="{{ route('admin.sales.export', request()->query()) }}" class="px-3 py-1.5 rounded bg-emerald-600 text-white hover:bg-emerald-700 text-sm font-medium">Export CSV</a>
     </div>
 
+    <form method="POST" action="{{ route('admin.sales.bulk-delete') }}" id="sales-journal-form" onsubmit="return confirm('Delete selected sales? This cannot be undone.');">
+        @csrf
+        <input type="hidden" name="from" value="{{ $from }}">
+        <input type="hidden" name="to" value="{{ $to }}">
+        <div class="mb-3 flex items-center gap-3">
+            <button type="submit" id="journal-delete-btn" disabled class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">Delete selected</button>
+            <span class="text-sm text-slate-500" id="journal-selected-count">0 selected</span>
+        </div>
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="px-4 py-3 bg-slate-50 border-b border-slate-200">
             <h2 class="text-sm font-semibold text-slate-800">Sales Journal (accounting ledger)</h2>
@@ -19,6 +27,9 @@
             <table class="min-w-full divide-y divide-slate-200">
                 <thead class="bg-slate-100">
                     <tr>
+                        <th class="px-4 py-3 text-left w-10">
+                            <input type="checkbox" id="journal-select-all" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" aria-label="Select all">
+                        </th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Date</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Ref</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Customer</th>
@@ -31,6 +42,9 @@
                 <tbody class="divide-y divide-slate-200">
                     @foreach($sales as $sale)
                     <tr class="hover:bg-slate-50">
+                        <td class="px-4 py-3">
+                            <input type="checkbox" name="ids[]" value="{{ $sale->id }}" class="journal-row-cb rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                        </td>
                         <td class="px-4 py-3 text-sm text-slate-700 whitespace-nowrap">
                             {{ $sale->completed_at?->format('d/m/Y H:i') ?? '–' }}
                         </td>
@@ -58,14 +72,37 @@
 
         @if($sales->isEmpty())
         <div class="px-6 py-12 text-center text-slate-500">No sales in this date range.</div>
-        @else
-        <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap gap-6 text-sm">
-            <span><strong>Period total:</strong> £{{ number_format($summary['grand_total'], 2) }}</span>
-            <span><strong>Transactions:</strong> {{ $summary['transaction_count'] }}</span>
-            @foreach($summary['by_method'] as $method => $row)
-            <span class="capitalize">{{ str_replace('_', ' ', $method) }}: £{{ number_format((float) $row->total, 2) }} ({{ $row->count }})</span>
-            @endforeach
-        </div>
         @endif
     </div>
+    </form>
+    @if(!$sales->isEmpty())
+    <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap gap-6 text-sm">
+        <span><strong>Period total:</strong> £{{ number_format($summary['grand_total'], 2) }}</span>
+        <span><strong>Transactions:</strong> {{ $summary['transaction_count'] }}</span>
+        @foreach($summary['by_method'] as $method => $row)
+        <span class="capitalize">{{ str_replace('_', ' ', $method) }}: £{{ number_format((float) $row->total, 2) }} ({{ $row->count }})</span>
+        @endforeach
+    </div>
+    @endif
 </x-admin-layout>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('sales-journal-form');
+    if (!form) return;
+    var selectAll = document.getElementById('journal-select-all');
+    var checkboxes = form.querySelectorAll('.journal-row-cb');
+    var deleteBtn = document.getElementById('journal-delete-btn');
+    var countSpan = document.getElementById('journal-selected-count');
+    function update() {
+        var n = form.querySelectorAll('.journal-row-cb:checked').length;
+        deleteBtn.disabled = n === 0;
+        countSpan.textContent = n + ' selected';
+        selectAll.checked = n > 0 && n === checkboxes.length;
+    }
+    if (selectAll) selectAll.addEventListener('change', function() {
+        checkboxes.forEach(function(cb) { cb.checked = selectAll.checked; });
+        update();
+    });
+    checkboxes.forEach(function(cb) { cb.addEventListener('change', update); });
+});
+</script>

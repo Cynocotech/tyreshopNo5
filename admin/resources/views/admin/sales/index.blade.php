@@ -53,10 +53,23 @@
     @endif
 
     {{-- Sales table --}}
+    <form method="POST" action="{{ route('admin.sales.bulk-delete') }}" id="sales-bulk-form" onsubmit="return confirm('Delete selected sales? This cannot be undone.');">
+        @csrf
+        <input type="hidden" name="from" value="{{ $from }}">
+        <input type="hidden" name="to" value="{{ $to }}">
+        <div class="mb-3 flex items-center gap-3">
+            <button type="submit" id="sales-delete-btn" disabled class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                Delete selected
+            </button>
+            <span class="text-sm text-slate-500" id="sales-selected-count">0 selected</span>
+        </div>
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <table class="min-w-full divide-y divide-slate-200">
             <thead class="bg-slate-50">
                 <tr>
+                    <th class="px-4 py-3 text-left">
+                        <input type="checkbox" id="sales-select-all" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" aria-label="Select all">
+                    </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Date</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Reference</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Customer</th>
@@ -69,6 +82,9 @@
             <tbody class="divide-y divide-slate-200">
                 @forelse($sales as $sale)
                 <tr class="hover:bg-slate-50">
+                    <td class="px-4 py-3">
+                        <input type="checkbox" name="ids[]" value="{{ $sale->id }}" class="sales-row-cb rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    </td>
                     <td class="px-4 py-3 text-sm text-slate-600">{{ $sale->completed_at?->format('d/m/Y H:i') ?? '–' }}</td>
                     <td class="px-4 py-3 font-mono text-sm font-medium text-slate-800">
                         {{ $sale->reference }}
@@ -86,10 +102,31 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-4 py-8 text-center text-slate-500">No sales in this period.</td>
+                    <td colspan="8" class="px-4 py-8 text-center text-slate-500">No sales in this period.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+    </form>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('sales-bulk-form');
+        var selectAll = document.getElementById('sales-select-all');
+        var checkboxes = form.querySelectorAll('.sales-row-cb');
+        var deleteBtn = document.getElementById('sales-delete-btn');
+        var countSpan = document.getElementById('sales-selected-count');
+        function update() {
+            var n = form.querySelectorAll('.sales-row-cb:checked').length;
+            deleteBtn.disabled = n === 0;
+            countSpan.textContent = n + ' selected';
+            selectAll.checked = n > 0 && n === checkboxes.length;
+        }
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(function(cb) { cb.checked = selectAll.checked; });
+            update();
+        });
+        checkboxes.forEach(function(cb) { cb.addEventListener('change', update); });
+    });
+    </script>
 </x-admin-layout>

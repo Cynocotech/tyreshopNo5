@@ -143,4 +143,15 @@ class BookingController extends Controller
         $bookings = Booking::canceled()->orderByDesc('canceled_at')->paginate(30);
         return view('admin.bookings.canceled', compact('bookings'));
     }
+
+    public function destroyBulk(Request $request): RedirectResponse
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'integer|exists:bookings,id'])['ids'];
+        $bookings = Booking::whereIn('id', $ids)->whereNotNull('canceled_at')->get();
+        $count = $bookings->count();
+        foreach ($bookings as $b) {
+            $b->delete();
+        }
+        return redirect()->back()->with('success', "Permanently deleted {$count} canceled booking(s).");
+    }
 }
