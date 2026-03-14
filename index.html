@@ -665,15 +665,26 @@ function App(){
     const byId = map.byId || {};
     const byValue = map.byValue || {};
 
+    var settings = data.settings || {};
+    var heroFromSettings = settings.hero_book_price && String(settings.hero_book_price).trim();
+    var saveFromSettings = settings.hero_save && String(settings.hero_save).trim();
+    if (heroFromSettings) HERO_BOOK_PRICE = heroFromSettings.indexOf('£') >= 0 ? heroFromSettings : '£' + heroFromSettings;
+    if (saveFromSettings) HERO_SAVE = saveFromSettings.indexOf('£') >= 0 ? saveFromSettings : '£' + saveFromSettings;
+
     if (byId['mot-full-service']) {
       const combo = byId['mot-full-service'];
       STATS[0].value = combo.priceDisplay || STATS[0].value;
       COMBOS[0].price = combo.priceDisplay || COMBOS[0].price;
       FOOTER_MOT_PRICE = combo.priceDisplay || FOOTER_MOT_PRICE;
-      const heroMOT = combo.heroMOTPrice != null ? combo.heroMOTPrice : 19;
-      HERO_BOOK_PRICE = '£' + (Number(heroMOT) === heroMOT ? heroMOT : parseInt(heroMOT, 10) || 19);
-      const motTest = byId['mot-test'];
-      HERO_SAVE = motTest && motTest.price != null ? '£' + Math.round(motTest.price - (Number(heroMOT) === heroMOT ? heroMOT : parseInt(heroMOT, 10) || 19)) : '£31';
+      if (!heroFromSettings) {
+        const heroMOT = combo.heroMOTPrice != null ? combo.heroMOTPrice : 19;
+        HERO_BOOK_PRICE = '£' + (Number(heroMOT) === heroMOT ? heroMOT : parseInt(heroMOT, 10) || 19);
+      }
+      if (!saveFromSettings) {
+        const heroMOT = (parseFloat(String(HERO_BOOK_PRICE).replace(/[£\s]/g,'')) || 19);
+        const motTest = byId['mot-test'];
+        HERO_SAVE = motTest && motTest.price != null ? '£' + Math.round(motTest.price - heroMOT) : '£31';
+      }
       const faq = FAQS.find(f=>f.a&&f.a.indexOf('£19')>=0);
       if (faq) faq.a = faq.a.replace('£19', combo.priceDisplay || '£19');
     }
