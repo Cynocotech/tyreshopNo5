@@ -72,10 +72,12 @@ class BookingController extends Controller
         $rangeEnd = $request->query('end');
         $query = Booking::active();
         if ($rangeStart) {
-            $query->where('appointment_date', '>=', $rangeStart);
+            $date = \Carbon\Carbon::parse($rangeStart)->format('Y-m-d');
+            $query->where('appointment_date', '>=', $date);
         }
         if ($rangeEnd) {
-            $query->where('appointment_date', '<=', $rangeEnd);
+            $date = \Carbon\Carbon::parse($rangeEnd)->format('Y-m-d');
+            $query->where('appointment_date', '<=', $date);
         }
         $bookings = $query->orderBy('appointment_date')->orderBy('appointment_time')->get();
         $events = [];

@@ -16,7 +16,7 @@
     </x-slot>
 
     <div class="bg-white rounded-lg shadow p-6">
-        <div id="bookings-calendar" class="min-h-[600px] w-full"
+        <div id="bookings-calendar" class="w-full" style="height: 600px;"
              data-events-url="{{ route('admin.bookings.list') }}"
              data-cancel-base="{{ url('/admin/bookings') }}"></div>
     </div>
