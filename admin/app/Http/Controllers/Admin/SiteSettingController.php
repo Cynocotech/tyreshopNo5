@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
@@ -74,16 +75,41 @@ class SiteSettingController extends Controller
         $to = $request->input('test_email');
 
         try {
-            Mail::html('<p>This is a test email from <strong>NO5 Tyre & MOT</strong> admin.</p><p>If you received this, your SMTP settings are configured correctly.</p>', fn ($mail) => $mail
-                ->from(config('mail.from.address'), config('mail.from.name'))
-                ->to($to)
-                ->subject('Test email — NO5 Tyre & MOT'));
-        } catch (\Throwable $e) {
+            Mail::html(
+                '<p>This is a test email from <strong>NO5 Tyre & MOT</strong> admin.</p><p>If you received this, your SMTP settings are configured correctly.</p><p><small>Sent at ' . now()->format('Y-m-d H:i:s') . ' UTC</small></p>',
+                fn ($mail) => $mail
+                    ->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to($to)
+                    ->subject('Test email — NO5 Tyre & MOT')
+            );
             return redirect()->route('admin.settings.index', ['tab' => 'email'])
-                ->with('test_email_error', $e->getMessage());
+                ->with('success', 'Test email sent to ' . $to . '. Check inbox and spam folder.')
+                ->with('test_email_sent', $to);
+        } catch (\Throwable $e) {
+            $host = config('mail.mailers.smtp.host');
+            $port = config('mail.mailers.smtp.port');
+            $user = config('mail.mailers.smtp.username');
+            Log::error('Admin test email failed', [
+                'to' => $to,
+                'host' => $host,
+                'port' => $port,
+                'username' => $user ?: '(none)',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            $msg = $e->getMessage();
+            $hint = '';
+            if (str_contains(strtolower($msg), 'connection') || str_contains($msg, 'refused') || str_contains($msg, 'timed out')) {
+                $hint = ' Check host, port, and firewall. Try port 587 (TLS) or 465 (SSL).';
+            } elseif (str_contains(strtolower($msg), 'authenticat') || str_contains($msg, '535') || str_contains(strtolower($msg), 'auth')) {
+                $hint = ' Check username and password. Gmail/Outlook often require app passwords.';
+            } elseif (str_contains(strtolower($msg), 'ssl') || str_contains(strtolower($msg), 'tls') || str_contains(strtolower($msg), 'certificate')) {
+                $hint = ' Try switching Encryption: port 587= TLS, 465= SSL, 25= None.';
+            }
+            $configLine = ($host ? " Using: {$host}:{$port}" : ' No SMTP host configured. Save settings first.');
+            return redirect()->route('admin.settings.index', ['tab' => 'email'])
+                ->with('error', 'SMTP failed' . $configLine . ' — ' . $msg . $hint)
+                ->with('test_email_error', $msg);
         }
-
-        return redirect()->route('admin.settings.index', ['tab' => 'email'])
-            ->with('test_email_sent', $to);
     }
 }

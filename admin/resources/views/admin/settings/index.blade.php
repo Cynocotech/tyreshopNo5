@@ -266,23 +266,7 @@
                     <input type="email" name="admin_email" value="{{ old('admin_email', $settings['admin_email'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="admin@example.com">
                     <p class="text-xs text-slate-500 mt-1">Receives booking notifications</p>
                 </div>
-                <div class="pt-4 border-t border-slate-200">
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Send test email</label>
-                    <p class="text-xs text-slate-500 mb-2">Verify your SMTP settings by sending a test email.</p>
-                    <form action="{{ route('admin.settings.test-email') }}" method="POST" class="flex flex-wrap items-end gap-3">
-                        @csrf
-                        <div class="flex-1 min-w-[200px]">
-                            <input type="email" name="test_email" value="{{ old('test_email', $settings['admin_email'] ?? Auth::user()?->email ?? '') }}" class="w-full rounded border-slate-300" placeholder="email@example.com" required>
-                        </div>
-                        <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test email</button>
-                    </form>
-                    @if (session('test_email_sent'))
-                        <p class="mt-2 text-sm text-green-600">✓ Test email sent successfully to {{ session('test_email_sent') }}.</p>
-                    @endif
-                    @if (session('test_email_error'))
-                        <p class="mt-2 text-sm text-red-600">✗ {{ session('test_email_error') }}</p>
-                    @endif
-                </div>
+                <p class="text-xs text-amber-700 mt-2">Save settings first before sending a test email.</p>
             </div>
         </div>
 
@@ -423,5 +407,32 @@
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Settings</button>
         </div>
     </form>
+
+    {{-- Test email form - outside main form (nested forms are invalid HTML and caused wrong submit) --}}
+    <div x-show="tab === 'email'" x-cloak class="bg-white rounded-lg shadow p-6 mt-4 space-y-4">
+        <h3 class="font-semibold text-slate-800">Test SMTP Connection</h3>
+        <p class="text-sm text-slate-600">Save your SMTP settings above first, then send a test email to verify the connection.</p>
+        @if (session('test_email_sent'))
+            <div class="p-4 rounded-lg bg-green-50 border border-green-200">
+                <p class="text-green-800 font-medium">✓ Test email sent successfully</p>
+                <p class="text-sm text-green-700 mt-1">Delivered to {{ session('test_email_sent') }}. Check the inbox and spam folder.</p>
+            </div>
+        @endif
+        @if (session('test_email_error'))
+            <div class="p-4 rounded-lg bg-red-50 border border-red-200">
+                <p class="text-red-800 font-medium">✗ SMTP connection failed</p>
+                <p class="text-sm text-red-700 mt-2 font-mono text-xs break-all">{{ session('test_email_error') }}</p>
+                <p class="text-xs text-red-600 mt-2">Check host, port, username, password, and encryption (TLS/SSL).</p>
+            </div>
+        @endif
+        <form action="{{ route('admin.settings.test-email') }}" method="POST" class="flex flex-wrap items-end gap-3">
+            @csrf
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Send test to</label>
+                <input type="email" name="test_email" value="{{ old('test_email', $settings['admin_email'] ?? Auth::user()?->email ?? '') }}" class="w-full rounded border-slate-300" placeholder="email@example.com" required>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test email</button>
+        </form>
+    </div>
     </div>
 </x-admin-layout>
