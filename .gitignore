@@ -1,5 +1,8 @@
 # Environment & secrets
 .env
 
+# Local database (each env has its own)
+admin/database/*.sqlite*
+
 # Dependencies
 node_modules/
