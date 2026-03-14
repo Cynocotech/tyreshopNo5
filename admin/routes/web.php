@@ -13,8 +13,15 @@ use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Api\ServicesController;
+use App\Http\Controllers\Api\VehicleController;
+use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+// API routes (fallback in web - some cPanel setups don't load api.php correctly)
+Route::get('/api/vehicle/lookup', [VehicleController::class, 'lookup']);
+Route::get('/api/booking/available-slots', [\App\Http\Controllers\Api\BookingController::class, 'availableSlots']);
+Route::get('/api/booking/config', [\App\Http\Controllers\Api\BookingController::class, 'config']);
 
 // Front page (serves index.html at /) — always from repo, no cache
 Route::get('/', function () {
