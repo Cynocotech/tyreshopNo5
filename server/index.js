@@ -49,7 +49,8 @@ app.use(cors({ origin: true }));
 // Serve services from Laravel SQLite (before static so it overrides data/services.json)
 app.get('/data/services.json', servicesHandler);
 
-app.use(express.static(path.join(__dirname, '..')));
+// Serve front page and static assets from admin/public (same as production)
+app.use(express.static(path.join(__dirname, '../admin/public')));
 
 // Stripe webhook needs raw body - mount BEFORE express.json()
 const { stripeWebhookHandler } = require('./routes/booking');

@@ -4,12 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>N05 Tyre &amp; MOT — Palmers Green Service Centre</title>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <!-- GTM/GA: Add scripts when you have real IDs (GTM-XXXXXX, G-XXXXXXXXXX). Placeholders cause console errors. -->
   <!-- GBP LocalBusiness Schema -->
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"N05 Tyre & MOT Service","description":"MOT testing, car servicing, tyre fitting in Palmers Green, North London.","address":{"@type":"PostalAddress","streetAddress":"6A Bourne Hill","addressLocality":"Southgate","addressRegion":"London","postalCode":"N13 4LG","addressCountry":"GB"},"telephone":"+447895859505","url":"https://no5mot.co.uk","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"08:00","closes":"18:00"}],"priceRange":"££"}</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -19,8 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="root"></div>
 <script>
 const { useState, useEffect } = React;
@@ -699,7 +692,7 @@ function App(){
 
 (async function init(){
   try {
-    const data = await (window.N05ServicesLoader && N05ServicesLoader.loadServices ? N05ServicesLoader.loadServices() : fetch('/data/services.json?v='+Date.now()).then(r=>r.json()));
+    const data = await (window.N05ServicesLoader && N05ServicesLoader.loadServices ? N05ServicesLoader.loadServices() : fetch('/data/services.json?v='+Date.now()).then(r=>r.ok?r.json():Promise.reject(new Error('Services unavailable')))).catch(function(){ return { services:[], categories:{}, settings:{} }; });
     const settings = data.settings || {};
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
