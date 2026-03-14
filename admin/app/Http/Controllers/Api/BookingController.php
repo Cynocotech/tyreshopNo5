@@ -34,7 +34,17 @@ class BookingController extends Controller
         if ($d && (int) $d->format('w') === 0) {
             return response()->json(['available' => []]);
         }
-        $booked = $this->readSlots()[$date] ?? [];
+        // Read from DB (admin panel + stripe bookings) and merge with JSON (legacy)
+        $bookedFromDb = Booking::active()
+            ->whereDate('appointment_date', $date)
+            ->pluck('appointment_time')
+            ->map(fn ($t) => preg_replace('/\s+/', '', (string) $t))
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+        $bookedFromJson = $this->readSlots()[$date] ?? [];
+        $booked = array_values(array_unique(array_merge($bookedFromDb, $bookedFromJson)));
         return response()->json(['available' => array_values(array_diff(self::ALL_SLOTS, $booked))]);
     }
 
@@ -70,8 +80,8 @@ class BookingController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
-                'success_url' => url('/mot-booking.html') . '?success=1&booking=' . $bookingId,
-                'cancel_url' => url('/mot-booking.html') . '?cancel=1',
+                'success_url' => url('/mot-booking') . '?success=1&booking=' . $bookingId,
+                'cancel_url' => url('/mot-booking') . '?cancel=1',
                 'customer_email' => $valid['customerEmail'],
                 'metadata' => [
                     'bookingId' => $bookingId,
@@ -107,8 +117,15 @@ class BookingController extends Controller
         $date = $m['appointmentDate'] ?? null;
         $time = $m['appointmentTime'] ?? null;
         if ($date && $time) {
-            $booked = $this->readSlots()[$date] ?? [];
-            if (in_array($time, $booked, true)) {
+            $timeNorm = preg_replace('/\s+/', '', $time);
+            $bookedFromDb = Booking::active()
+                ->whereDate('appointment_date', $date)
+                ->pluck('appointment_time')
+                ->map(fn ($t) => preg_replace('/\s+/', '', (string) $t))
+                ->toArray();
+            $bookedFromJson = $this->readSlots()[$date] ?? [];
+            $booked = array_merge($bookedFromDb, $bookedFromJson);
+            if (in_array($timeNorm, $booked, true)) {
                 return response()->json(['error' => 'This time slot has already been booked. Please choose another date or time.'], 409);
             }
         }

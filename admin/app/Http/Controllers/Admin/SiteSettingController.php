@@ -22,7 +22,7 @@ class SiteSettingController extends Controller
     {
         $allowed = [
             'site_name', 'site_description', 'address_street', 'address_locality', 'address_region', 'address_postcode', 'address_country',
-            'phone', 'phone_international', 'email', 'logo_url', 'url',
+            'phone', 'phone_international', 'email', 'logo_url', 'logo_link', 'url',
             'opening_days', 'opening_time', 'closing_time', 'opening_hours_display',
             'tagline', 'footer_tagline', 'footer_description', 'copyright',
             'hero_book_price', 'hero_save', 'footer_mot_price', 'areas_intro',

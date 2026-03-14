@@ -82,7 +82,12 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Logo URL</label>
-                    <input type="url" name="logo_url" value="{{ old('logo_url', $settings['logo_url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
+                    <input type="url" name="logo_url" value="{{ old('logo_url', $settings['logo_url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="https://example.com/logo.png">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Logo Link</label>
+                    <input type="text" name="logo_link" value="{{ old('logo_link', $settings['logo_link'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="/ or https://example.com">
+                    <p class="text-xs text-slate-500 mt-1">URL the logo links to when clicked (e.g. / for homepage).</p>
                 </div>
             </div>
         </div>

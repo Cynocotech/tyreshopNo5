@@ -18,6 +18,20 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Redirect .html URLs to clean URLs (preserve query string)
+    RewriteCond %{THE_REQUEST} \s/[^?\s]+\.html
+    RewriteRule ^(.+)\.html$ /$1 [R=301,L,QSA]
+
+    # Serve index.html for root
+    RewriteRule ^$ index.html [L]
+
+    # Serve .html for clean URLs (skip API and existing files)
+    RewriteCond %{REQUEST_URI} !^/api
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+)$ $1.html [L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

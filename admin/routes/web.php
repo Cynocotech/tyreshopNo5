@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, '__invoke'])->name('dashboard');
+    Route::get('/account', [ProfileController::class, 'edit'])->name('account')->defaults('admin_layout', true);
     Route::get('/export', [ExportController::class, '__invoke'])->name('export')->middleware('throttle:10,1');
     Route::resource('services', ServiceController::class)->names('services');
     Route::resource('products', ProductController::class)->names('products');
@@ -67,6 +68,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/bookings/canceled', [AdminBookingController::class, 'canceled'])->name('bookings.canceled');
     Route::get('/bookings/list', [AdminBookingController::class, 'list'])->name('bookings.list');
     Route::get('/bookings/{booking}/invoice', [AdminBookingController::class, 'invoice'])->name('bookings.invoice');
+    Route::get('/account', function (Illuminate\Http\Request $request) {
+        return view('admin.account.index', ['user' => $request->user()]);
+    })->name('account.index');
 });
 
 require __DIR__.'/auth.php';

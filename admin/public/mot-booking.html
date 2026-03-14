@@ -76,22 +76,22 @@
   <span>🕐 Mon–Sat: 8am–6pm</span>
 </div>
 <header class="mot-header">
-  <a href="index.html" class="logo">
+  <a href="/" class="logo">
     <img src="https://no5tyreandmot.co.uk/wp-content/uploads/2025/12/logo.png" alt="N05 Tyre & MOT Service" style="height:44px;width:auto">
     <div class="tagline">Palmers Green · North London</div>
   </a>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="car-servicing-mot.html">Car Servicing & MOT</a>
-    <a href="tyres.html">Tyres</a>
-    <a href="other-services.html">Other Services</a>
-    <a href="blog.html">Blog</a>
-    <a href="contact.html">Contact</a>
-    <a href="mot-booking.html" class="btn-book">Book Now</a>
+    <a href="/">Home</a>
+    <a href="/car-servicing-mot">Car Servicing & MOT</a>
+    <a href="/tyres">Tyres</a>
+    <a href="/other-services">Other Services</a>
+    <a href="/blog">Blog</a>
+    <a href="/contact">Contact</a>
+    <a href="/mot-booking" class="btn-book">Book Now</a>
   </nav>
 </header>
 <div class="mot-page">
-  <a href="index.html" class="back-home">← Back to Home</a>
+  <a href="/" class="back-home">← Back to Home</a>
 
   <div class="mot-hero">
     <h1>🛞 MOT Test Booking</h1>
@@ -102,7 +102,7 @@
     <div class="success-msg">
       <h2>✅ Booking Confirmed!</h2>
       <p id="success-text">Your MOT booking has been confirmed. You will receive a confirmation email shortly.</p>
-      <a href="index.html" class="btn-secondary">Return to Home</a>
+      <a href="/" class="btn-secondary">Return to Home</a>
     </div>
   </div>
 
@@ -524,7 +524,7 @@
       });
       const data = await r.json();
       if (data.ok) {
-        window.location.href = `${base}/thank-you.html?booking=${bookingId}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&service=${encodeURIComponent(sel.value)}`;
+        window.location.href = `${base}/thank-you?booking=${bookingId}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&service=${encodeURIComponent(sel.value)}`;
       } else {
         throw new Error(data.error || 'Could not submit booking');
       }

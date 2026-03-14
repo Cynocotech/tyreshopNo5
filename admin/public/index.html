@@ -20,13 +20,13 @@
 <div id="root"><div style="background:#1B263B;color:#fff;font-family:Inter,sans-serif;min-height:100vh">
   <div style="background:#fede00;color:#1B263B;padding:8px 24px;font-size:13px;font-weight:600;text-align:center">📞 07895 859505 &nbsp; 📍 6A Bourne Hill, Southgate N13 4LG &nbsp; 🕐 Mon–Sat: 8am–6pm</div>
   <header style="max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between">
-    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit"><img src="https://no5tyreandmot.co.uk/wp-content/uploads/2025/12/logo.png" alt="N05" style="height:44px;width:auto"><span style="color:#fede00;font-size:11px">Palmers Green · North London</span></a>
-    <nav style="display:flex;gap:24px;flex-wrap:wrap"><a href="car-servicing-mot.html" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Car Servicing & MOT</a><a href="tyres.html" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Tyres</a><a href="contact.html" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Contact</a><a href="mot-booking.html" style="background:#fede00;color:#1B263B;padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;text-decoration:none">Book Now</a></nav>
+    <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit"><img src="https://no5tyreandmot.co.uk/wp-content/uploads/2025/12/logo.png" alt="N05" style="height:44px;width:auto"><span style="color:#fede00;font-size:11px">Palmers Green · North London</span></a>
+    <nav style="display:flex;gap:24px;flex-wrap:wrap"><a href="/car-servicing-mot" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Car Servicing & MOT</a><a href="/tyres" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Tyres</a><a href="/contact" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Contact</a><a href="/mot-booking" style="background:#fede00;color:#1B263B;padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;text-decoration:none">Book Now</a></nav>
   </header>
   <section style="max-width:1280px;margin:0 auto;padding:48px 24px;text-align:center">
     <h1 style="font-size:2.5rem;font-weight:900;margin:0 0 12px;color:#fff">MOT &amp; Car Servicing</h1>
     <p style="font-size:18px;color:rgba(255,255,255,.85);margin:0 0 24px">Palmers Green · North London</p>
-    <a href="mot-booking.html" style="display:inline-block;background:#fede00;color:#1B263B;padding:16px 32px;border-radius:12px;font-weight:800;font-size:18px;text-decoration:none">Book Now</a>
+    <a href="/mot-booking" style="display:inline-block;background:#fede00;color:#1B263B;padding:16px 32px;border-radius:12px;font-weight:800;font-size:18px;text-decoration:none">Book Now</a>
   </section>
   <footer style="background:#0d1117;padding:24px;text-align:center;margin-top:48px"><p style="margin:0;color:rgba(255,255,255,.6);font-size:13px">N05 Tyre &amp; MOT · 6A Bourne Hill, Southgate N13 4LG · 07895 859505</p></footer>
 </div></div>
@@ -58,12 +58,12 @@ const T = {
 };
 
 const NAV_LINKS = [
-  {label:"Home",href:"index.html"},
-  {label:"Car Servicing & MOT",href:"car-servicing-mot.html"},
-  {label:"Tyres",href:"tyres.html"},
-  {label:"Other Services",href:"other-services.html"},
-  {label:"Blog",href:"blog.html"},
-  {label:"Contact",href:"contact.html"}
+  {label:"Home",href:"/"},
+  {label:"Car Servicing & MOT",href:"/car-servicing-mot"},
+  {label:"Tyres",href:"/tyres"},
+  {label:"Other Services",href:"/other-services"},
+  {label:"Blog",href:"/blog"},
+  {label:"Contact",href:"/contact"}
 ];
 
 const USPS = [
@@ -212,14 +212,14 @@ function Header({scrolled}){
   }},
     h('div',{style:{maxWidth:1280,margin:'0 auto',padding:'16px 24px',
       display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative'}},
-      h('a',{href:'index.html',style:{display:'flex',alignItems:'center',gap:12,textDecoration:'none'}},
+      h('a',{href:'/',style:{display:'flex',alignItems:'center',gap:12,textDecoration:'none'}},
         h('img',{src:LOGO_URL,alt:'N05 Tyre & MOT Service',style:{height:44,width:'auto'}}),
         h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},'Palmers Green · North London'),
       ),
       h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:500}},l.label)),
-        h('a',{href:'mot-booking.html',className:'btn-transition anim-pulse-cta',style:{
+        h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{
           background:T.yellow,color:T.navy,padding:'10px 22px',borderRadius:50,
           fontWeight:800,fontSize:14,textDecoration:'none',display:'inline-block',
         }},'Book Now')
@@ -238,7 +238,7 @@ function Header({scrolled}){
       },
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{display:'block',color:'rgba(255,255,255,.9)',fontSize:16,fontWeight:500,padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,.1)'}},l.label)),
-        h('a',{href:'mot-booking.html',className:'btn-transition anim-pulse-cta',style:{
+        h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{
           display:'block',textAlign:'center',background:T.yellow,color:T.navy,padding:'14px 22px',borderRadius:50,
           fontWeight:800,fontSize:16,textDecoration:'none',marginTop:16,
         }},'Book Now')
@@ -326,7 +326,7 @@ function HeroSection(){
           submitted&&plate&&lookupOk&&h('div',{className:'anim-bounce-in',style:{
             marginTop:14,display:'flex',alignItems:'center',gap:8,
             color:'#4ade80',fontWeight:600,fontSize:14}},
-            '✅ Reg ',h('strong',null,plate),' recognised — ',h('a',{href:`mot-booking.html?vrm=${encodeURIComponent(plate.replace(/\s/g,''))}`,style:{color:'#4ade80',textDecoration:'underline',marginLeft:4}},'Continue to MOT booking →')),
+            '✅ Reg ',h('strong',null,plate),' recognised — ',h('a',{href:`/mot-booking?vrm=${encodeURIComponent(plate.replace(/\s/g,''))}`,style:{color:'#4ade80',textDecoration:'underline',marginLeft:4}},'Continue to MOT booking →')),
           submitted&&plate&&!lookupOk&&lookupError&&h('div',{className:'anim-bounce-in',style:{marginTop:14,color:'#f87171',fontSize:14}},lookupError),
           submitted&&!plate&&h('div',{style:{marginTop:10,color:'#f87171',fontSize:13}},
             'Please enter your registration plate to continue.'),
@@ -439,7 +439,7 @@ function ComboDeals(){
                 fontSize:14,color:T.gray600,marginBottom:10,lineHeight:1.5,
               }},h('span',{style:{color:T.green,fontSize:16,marginTop:1,flexShrink:0}},'✓'),f))
             ),
-            h('a',{href:'mot-booking.html' + (c.id ? '?service=' + encodeURIComponent(c.id) : ''),className:'btn-transition',style:{
+            h('a',{href:'/mot-booking' + (c.id ? '?service=' + encodeURIComponent(c.id) : ''),className:'btn-transition',style:{
               width:'100%',padding:'14px',borderRadius:12,
               background:c.hot?T.yellow:'transparent',
               border:c.hot?'none':`2px solid ${T.navy}`,
@@ -490,7 +490,7 @@ function ServicesSection(){
             ),
             h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
               h('span',{style:{fontWeight:900,fontSize:18,color:T.navy}},svc.price),
-              h('a',{href:'mot-booking.html',className:'btn-transition',style:{
+              h('a',{href:'/mot-booking',className:'btn-transition',style:{
                 display:'flex',alignItems:'center',gap:4,background:'none',
                 border:`2px solid ${T.yellow}`,borderRadius:8,padding:'6px 12px',
                 color:T.navy,fontWeight:700,fontSize:12,cursor:'pointer',textDecoration:'none',
@@ -661,7 +661,7 @@ function Footer(){
           h('div',{style:{color:'rgba(255,255,255,.45)',fontSize:12,marginTop:4}},
             h('s',{style:{color:'rgba(255,255,255,.25)'}},FOOTER_OFFER_WAS_PRICE),' ',FOOTER_OFFER_SAVE),
           h('div',{style:{color:'rgba(255,255,255,.4)',fontSize:11,marginTop:4}},FOOTER_OFFER_FEATURE),
-          h('a',{href:'mot-booking.html',className:'btn-transition',style:{
+          h('a',{href:'/mot-booking',className:'btn-transition',style:{
             marginTop:18,width:'100%',background:T.yellow,color:T.navy,
             border:'none',borderRadius:10,padding:'12px 0',
             fontWeight:800,fontSize:15,cursor:'pointer',display:'block',
