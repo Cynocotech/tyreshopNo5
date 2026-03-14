@@ -208,17 +208,6 @@
                     </label>
                     <p class="text-xs text-slate-500 mt-1 ml-6">When enabled, an amber banner appears at the top of the site asking visitors to please be patient during updates.</p>
                 </div>
-                <div class="pt-3 mt-3 border-t border-slate-200">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" name="show_maintenance_notice" value="1" {{ old('show_maintenance_notice', $settings['show_maintenance_notice'] ?? '0') === '1' ? 'checked' : '' }}>
-                        <span class="text-sm font-medium text-slate-700">Show "Site maintenance" notice</span>
-                    </label>
-                    <p class="text-xs text-slate-500 mt-1 ml-6">When enabled, a red banner appears at the very top of the front page.</p>
-                    <div class="mt-2 ml-6">
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Message</label>
-                        <input type="text" name="maintenance_message" value="{{ old('maintenance_message', $settings['maintenance_message'] ?? "Site maintenance — we'll be back shortly") }}" class="w-full mt-1 rounded border-slate-300" placeholder="Site maintenance — we'll be back shortly">
-                    </div>
-                </div>
             </div>
         </div>
 

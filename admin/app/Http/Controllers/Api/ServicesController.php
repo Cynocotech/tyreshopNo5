@@ -51,8 +51,6 @@ class ServicesController extends Controller
             'footer_mot_price' => SiteSetting::get('footer_mot_price'),
             'opening_hours_display' => SiteSetting::get('opening_hours_display'),
             'show_update_notice' => SiteSetting::get('show_update_notice', '1'),
-            'show_maintenance_notice' => SiteSetting::get('show_maintenance_notice', '0'),
-            'maintenance_message' => SiteSetting::get('maintenance_message', 'Site maintenance — we\'ll be back shortly'),
             'footer_offer_title' => SiteSetting::get('footer_offer_title', "Today's Offer"),
             'footer_offer_subtitle' => SiteSetting::get('footer_offer_subtitle', 'Book Today'),
             'footer_offer_label' => SiteSetting::get('footer_offer_label', 'MOT + Service'),

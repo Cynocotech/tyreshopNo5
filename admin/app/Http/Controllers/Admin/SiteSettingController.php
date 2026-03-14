@@ -30,13 +30,13 @@ class SiteSettingController extends Controller
             'footer_offer_was_price', 'footer_offer_save', 'footer_offer_feature',
             'footer_offer_btn_text', 'footer_offer_disclaimer',
             'combo_section_title', 'combo_section_intro', 'combo_combined_desc',
-            'show_update_notice', 'show_maintenance_notice', 'maintenance_message',
+            'show_update_notice',
             'payment_card_provider', 'payment_stripe_secret', 'payment_stripe_publishable', 'payment_stripe_reader_id', 'payment_stripe_enabled',
             'payment_teya_api_url', 'payment_teya_merchant_id', 'payment_teya_api_key', 'payment_teya_enabled',
             'payment_faster_api_url', 'payment_faster_client_id', 'payment_faster_client_secret', 'payment_faster_enabled',
             'payment_lfat_api_url', 'payment_lfat_api_key', 'payment_lfat_enabled',
         ];
-        $checkboxKeys = ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled', 'show_update_notice', 'show_maintenance_notice'];
+        $checkboxKeys = ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled', 'show_update_notice'];
         foreach ($checkboxKeys as $key) {
             if (in_array($key, $allowed)) {
                 $value = in_array($request->input($key), ['1', 1], true) ? '1' : '0';
