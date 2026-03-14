@@ -46,6 +46,8 @@ class ServicesController extends Controller
         }
 
         $settings = [
+            'logo_url' => SiteSetting::get('logo_url', '/images/logo.png'),
+            'tagline' => SiteSetting::get('tagline', 'Palmers Green · North London'),
             'hero_book_price' => SiteSetting::get('hero_book_price'),
             'hero_save' => SiteSetting::get('hero_save'),
             'footer_mot_price' => SiteSetting::get('footer_mot_price'),

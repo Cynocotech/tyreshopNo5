@@ -155,7 +155,8 @@ const FOOTER_SVCS = [
   "Clutch Replacement","Window Tinting","Van Servicing","Free Collection & Delivery",
 ];
 
-const LOGO_URL = '/images/logo.png';
+let LOGO_URL = '/images/logo.png';
+let HEADER_TAGLINE = 'Palmers Green · North London';
 const PHONE_TEL = 'tel:+447895859505';
 
 function EmergencyCallButton(){
@@ -205,18 +206,18 @@ function TopBar(){
 
 function Header({scrolled}){
   const [menuOpen,setMenuOpen]=useState(false);
-  return h('header',{style:{
-    position:'sticky',top:0,zIndex:100,
+  return h('header',{className:'site-header',style:{
+    position:'sticky',top:0,zIndex:100,width:'100%',overflow:'visible',
     background:scrolled?'rgba(17,25,39,0.97)':T.navy,
     backdropFilter:scrolled?'blur(12px)':'none',
     boxShadow:scrolled?'0 4px 24px rgba(0,0,0,.35)':'none',
     transition:'all .3s ease',
   }},
-    h('div',{style:{maxWidth:1280,margin:'0 auto',padding:'16px 24px',
-      display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative'}},
+    h('div',{style:{maxWidth:1280,width:'100%',margin:'0 auto',padding:'16px 24px',
+      display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative',flexWrap:'wrap'}},
       h('a',{href:'/',style:{display:'flex',alignItems:'center',gap:12,textDecoration:'none'}},
         h('img',{src:LOGO_URL,alt:'N05 Tyre & MOT Service',style:{height:44,width:'auto'}}),
-        h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},'Palmers Green · North London'),
+        h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},HEADER_TAGLINE),
       ),
       h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
@@ -235,8 +236,8 @@ function Header({scrolled}){
       },menuOpen ? h('svg',{width:24,height:24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2},h('path',{d:'M18 6L6 18M6 6l12 12'})) : h('svg',{width:24,height:24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2},h('path',{d:'M4 6h16M4 12h16M4 18h16'}))),
       menuOpen && h('div',{
         className:'header-mobile-menu',
-        style:{position:'absolute',top:'100%',left:0,right:0,background:T.navy,boxShadow:'0 10px 40px rgba(0,0,0,.3)',padding:'16px 24px 24px',zIndex:50},
-        onClick:function(){ setMenuOpen(false); }
+        style:{position:'absolute',top:'100%',left:0,right:0,width:'100%',minWidth:'100%',background:T.navy,boxShadow:'0 10px 40px rgba(0,0,0,.3)',padding:'16px 24px 24px',zIndex:50},
+        onClick:function(e){ if(e.target.tagName!=='A') setMenuOpen(false); }
       },
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{display:'block',color:'rgba(255,255,255,.9)',fontSize:16,fontWeight:500,padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,.1)'}},l.label)),
@@ -725,6 +726,10 @@ doRender();
     var data = await Promise.race([load.catch(function(){ return {services:[],categories:{},settings:{}}; }), new Promise(function(r){ setTimeout(function(){ r({services:[],categories:{},settings:{}}); }, 2000); })]);
     const settings = data.settings || {};
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
+    if (s.logo_url && String(s.logo_url).trim()) LOGO_URL = String(s.logo_url).trim();
+    if (s.tagline && String(s.tagline).trim()) HEADER_TAGLINE = String(s.tagline).trim();
+    if (s.logo_url && String(s.logo_url).trim()) LOGO_URL = String(s.logo_url).trim();
+    if (s.tagline && String(s.tagline).trim()) HEADER_TAGLINE = String(s.tagline).trim();
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
     SHOW_UPDATE_NOTICE = (data.settings && data.settings.show_update_notice === '1');
     var s = data.settings || {};
