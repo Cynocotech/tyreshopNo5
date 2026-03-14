@@ -80,6 +80,14 @@
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <span>Bookings</span>
                 </a>
+                <a href="{{ route('admin.bookings.attended') }}" class="flex items-center gap-4 px-4 py-4 rounded-xl {{ request()->routeIs('admin.bookings.attended') ? 'active' : 'hover:bg-slate-100 text-slate-700' }}" @click="sidebarOpen = false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Attended Customers</span>
+                </a>
+                <a href="{{ route('admin.sms-marketing.index') }}" class="flex items-center gap-4 px-4 py-4 rounded-xl {{ request()->routeIs('admin.sms-marketing.*') ? 'active' : 'hover:bg-slate-100 text-slate-700' }}" @click="sidebarOpen = false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    <span>SMS Marketing</span>
+                </a>
                 <a href="{{ url('/admin/account') }}" class="flex items-center gap-4 px-4 py-4 rounded-xl {{ request()->routeIs('admin.account.*') ? 'active' : 'hover:bg-slate-100 text-slate-700' }}" @click="sidebarOpen = false">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>Account</span>

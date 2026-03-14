@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\SmsMarketingController;
 use App\Http\Controllers\Api\BookingController as ApiBookingController;
 use App\Http\Controllers\Api\ServicesController;
 use App\Http\Controllers\Api\VehicleController;
@@ -85,10 +86,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/{booking}/attend', [AdminBookingController::class, 'markAttended'])->name('bookings.attend');
     Route::post('/bookings/bulk-delete', [AdminBookingController::class, 'destroyBulk'])->name('bookings.bulk-delete');
     Route::get('/bookings/canceled', [AdminBookingController::class, 'canceled'])->name('bookings.canceled');
+    Route::get('/bookings/attended', [AdminBookingController::class, 'attended'])->name('bookings.attended');
     Route::get('/bookings/list', [AdminBookingController::class, 'list'])->name('bookings.list');
     Route::get('/bookings/{booking}/invoice', [AdminBookingController::class, 'invoice'])->name('bookings.invoice');
+    Route::get('/sms-marketing', [SmsMarketingController::class, 'index'])->name('sms-marketing.index');
+    Route::post('/sms-marketing/send', [SmsMarketingController::class, 'send'])->name('sms-marketing.send');
+    Route::post('/sms-marketing/send-csv', [SmsMarketingController::class, 'sendCsv'])->name('sms-marketing.send-csv');
 });
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class BookingController extends Controller
@@ -106,6 +107,7 @@ class BookingController extends Controller
                     'vehicle' => $b->vehicle_registration . ' ' . trim(($b->vehicle_make ?? '') . ' ' . ($b->vehicle_model ?? '')),
                     'service' => $b->service_type,
                     'amount' => $b->total_amount ? '£' . number_format((float) $b->total_amount, 2) : null,
+                    'attendedAt' => $b->attended_at?->toIso8601String(),
                 ],
             ];
         }
@@ -153,5 +155,51 @@ class BookingController extends Controller
             $b->delete();
         }
         return redirect()->back()->with('success', "Permanently deleted {$count} canceled booking(s).");
+    }
+
+    public function attended(): View
+    {
+        $bookings = Booking::attended()->orderByDesc('attended_at')->paginate(30);
+        return view('admin.bookings.attended', compact('bookings'));
+    }
+
+    public function markAttended(Booking $booking): RedirectResponse
+    {
+        if ($booking->isCanceled()) {
+            return redirect()->route('admin.bookings.index')->with('error', 'Cannot mark canceled booking as attended.');
+        }
+        if ($booking->isAttended()) {
+            return redirect()->route('admin.bookings.index')->with('info', 'Booking already marked as attended.');
+        }
+        $booking->update(['attended_at' => now()]);
+
+        $siteName = SiteSetting::get('site_name', 'NO5 Tyre & MOT');
+        $logoUrl = SiteSetting::get('logo_url');
+        $siteUrl = SiteSetting::get('url', url('/'));
+        $phone = SiteSetting::get('phone');
+        $googleReviewUrl = SiteSetting::get('google_review_url', 'https://g.page/r/YOUR_PLACE_ID/review');
+
+        $data = [
+            'customerName' => $booking->customer_name ?? 'Customer',
+            'bookingId' => $booking->booking_id,
+            'serviceType' => $booking->service_type ?? 'Service',
+            'siteName' => $siteName,
+            'logoUrl' => $logoUrl,
+            'siteUrl' => $siteUrl,
+            'phone' => $phone,
+            'googleReviewUrl' => $googleReviewUrl,
+        ];
+
+        $html = view('emails.booking-thank-you', $data)->render();
+        try {
+            Mail::html($html, fn ($mail) => $mail
+                ->from(config('mail.from.address'), config('mail.from.name'))
+                ->to($booking->customer_email)
+                ->subject("Thank you for visiting – Rate us on Google"));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Thank you email failed', ['bookingId' => $booking->booking_id, 'error' => $e->getMessage()]);
+        }
+
+        return redirect()->route('admin.bookings.index')->with('success', "Marked {$booking->booking_id} as attended. Thank you email sent to {$booking->customer_email}.");
     }
 }

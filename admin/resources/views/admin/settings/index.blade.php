@@ -90,6 +90,11 @@
                     <input type="text" name="logo_link" value="{{ old('logo_link', $settings['logo_link'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="/ or https://example.com">
                     <p class="text-xs text-slate-500 mt-1">URL the logo links to when clicked (e.g. / for homepage).</p>
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Google Review URL</label>
+                    <input type="url" name="google_review_url" value="{{ old('google_review_url', $settings['google_review_url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="https://g.page/r/YOUR_PLACE_ID/review">
+                    <p class="text-xs text-slate-500 mt-1">Used in thank you emails when customers attend a booking. Get it from your Google Business Profile.</p>
+                </div>
             </div>
         </div>
 
@@ -433,6 +438,25 @@
                     <label class="block text-sm font-medium text-slate-700">API Key</label>
                     <input type="password" name="vrn_api_key" value="{{ old('vrn_api_key', $settings['vrn_api_key'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Your Check Car Details API key" autocomplete="off">
                     <p class="text-xs text-slate-500 mt-1">Leave blank to use <code class="bg-slate-100 px-1 rounded">CHECK_CAR_DETAILS_API_KEY</code> from .env (if set).</p>
+                </div>
+            </div>
+
+            <div class="mb-6 pb-4 border-b border-slate-200">
+                <h4 class="font-medium text-slate-700 mb-2">Twilio (SMS marketing)</h4>
+                <p class="text-xs text-slate-500 mb-3">Used for SMS Marketing. Sign up at <a href="https://www.twilio.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">twilio.com</a>. Account SID, Auth Token, and a phone number (From) are required.</p>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Twilio Account SID</label>
+                        <input type="text" name="twilio_sid" value="{{ old('twilio_sid', $settings['twilio_sid'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="ACxxxxxxxx" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Twilio Auth Token</label>
+                        <input type="password" name="twilio_token" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">From (phone number)</label>
+                        <input type="text" name="twilio_from" value="{{ old('twilio_from', $settings['twilio_from'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="+447123456789">
+                    </div>
                 </div>
             </div>
 

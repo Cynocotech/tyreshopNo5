@@ -20,6 +20,7 @@ class Booking extends Model
         'service_type',
         'total_amount',
         'canceled_at',
+        'attended_at',
     ];
 
     protected function casts(): array
@@ -28,6 +29,7 @@ class Booking extends Model
             'appointment_date' => 'date',
             'total_amount' => 'decimal:2',
             'canceled_at' => 'datetime',
+            'attended_at' => 'datetime',
         ];
     }
 
@@ -41,8 +43,18 @@ class Booking extends Model
         return $query->whereNotNull('canceled_at');
     }
 
+    public function scopeAttended(Builder $query): Builder
+    {
+        return $query->whereNotNull('attended_at')->whereNull('canceled_at');
+    }
+
     public function isCanceled(): bool
     {
         return $this->canceled_at !== null;
+    }
+
+    public function isAttended(): bool
+    {
+        return $this->attended_at !== null;
     }
 }

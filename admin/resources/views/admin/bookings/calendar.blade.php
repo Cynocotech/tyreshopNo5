@@ -3,6 +3,9 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <span>Bookings Calendar</span>
             <div class="flex items-center gap-2">
+                <a href="{{ route('admin.bookings.attended') }}" class="inline-flex items-center gap-2 px-3 py-2 bg-emerald-100 text-emerald-800 text-sm font-medium rounded-lg hover:bg-emerald-200">
+                    Attended customers
+                </a>
                 <a href="{{ route('admin.bookings.canceled') }}" class="inline-flex items-center gap-2 px-3 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-300">
                     Canceled bookings
                 </a>
