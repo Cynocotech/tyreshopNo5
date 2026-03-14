@@ -8,7 +8,7 @@
   <!-- GBP LocalBusiness Schema -->
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"N05 Tyre & MOT Service","description":"MOT testing, car servicing, tyre fitting in Palmers Green, North London.","address":{"@type":"PostalAddress","streetAddress":"6A Bourne Hill","addressLocality":"Southgate","addressRegion":"London","postalCode":"N13 4LG","addressCountry":"GB"},"telephone":"+447895859505","url":"https://no5mot.co.uk","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"08:00","closes":"18:00"}],"priceRange":"££"}</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link href="css/n05-styles.css?v=2" rel="stylesheet" />
+  <link href="/css/n05-styles.css?v=3" rel="stylesheet" />
   <script src="js/services-loader.js"></script>
   <style>
     .page-hero { background: linear-gradient(135deg,#1B263B 0%,#243447 100%); color: #fff; padding: 60px 24px; text-align: center; }
@@ -75,6 +75,13 @@
     .footer p { color: rgba(255,255,255,.5); font-size: 13px; margin: 8px 0; }
     .footer a { color: rgba(255,255,255,.5); text-decoration: none; }
     .footer a:hover { color: #fede00; }
+    /* Responsive menu */
+    .header .header-hamburger { display:none; background:none; border:none; color:#fff; padding:8px; min-width:44px; min-height:44px; cursor:pointer; align-items:center; justify-content:center; }
+    @media (max-width:768px){ .header nav { display:none!important; } .header .header-hamburger { display:flex!important; } .header .tagline { display:none!important; }
+      .header.open nav { display:flex!important; flex-direction:column; position:absolute; top:100%; left:0; right:0; background:#1B263B; padding:16px 24px 24px; box-shadow:0 10px 40px rgba(0,0,0,.3); z-index:9999; }
+      .header.open nav a { padding:14px 0; border-bottom:1px solid rgba(255,255,255,.1); display:block; } .header.open nav a:last-of-type { border-bottom:none; }
+      .header.open nav .btn-book { margin-top:8px; text-align:center; } }
+    @media (min-width:769px){ .header .header-hamburger { display:none!important; } }
   </style>
 </head>
 <body>
