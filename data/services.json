@@ -17,7 +17,8 @@
                 "MOT and service combo",
                 "cheap MOT near me",
                 "full service £19"
-            ]
+            ],
+            "sortOrder": 0
         },
         {
             "id": "mot-major-service",
@@ -27,7 +28,7 @@
             "price": 199,
             "heroMOTPrice": null,
             "priceLabel": "£199 (Special Offer)",
-            "priceDisplay": "£199",
+            "priceDisplay": "£250",
             "category": "special-offers",
             "isQuote": false,
             "keywords": [
@@ -36,7 +37,8 @@
                 "MOT special offer",
                 "Palmers Green garage",
                 "MOT deal"
-            ]
+            ],
+            "sortOrder": 1
         },
         {
             "id": "mot-test",
@@ -55,7 +57,8 @@
                 "DVSA MOT test",
                 "MOT near me",
                 "cheap MOT test"
-            ]
+            ],
+            "sortOrder": 2
         },
         {
             "id": "full-service",
@@ -74,7 +77,8 @@
                 "annual service",
                 "oil change service",
                 "car maintenance"
-            ]
+            ],
+            "sortOrder": 3
         },
         {
             "id": "major-service",
@@ -93,7 +97,8 @@
                 "comprehensive service",
                 "Palmers Green garage",
                 "car servicing"
-            ]
+            ],
+            "sortOrder": 4
         },
         {
             "id": "van-servicing",
@@ -112,7 +117,8 @@
                 "commercial vehicle service",
                 "van MOT",
                 "light commercial servicing"
-            ]
+            ],
+            "sortOrder": 5
         },
         {
             "id": "tyre-fitting",
@@ -131,7 +137,8 @@
                 "new tyres near me",
                 "tyre specialist",
                 "Michelin Pirelli tyres"
-            ]
+            ],
+            "sortOrder": 6
         },
         {
             "id": "brakes-discs",
@@ -150,7 +157,8 @@
                 "brake pads Palmers Green",
                 "brake service",
                 "car brakes near me"
-            ]
+            ],
+            "sortOrder": 7
         },
         {
             "id": "exhaust-systems",
@@ -169,7 +177,8 @@
                 "catalytic converter",
                 "exhaust fitting",
                 "car exhaust repair"
-            ]
+            ],
+            "sortOrder": 8
         },
         {
             "id": "window-tinting",
@@ -188,7 +197,8 @@
                 "UV protection film",
                 "road legal tinting",
                 "privacy glass Palmers Green"
-            ]
+            ],
+            "sortOrder": 9
         }
     ],
     "categories": {

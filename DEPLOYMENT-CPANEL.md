@@ -44,6 +44,26 @@ Then edit `.env` and point your domain's document root to `~/tyre/admin/public`.
 
 ---
 
+## Sync services to production
+
+To push your local services and categories to the live site:
+
+```bash
+cd ~/tyre   # or your project root
+bash push-services.sh
+```
+
+This exports services from your local database to `data/services.json` and prints instructions to upload and run the import on the server. On the server:
+
+```bash
+cd ~/tyre/admin
+php artisan no5:import-services ../data/services.json
+```
+
+See `push-services.sh` for upload options (SSH, cPanel File Manager, or Git).
+
+---
+
 ## Deployment Steps (manual)
 
 ### 1. Upload Files

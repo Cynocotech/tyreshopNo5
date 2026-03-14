@@ -38,6 +38,7 @@ class ExportServicesCommand extends Command
                 'category' => $s->category?->slug ?? '',
                 'isQuote' => $s->is_quote,
                 'keywords' => $s->keywords ?? [],
+                'sortOrder' => $s->sort_order,
             ];
         }
 
