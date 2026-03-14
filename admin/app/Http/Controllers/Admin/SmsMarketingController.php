@@ -24,6 +24,7 @@ class SmsMarketingController extends Controller
         $validated = $request->validate([
             'recipients' => 'required|string',
             'message' => 'required|string|max:160',
+            'campaign_name' => 'nullable|string|max:255',
         ]);
 
         $recipients = $this->parseRecipients($validated['recipients']);
@@ -40,7 +41,16 @@ class SmsMarketingController extends Controller
                 ->with('error', 'SMS not configured. Add Twilio credentials in Site Settings → APIs (twilio_sid, twilio_token, twilio_from).');
         }
 
+        $campaignName = $validated['campaign_name'] ?? 'Manual – ' . now()->format('d M Y H:i');
+        $campaign = SmsCampaign::create([
+            'name' => $campaignName,
+            'message' => $validated['message'],
+            'source' => 'manual',
+            'total_recipients' => count($recipients),
+        ]);
+
         $sent = 0;
+        $failed = 0;
         foreach ($recipients as $to) {
             try {
                 $response = Http::asForm()->withBasicAuth($twilioSid, $twilioToken)
@@ -52,12 +62,16 @@ class SmsMarketingController extends Controller
                 if ($response->successful()) {
                     $sent++;
                 } else {
+                    $failed++;
                     Log::warning('SMS send failed', ['to' => $to, 'status' => $response->status(), 'body' => $response->body()]);
                 }
             } catch (\Throwable $e) {
+                $failed++;
                 Log::error('SMS send error', ['to' => $to, 'error' => $e->getMessage()]);
             }
         }
+
+        $campaign->update(['sent_count' => $sent, 'failed_count' => $failed]);
 
         return redirect()->route('admin.sms-marketing.index')
             ->with('success', "Sent {$sent} of " . count($recipients) . " message(s).");
@@ -89,6 +103,7 @@ class SmsMarketingController extends Controller
         $validated = $request->validate([
             'csv' => 'required|file|mimes:csv,txt|max:2048',
             'message' => 'required|string|max:160',
+            'campaign_name' => 'nullable|string|max:255',
         ]);
 
         $content = file_get_contents($validated['csv']->getRealPath());
@@ -134,7 +149,16 @@ class SmsMarketingController extends Controller
                 ->with('error', 'SMS not configured. Add Twilio credentials in Site Settings → APIs.');
         }
 
+        $campaignName = $validated['campaign_name'] ?? 'CSV – ' . now()->format('d M Y H:i');
+        $campaign = SmsCampaign::create([
+            'name' => $campaignName,
+            'message' => $validated['message'],
+            'source' => 'csv',
+            'total_recipients' => count($recipients),
+        ]);
+
         $sent = 0;
+        $failed = 0;
         foreach ($recipients as $to) {
             try {
                 $response = Http::asForm()->withBasicAuth($twilioSid, $twilioToken)
@@ -146,12 +170,16 @@ class SmsMarketingController extends Controller
                 if ($response->successful()) {
                     $sent++;
                 } else {
+                    $failed++;
                     Log::warning('SMS send failed', ['to' => $to, 'status' => $response->status()]);
                 }
             } catch (\Throwable $e) {
+                $failed++;
                 Log::error('SMS send error', ['to' => $to, 'error' => $e->getMessage()]);
             }
         }
+
+        $campaign->update(['sent_count' => $sent, 'failed_count' => $failed]);
 
         return redirect()->route('admin.sms-marketing.index')
             ->with('success', "Sent {$sent} of " . count($recipients) . " message(s) from CSV.");

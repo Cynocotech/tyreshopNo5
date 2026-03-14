@@ -5,12 +5,51 @@
         </div>
     </x-slot>
 
-    <div class="max-w-2xl space-y-6">
+    <div class="max-w-3xl space-y-6">
+        @if($campaigns->isNotEmpty())
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <h3 class="text-base font-semibold text-slate-800 px-6 py-4 border-b border-slate-200">Campaigns</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="text-left px-6 py-3 font-medium text-slate-700">Campaign</th>
+                            <th class="text-right px-6 py-3 font-medium text-slate-700">Total</th>
+                            <th class="text-right px-6 py-3 font-medium text-slate-700">Sent</th>
+                            <th class="text-right px-6 py-3 font-medium text-slate-700">Failed</th>
+                            <th class="text-left px-6 py-3 font-medium text-slate-700">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($campaigns as $c)
+                        <tr class="border-b border-slate-100 hover:bg-slate-50">
+                            <td class="px-6 py-3">
+                                <span class="font-medium text-slate-800">{{ $c->name }}</span>
+                                <span class="text-slate-500 text-xs ml-1">({{ $c->source }})</span>
+                            </td>
+                            <td class="text-right px-6 py-3 text-slate-600">{{ $c->total_recipients }}</td>
+                            <td class="text-right px-6 py-3 text-emerald-600 font-medium">{{ $c->sent_count }}</td>
+                            <td class="text-right px-6 py-3 {{ $c->failed_count ? 'text-amber-600' : 'text-slate-400' }}">{{ $c->failed_count }}</td>
+                            <td class="px-6 py-3 text-slate-500">{{ $c->created_at->format('d M Y H:i') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
         <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-base font-semibold text-slate-800 mb-2">Send SMS to customers</h3>
             <p class="text-sm text-slate-600 mb-4">Enter phone numbers (one per line or comma-separated), or paste from a CSV. UK numbers: 07xxx or +447xxx. Configure Twilio in Settings → APIs.</p>
             <form action="{{ route('admin.sms-marketing.send') }}" method="POST">
                 @csrf
+                <div class="mb-4">
+                    <label for="campaign_name" class="block text-sm font-medium text-slate-700 mb-1">Campaign name (optional)</label>
+                    <input type="text" name="campaign_name" id="campaign_name" maxlength="255"
+                        class="w-full rounded-lg border-slate-300"
+                        placeholder="e.g. Spring promo 2025">
+                </div>
                 <div class="mb-4">
                     <label for="recipients" class="block text-sm font-medium text-slate-700 mb-1">Phone numbers</label>
                     <textarea name="recipients" id="recipients" rows="6" required
@@ -34,6 +73,12 @@
             <p class="text-sm text-slate-600 mb-4">Upload a CSV file with a column containing phone numbers. The first row is headers. We'll detect columns named "phone", "mobile", "number", or "customer_phone".</p>
             <form action="{{ route('admin.sms-marketing.send-csv') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <div class="mb-4">
+                    <label for="campaign_name_csv" class="block text-sm font-medium text-slate-700 mb-1">Campaign name (optional)</label>
+                    <input type="text" name="campaign_name" id="campaign_name_csv" maxlength="255"
+                        class="w-full rounded-lg border-slate-300"
+                        placeholder="e.g. Customer list March 2025">
+                </div>
                 <div class="mb-4">
                     <input type="file" name="csv" accept=".csv" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
                 </div>
