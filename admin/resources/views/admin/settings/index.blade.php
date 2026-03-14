@@ -8,6 +8,7 @@
             <button type="button" @click="tab = 'contact'" :class="tab === 'contact' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Contact</button>
             <button type="button" @click="tab = 'hours'" :class="tab === 'hours' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Opening Hours</button>
             <button type="button" @click="tab = 'hero'" :class="tab === 'hero' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Hero & Footer</button>
+            <button type="button" @click="tab = 'email'" :class="tab === 'email' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Email / SMTP</button>
             <button type="button" @click="tab = 'payment'" :class="tab === 'payment' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">Payment Gateways</button>
             <button type="button" @click="tab = 'apis'" :class="tab === 'apis' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-sm font-medium shrink-0">APIs</button>
         </div>
@@ -213,6 +214,57 @@
                         <span class="text-sm font-medium text-slate-700">Show “Site under update” notice</span>
                     </label>
                     <p class="text-xs text-slate-500 mt-1 ml-6">When enabled, an amber banner appears at the top of the site asking visitors to please be patient during updates.</p>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="tab === 'email'" x-cloak>
+            <h3 class="font-semibold text-slate-800 mb-4">Email / SMTP</h3>
+            <p class="text-sm text-slate-600 mb-4">Configure outgoing email (booking confirmations, notifications). Leave blank to use .env values.</p>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">SMTP Host</label>
+                        <input type="text" name="mail_host" value="{{ old('mail_host', $settings['mail_host'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="smtp.example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Port</label>
+                        <input type="text" name="mail_port" value="{{ old('mail_port', $settings['mail_port'] ?? '587') }}" class="w-full mt-1 rounded border-slate-300" placeholder="587">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Username</label>
+                        <input type="text" name="mail_username" value="{{ old('mail_username', $settings['mail_username'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Password</label>
+                        <input type="password" name="mail_password" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
+                        <p class="text-xs text-slate-500 mt-1">Leave blank to keep existing password</p>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Encryption</label>
+                    <select name="mail_encryption" class="w-full mt-1 rounded border-slate-300">
+                        <option value="" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === '' ? 'selected' : '' }}>None</option>
+                        <option value="tls" {{ old('mail_encryption', $settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
+                        <option value="ssl" {{ old('mail_encryption', $settings['mail_encryption'] ?? '') === 'ssl' ? 'selected' : '' }}>SSL</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">From Address</label>
+                        <input type="email" name="mail_from_address" value="{{ old('mail_from_address', $settings['mail_from_address'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="noreply@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">From Name</label>
+                        <input type="text" name="mail_from_name" value="{{ old('mail_from_name', $settings['mail_from_name'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="NO5 Tyre & MOT">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Admin notification email</label>
+                    <input type="email" name="admin_email" value="{{ old('admin_email', $settings['admin_email'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="admin@example.com">
+                    <p class="text-xs text-slate-500 mt-1">Receives booking notifications</p>
                 </div>
             </div>
         </div>

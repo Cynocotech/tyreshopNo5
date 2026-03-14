@@ -88,6 +88,45 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 .booking-step { margin-bottom: 32px; }
 .booking-step-title { font-weight: 700; font-size: 16px; color: #1B263B; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
+/* Responsive hamburger - React pages (index, mot-booking) */
+.header-hamburger { display: none; }
+.header-nav-desktop { display: flex; }
+@media(max-width:768px){
+  .header-nav-desktop { display: none !important; }
+  .header-hamburger { display: flex !important; align-items: center; justify-content: center; }
+  .header-mobile-menu .nav-link,
+  .header-mobile-menu .btn-transition { display: block !important; padding: 14px 0; font-size: 16px; }
+  .header-mobile-menu .btn-transition { text-align: center; margin-top: 8px; }
+  .header-tagline { display: none !important; }
+}
+@media(min-width:769px){
+  .header-mobile-menu { display: none !important; }
+}
+
+/* Responsive hamburger - static pages (contact, tyres, blog, mot-booking, etc.) */
+.header, .mot-header { position: relative; }
+.header .header-hamburger, .mot-header .header-hamburger {
+  display: none; background: none; border: none; color: #fff; padding: 8px;
+  cursor: pointer; align-items: center; justify-content: center;
+}
+.header .header-hamburger svg, .mot-header .header-hamburger svg { width: 24px; height: 24px; }
+@media(max-width:768px){
+  .header nav, .mot-header nav { display: none !important; }
+  .header .header-hamburger, .mot-header .header-hamburger { display: flex !important; }
+  .header .tagline, .mot-header .tagline, .header .header-tagline { display: none !important; }
+  .header.open nav, .mot-header.open nav {
+    display: flex !important; flex-direction: column; position: absolute;
+    top: 100%; left: 0; right: 0; background: #1B263B;
+    padding: 16px 24px 24px; gap: 0; box-shadow: 0 10px 40px rgba(0,0,0,.3); z-index: 50;
+  }
+  .mot-header.open nav { background: #111927; }
+  .header.open nav a, .mot-header.open nav a {
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); text-align: left;
+  }
+  .header.open nav a:last-of-type, .mot-header.open nav a:last-of-type { border-bottom: none; }
+  .header.open nav .btn-book, .mot-header.open nav .btn-book { margin-top: 8px; text-align: center; }
+}
+
 @media(max-width:1024px){
   .hero-grid{grid-template-columns:1fr!important}
   .stats-grid{display:none!important}

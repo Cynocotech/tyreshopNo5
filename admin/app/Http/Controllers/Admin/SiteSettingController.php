@@ -36,6 +36,8 @@ class SiteSettingController extends Controller
             'payment_faster_api_url', 'payment_faster_client_id', 'payment_faster_client_secret', 'payment_faster_enabled',
             'payment_lfat_api_url', 'payment_lfat_api_key', 'payment_lfat_enabled',
             'vrn_api_key',
+            'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption',
+            'mail_from_address', 'mail_from_name', 'admin_email',
         ];
         $checkboxKeys = ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled', 'show_update_notice'];
         foreach ($checkboxKeys as $key) {
@@ -49,6 +51,10 @@ class SiteSettingController extends Controller
                 continue;
             }
             if ($value === null) {
+                continue;
+            }
+            // Don't overwrite mail_password when left blank (keep existing)
+            if ($key === 'mail_password' && (string) $value === '') {
                 continue;
             }
             if (in_array($key, ['payment_card_provider'])) {

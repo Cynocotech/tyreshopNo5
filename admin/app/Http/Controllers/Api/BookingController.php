@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Stripe\StripeClient;
 use Stripe\Webhook;
@@ -268,18 +269,25 @@ class BookingController extends Controller
                 'parse_mode' => 'Markdown',
             ]);
         }
-        $adminEmail = config('mail.admin_email');
-        if ($adminEmail) {
-            Mail::html($this->adminEmailHtml($data), fn ($mail) => $mail
+        try {
+            $adminEmail = config('mail.admin_email');
+            if ($adminEmail) {
+                Mail::html($this->adminEmailHtml($data), fn ($mail) => $mail
+                    ->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to($adminEmail)
+                    ->subject("New booking: {$data['bookingId']} — {$data['customerName']}"));
+            }
+            $html = $this->customerEmailHtml($data);
+            Mail::html($html, fn ($mail) => $mail
                 ->from(config('mail.from.address'), config('mail.from.name'))
-                ->to($adminEmail)
-                ->subject("New booking: {$data['bookingId']} — {$data['customerName']}"));
+                ->to($email)
+                ->subject("MOT Booking Confirmed - {$data['bookingId']}"));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Booking email failed (booking still saved)', [
+                'bookingId' => $data['bookingId'],
+                'error' => $e->getMessage(),
+            ]);
         }
-        $html = $this->customerEmailHtml($data);
-        Mail::html($html, fn ($mail) => $mail
-            ->from(config('mail.from.address'), config('mail.from.name'))
-            ->to($email)
-            ->subject("MOT Booking Confirmed - {$data['bookingId']}"));
     }
 
     private function adminEmailHtml(array $d): string
