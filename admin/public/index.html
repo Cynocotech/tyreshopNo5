@@ -219,7 +219,7 @@ function Header({scrolled}){
         h('img',{src:LOGO_URL,alt:'N05 Tyre & MOT Service',style:{height:44,width:'auto'}}),
         h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},HEADER_TAGLINE),
       ),
-      h('nav',{className:'header-nav-desktop',style:{alignItems:'center',gap:24}},
+      h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:500}},l.label)),
         h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{

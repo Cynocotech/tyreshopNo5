@@ -107,7 +107,10 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
   .site-header .header-tagline { display: none !important; }
 }
 @media(min-width:992px){
+  .site-header .header-nav-desktop { display: flex !important; align-items: center; gap: 24px; }
+  .site-header .header-hamburger { display: none !important; }
   .site-header .header-mobile-menu { display: none !important; }
+  .site-header .header-tagline { display: block !important; }
 }
 
 /* Responsive hamburger - static pages (contact, tyres, blog, mot-booking, etc.) */
