@@ -31,6 +31,16 @@ admin/public/        ← Set this as your document root
 
 ---
 
+## Easy install wizard
+
+After cloning and setting the document root, open:
+
+**https://yourdomain.com/install.php**
+
+The wizard will guide you through: system check, Composer, .env, storage dirs, and Laravel setup. Copy-paste commands for Terminal when needed. Delete `install.php` after installation.
+
+---
+
 ## Quick Install (recommended)
 
 From cPanel Terminal, after cloning the repo:
