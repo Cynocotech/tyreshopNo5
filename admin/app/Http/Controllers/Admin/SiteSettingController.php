@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class SiteSettingController extends Controller
@@ -65,5 +66,24 @@ class SiteSettingController extends Controller
         Cache::forget('site_settings');
         $tab = $request->input('_tab', 'general');
         return redirect()->route('admin.settings.index', ['tab' => $tab])->with('success', 'Settings saved.');
+    }
+
+    public function sendTestEmail(Request $request): RedirectResponse
+    {
+        $request->validate(['test_email' => 'required|email']);
+        $to = $request->input('test_email');
+
+        try {
+            Mail::html('<p>This is a test email from <strong>NO5 Tyre & MOT</strong> admin.</p><p>If you received this, your SMTP settings are configured correctly.</p>', fn ($mail) => $mail
+                ->from(config('mail.from.address'), config('mail.from.name'))
+                ->to($to)
+                ->subject('Test email — NO5 Tyre & MOT'));
+        } catch (\Throwable $e) {
+            return redirect()->route('admin.settings.index', ['tab' => 'email'])
+                ->with('test_email_error', $e->getMessage());
+        }
+
+        return redirect()->route('admin.settings.index', ['tab' => 'email'])
+            ->with('test_email_sent', $to);
     }
 }

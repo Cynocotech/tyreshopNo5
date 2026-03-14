@@ -266,6 +266,23 @@
                     <input type="email" name="admin_email" value="{{ old('admin_email', $settings['admin_email'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="admin@example.com">
                     <p class="text-xs text-slate-500 mt-1">Receives booking notifications</p>
                 </div>
+                <div class="pt-4 border-t border-slate-200">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Send test email</label>
+                    <p class="text-xs text-slate-500 mb-2">Verify your SMTP settings by sending a test email.</p>
+                    <form action="{{ route('admin.settings.test-email') }}" method="POST" class="flex flex-wrap items-end gap-3">
+                        @csrf
+                        <div class="flex-1 min-w-[200px]">
+                            <input type="email" name="test_email" value="{{ old('test_email', $settings['admin_email'] ?? Auth::user()?->email ?? '') }}" class="w-full rounded border-slate-300" placeholder="email@example.com" required>
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700">Send test email</button>
+                    </form>
+                    @if (session('test_email_sent'))
+                        <p class="mt-2 text-sm text-green-600">✓ Test email sent successfully to {{ session('test_email_sent') }}.</p>
+                    @endif
+                    @if (session('test_email_error'))
+                        <p class="mt-2 text-sm text-red-600">✗ {{ session('test_email_error') }}</p>
+                    @endif
+                </div>
             </div>
         </div>
 
