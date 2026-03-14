@@ -44,6 +44,24 @@ Then edit `.env` and point your domain's document root to `~/tyre/admin/public`.
 
 ---
 
+## After git pull (front page updates)
+
+**If document root = `admin/public`** (repo files are the web root):
+```bash
+cd ~/tyre
+git pull
+```
+
+**If using `deploy-to-public-html`** (document root = `public_html`):
+```bash
+cd ~/tyre
+git pull
+bash deploy-to-public-html.sh
+```
+Then hard refresh (Ctrl+Shift+R) or clear Cloudflare/cache. The root `/` is forced through Laravel to serve fresh content.
+
+---
+
 ## Sync services to production
 
 To push your local services and categories to the live site:

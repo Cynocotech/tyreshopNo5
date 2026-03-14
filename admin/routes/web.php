@@ -15,10 +15,16 @@ use App\Http\Controllers\Api\ServicesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Front page (serves index.html at /)
-Route::get('/', fn () => file_exists(public_path('index.html'))
-    ? response()->file(public_path('index.html'))
-    : redirect()->route('login'));
+// Front page (serves index.html at /) — always from repo, no cache
+Route::get('/', function () {
+    $path = public_path('index.html');
+    if (!file_exists($path)) return redirect()->route('login');
+    return response()->file($path, [
+        'Cache-Control' => 'no-cache, no-store, must-revalidate',
+        'Pragma' => 'no-cache',
+        'Expires' => '0',
+    ]);
+});
 
 // Services JSON for front (read from DB)
 Route::get('/data/services.json', [ServicesController::class, 'index']);
