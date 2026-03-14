@@ -4,14 +4,14 @@
 
 ---
 
-## What to Upload
+## One place, one document root
 
-Upload the **`admin`** folder contents to your cPanel. The structure should be:
+**All public files live in `admin/public`.** Point your domain’s document root there and nothing else.
 
 ```
-public_html/          ← cPanel document root (point to admin/public)
-├── index.php         ← Laravel entry (from admin/public)
-├── index.html        ← Front page (from admin/public)
+admin/public/        ← Set this as your document root
+├── index.php        ← Laravel entry
+├── index.html       ← Front page
 ├── mot-booking.html
 ├── css/
 ├── js/
@@ -19,7 +19,15 @@ public_html/          ← cPanel document root (point to admin/public)
 └── ...
 ```
 
-Or upload the **entire `admin`** folder and point document root to **`admin/public`**.
+**cPanel → Domains → Document Root** → set to:
+
+```
+/home/yourusername/tyre/admin/public
+```
+
+(or the full path to your repo’s `admin/public` folder)
+
+**Updates:** `git pull` is enough — no deploy script. Files update in place.
 
 ---
 
@@ -40,25 +48,18 @@ This script will:
 - Build frontend assets (optional; app works without npm using CDN)
 - Set permissions
 
-Then edit `.env` and point your domain's document root to `~/tyre/admin/public`.
+Then set your domain’s document root to `~/tyre/admin/public`.
 
 ---
 
 ## After git pull (front page updates)
 
-**If document root = `admin/public`** (repo files are the web root):
 ```bash
 cd ~/tyre
 git pull
 ```
 
-**If using `deploy-to-public-html`** (document root = `public_html`):
-```bash
-cd ~/tyre
-git pull
-bash deploy-to-public-html.sh
-```
-Then hard refresh (Ctrl+Shift+R) or clear Cloudflare/cache. The root `/` is forced through Laravel to serve fresh content.
+Hard refresh (Ctrl+Shift+R) or clear Cloudflare/cache if needed.
 
 ---
 
@@ -93,9 +94,9 @@ See `push-services.sh` for upload options (SSH, cPanel File Manager, or Git).
 
 - In cPanel → **Domains** or **Addon Domains** → set **Document Root** to:
   ```
-  /home/username/public_html/no5/admin/public
+  /home/yourusername/tyre/admin/public
   ```
-  (Adjust path to match your actual folder structure.)
+  (Adjust path to match your repo location.)
 
 ### 3. Create .env
 

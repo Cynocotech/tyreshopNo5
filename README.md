@@ -6,11 +6,16 @@ MOT and tyre booking system with vehicle lookup (Check Car Details), Stripe paym
 
 ```
 NO5/
-├── css/n05-styles.css       # Shared stylesheet
-├── N05TyreAndMOT_preview.html  # Main landing page
-├── mot-booking.html         # MOT booking page with vehicle lookup
+├── admin/
+│   ├── public/             ← All public files (set as document root)
+│   │   ├── index.html      # Front page
+│   │   ├── mot-booking.html
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── blog/
+│   └── ...                 # Laravel app (admin panel, API)
 ├── server/
-│   ├── index.js            # Express API server
+│   ├── index.js            # Express API (local dev)
 │   ├── routes/
 │   │   ├── vehicle.js      # Check Car Details proxy
 │   │   └── booking.js      # Stripe, Telegram, email
@@ -18,6 +23,8 @@ NO5/
 │       └── booking-email.html   # Customer confirmation email template
 └── .env.example
 ```
+
+**Deployment:** Point document root to `admin/public`. See `DEPLOYMENT-CPANEL.md`.
 
 ## Setup
 
