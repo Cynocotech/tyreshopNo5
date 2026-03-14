@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
+use App\Models\SmsCampaign;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,8 @@ class SmsMarketingController extends Controller
 {
     public function index(): View
     {
-        return view('admin.sms-marketing.index');
+        $campaigns = SmsCampaign::orderByDesc('created_at')->get();
+        return view('admin.sms-marketing.index', compact('campaigns'));
     }
 
     public function send(Request $request): RedirectResponse
