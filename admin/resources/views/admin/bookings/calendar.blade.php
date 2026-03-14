@@ -156,6 +156,35 @@
         </div>
     </div>
 
+    {{-- Mark as Attended confirmation modal (designed) --}}
+    <div id="attend-confirm-modal" class="fixed inset-0 z-[60] hidden" aria-hidden="true" role="dialog" aria-labelledby="attend-modal-title" aria-modal="true" tabindex="-1">
+        <div class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" onclick="window.closeAttendConfirmModal()"></div>
+        <div class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm mx-4 flex items-center justify-center min-h-[100px]">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden ring-1 ring-slate-200/80 w-full">
+                <div class="p-6 sm:p-8 text-center">
+                    <div class="mx-auto w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-5 ring-4 ring-emerald-100">
+                        <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 id="attend-modal-title" class="text-xl font-bold text-slate-800 mb-2">Mark as attended?</h3>
+                    <p class="text-slate-600 text-[15px] leading-relaxed">A thank you email with a Google review link will be sent to the customer.</p>
+                </div>
+                <div class="px-6 pb-6 sm:px-8 sm:pb-8 flex gap-3">
+                    <button type="button" onclick="window.closeAttendConfirmModal()"
+                            class="flex-1 py-3 px-4 rounded-xl font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-sm sm:text-base">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="window.confirmAttendSubmit()"
+                            class="flex-1 py-3 px-4 rounded-xl font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/25 text-sm sm:text-base inline-flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
     #booking-modal #booking-modal-actions a { display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none !important;border:none; }
     #booking-modal #booking-modal-actions a.btn-call { background-color:#16a34a !important; color:#fff !important; }

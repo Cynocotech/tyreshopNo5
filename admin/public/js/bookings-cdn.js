@@ -86,7 +86,7 @@
                         if (p.phone) btnHtml += '<a class="btn-call" href="tel:' + escapeHtml(String(p.phone).replace(/\s/g, '')) + '" style="background-color:#16a34a;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none"><svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>Call</a>';
                         if (p.email) btnHtml += '<a class="btn-email" href="mailto:' + escapeHtml(p.email) + '" style="background-color:#475569;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none">Email</a>';
                         btnHtml += '<button type="button" onclick="window.printInvoice()" class="btn-print" style="background-color:#1B263B;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer"><svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>Print Invoice</button>';
-                        if (!p.attendedAt) btnHtml += '<form method="POST" action="' + cancelBase + '/' + info.event.id + '/attend" class="inline" onsubmit="return confirm(\'Mark this customer as attended? A thank you email with a Google review link will be sent.\')"><input type="hidden" name="_token" value="' + escapeHtml(csrfToken) + '"><button type="submit" style="background-color:#059669;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer"><svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Mark as Attended</button></form>';
+                        if (!p.attendedAt) btnHtml += '<form id="attend-form-' + info.event.id + '" method="POST" action="' + cancelBase + '/' + info.event.id + '/attend" class="inline"><input type="hidden" name="_token" value="' + escapeHtml(csrfToken) + '"><button type="button" onclick="window.openAttendConfirmModal(document.getElementById(\'attend-form-' + info.event.id + '\'))" style="background-color:#059669;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer"><svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Mark as Attended</button></form>';
                         else btnHtml += '<span style="background-color:#dcfce7;color:#166534;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;"><svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Attended</span>';
                         btnHtml += '<form method="POST" action="' + cancelBase + '/' + info.event.id + '/cancel" class="inline" onsubmit="return confirm(\'Cancel this booking? It will be removed from the calendar and listed under Canceled bookings.\')"><input type="hidden" name="_token" value="' + escapeHtml(csrfToken) + '"><button type="submit" style="background-color:#dc2626;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer">Cancel booking</button></form>';
                         btnHtml += '<button type="button" onclick="document.getElementById(\'booking-modal\').classList.add(\'hidden\')" style="background-color:#e2e8f0;color:#475569;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer">Close</button>';
@@ -110,6 +110,25 @@
         var base = window._bookingInvoiceBase || '';
         if (!id || !base) return;
         window.open(base + '/' + id + '/invoice?print=1', '_blank', 'noopener');
+    };
+
+    window._attendFormToSubmit = null;
+    window.openAttendConfirmModal = function (form) {
+        window._attendFormToSubmit = form;
+        var m = document.getElementById('attend-confirm-modal');
+        if (m) { m.classList.remove('hidden'); m.setAttribute('aria-hidden', 'false'); }
+    };
+    window.closeAttendConfirmModal = function () {
+        window._attendFormToSubmit = null;
+        var m = document.getElementById('attend-confirm-modal');
+        if (m) { m.classList.add('hidden'); m.setAttribute('aria-hidden', 'true'); }
+    };
+    window.confirmAttendSubmit = function () {
+        if (window._attendFormToSubmit) {
+            window._attendFormToSubmit.submit();
+            window._attendFormToSubmit = null;
+        }
+        window.closeAttendConfirmModal();
     };
 
     if (document.readyState === 'loading') {
