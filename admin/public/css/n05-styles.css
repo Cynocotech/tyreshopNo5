@@ -90,21 +90,24 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 
 /* Responsive hamburger - React pages (index) */
 .site-header { width: 100%; overflow: visible; }
-.header-hamburger { display: none; flex-shrink: 0; }
-.header-nav-desktop { display: flex; flex-shrink: 0; }
+.site-header .header-hamburger { display: none; flex-shrink: 0; }
+.site-header .header-nav-desktop { display: flex; flex-shrink: 0; }
 @media(max-width:991px){
-  .header-nav-desktop { display: none !important; }
-  .header-hamburger { display: flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  /* Force desktop nav hidden, hamburger visible - scoped to site-header for production */
+  .site-header .header-nav-desktop,
+  header.site-header nav.header-nav-desktop { display: none !important; }
+  .site-header .header-hamburger,
+  header.site-header .header-hamburger { display: flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
   .site-header .header-mobile-menu {
     left: 0 !important; right: 0 !important; width: 100% !important;
   }
   .header-mobile-menu .nav-link,
   .header-mobile-menu .btn-transition { display: block !important; padding: 14px 0; font-size: 16px; }
   .header-mobile-menu .btn-transition { text-align: center; margin-top: 8px; }
-  .header-tagline { display: none !important; }
+  .site-header .header-tagline { display: none !important; }
 }
 @media(min-width:992px){
-  .header-mobile-menu { display: none !important; }
+  .site-header .header-mobile-menu { display: none !important; }
 }
 
 /* Responsive hamburger - static pages (contact, tyres, blog, mot-booking, etc.) */

@@ -219,7 +219,7 @@ function Header({scrolled}){
         h('img',{src:LOGO_URL,alt:'N05 Tyre & MOT Service',style:{height:44,width:'auto'}}),
         h('div',{className:'header-tagline',style:{color:T.yellow,fontSize:11}},HEADER_TAGLINE),
       ),
-      h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
+      h('nav',{className:'header-nav-desktop',style:{alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
           style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:500}},l.label)),
         h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{
@@ -726,10 +726,8 @@ doRender();
     var data = await Promise.race([load.catch(function(){ return {services:[],categories:{},settings:{}}; }), new Promise(function(r){ setTimeout(function(){ r({services:[],categories:{},settings:{}}); }, 2000); })]);
     const settings = data.settings || {};
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
-    if (s.logo_url && String(s.logo_url).trim()) LOGO_URL = String(s.logo_url).trim();
-    if (s.tagline && String(s.tagline).trim()) HEADER_TAGLINE = String(s.tagline).trim();
-    if (s.logo_url && String(s.logo_url).trim()) LOGO_URL = String(s.logo_url).trim();
-    if (s.tagline && String(s.tagline).trim()) HEADER_TAGLINE = String(s.tagline).trim();
+    if (settings.logo_url && String(settings.logo_url).trim()) LOGO_URL = String(settings.logo_url).trim();
+    if (settings.tagline && String(settings.tagline).trim()) HEADER_TAGLINE = String(settings.tagline).trim();
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
     SHOW_UPDATE_NOTICE = (data.settings && data.settings.show_update_notice === '1');
     var s = data.settings || {};
