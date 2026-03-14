@@ -205,19 +205,7 @@
                 </span>
             </a>
 
-            {{-- Export --}}
-            <div class="bg-white rounded-xl border border-slate-200 p-5">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    </div>
-                    <h3 class="text-sm font-semibold text-slate-800">Export to Site</h3>
-                </div>
-                <p class="text-xs text-slate-500 mb-3">Push services & categories to your live site.</p>
-                <form action="{{ route('admin.export') }}" method="GET">
-                    <button type="submit" class="w-full py-2.5 px-4 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">Export now</button>
-                </form>
-            </div>
+            {{-- Services are live: /data/services.json is served from the database automatically --}}
         </div>
     </div>
 </x-admin-layout>
