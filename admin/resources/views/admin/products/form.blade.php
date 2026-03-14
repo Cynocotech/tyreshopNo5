@@ -15,6 +15,22 @@
                 @error('name')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                    <select name="product_category_id" class="w-full rounded border-slate-300">
+                        <option value="">— None —</option>
+                        @foreach($categories ?? [] as $cat)
+                        <option value="{{ $cat->id }}" {{ old('product_category_id', $product->product_category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Tyre size</label>
+                    <input type="text" name="tyre_size" value="{{ old('tyre_size', $product->tyre_size) }}" class="w-full rounded border-slate-300" placeholder="205/55 R16" maxlength="50">
+                    <p class="text-xs text-slate-500 mt-0.5">e.g. 205/55 R16 — for tyres only</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="sm:col-span-2">
                     <label class="block text-sm font-medium text-slate-700 mb-1">Barcode</label>
                     <div class="flex flex-col sm:flex-row gap-2">

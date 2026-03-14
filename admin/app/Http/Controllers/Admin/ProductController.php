@@ -15,13 +15,14 @@ class ProductController extends Controller
     public function index(): View
     {
         return view('admin.products.index', [
-            'products' => Product::withCount(['serials', 'availableSerials'])->orderBy('sort_order')->orderBy('name')->get(),
+            'products' => Product::with('category')->withCount(['serials', 'availableSerials'])->orderBy('sort_order')->orderBy('name')->get(),
         ]);
     }
 
     public function create(): View
     {
-        return view('admin.products.form', ['product' => new Product]);
+        $categories = \App\Models\ProductCategory::orderBy('sort_order')->orderBy('name')->get();
+        return view('admin.products.form', ['product' => new Product, 'categories' => $categories]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -36,12 +37,16 @@ class ProductController extends Controller
             'low_stock_threshold' => 'nullable|integer|min:0',
             'sort_order' => 'nullable|integer|min:0',
             'icon' => 'nullable|string|max:50|in:' . implode(',', array_keys(\App\Models\Product::iconOptions())),
+            'product_category_id' => 'nullable|exists:product_categories,id',
+            'tyre_size' => 'nullable|string|max:50',
         ]);
         $validated['requires_serial'] = $request->boolean('requires_serial');
         $validated['quantity'] = $validated['quantity'] ?? 0;
         $validated['low_stock_threshold'] = $validated['low_stock_threshold'] ?? 5;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['icon'] = !empty($validated['icon'] ?? '') ? $validated['icon'] : null;
+        $validated['product_category_id'] = $validated['product_category_id'] ?? null;
+        $validated['tyre_size'] = $validated['tyre_size'] ?? null;
         $product = Product::create($validated);
 
         if ($product->requires_serial) {
@@ -59,7 +64,8 @@ class ProductController extends Controller
     public function edit(Product $product): View
     {
         $product->load('serials');
-        return view('admin.products.form', ['product' => $product]);
+        $categories = \App\Models\ProductCategory::orderBy('sort_order')->orderBy('name')->get();
+        return view('admin.products.form', ['product' => $product, 'categories' => $categories]);
     }
 
     public function update(Request $request, Product $product): RedirectResponse
@@ -74,12 +80,16 @@ class ProductController extends Controller
             'low_stock_threshold' => 'nullable|integer|min:0',
             'sort_order' => 'nullable|integer|min:0',
             'icon' => 'nullable|string|max:50|in:' . implode(',', array_keys(\App\Models\Product::iconOptions())),
+            'product_category_id' => 'nullable|exists:product_categories,id',
+            'tyre_size' => 'nullable|string|max:50',
         ]);
         $validated['requires_serial'] = $request->boolean('requires_serial');
         $validated['quantity'] = $validated['quantity'] ?? 0;
         $validated['low_stock_threshold'] = $validated['low_stock_threshold'] ?? 5;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['icon'] = !empty($validated['icon'] ?? '') ? $validated['icon'] : null;
+        $validated['product_category_id'] = $validated['product_category_id'] ?? null;
+        $validated['tyre_size'] = $validated['tyre_size'] ?? null;
         $product->update($validated);
 
         if ($product->requires_serial) {

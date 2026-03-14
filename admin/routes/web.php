@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\SalesController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SiteSettingController;
@@ -60,6 +62,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/export', [ExportController::class, '__invoke'])->name('export')->middleware('throttle:10,1');
     Route::resource('services', ServiceController::class)->names('services');
     Route::resource('products', ProductController::class)->names('products');
+    Route::resource('product-categories', ProductCategoryController::class)->names('product-categories')->except('show');
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::post('/products/add-stock-by-scan', [ProductController::class, 'addStockByScan'])->name('products.add-stock-by-scan');
     Route::get('/epos', [EposController::class, 'index'])->name('epos.index');
     Route::post('/epos/lookup', [EposController::class, 'lookup'])->name('epos.lookup');

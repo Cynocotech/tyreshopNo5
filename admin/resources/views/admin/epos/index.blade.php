@@ -1,5 +1,8 @@
 <x-admin-layout>
     <x-slot name="header">EPOS</x-slot>
+    @push('head')
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    @endpush
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" x-data="eposApp({{ json_encode($cardTerminalConfig ?? []) }})">
         {{-- Barcode / Scanner input --}}
@@ -21,17 +24,19 @@
                     <label class="text-sm font-medium text-slate-700">Scan or enter barcode</label>
                 </div>
                 <p class="text-xs text-slate-500 mb-2 flex items-center gap-1.5">
-                    <span>Bluetooth or wired barcode scanners act as keyboards</span>
-                    <span class="inline-flex items-center gap-0.5" title="Both connection types supported">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.5 12c0-1.5-.75-2.75-2-3.5l1-1.75c2 1.25 3.25 3.5 3.25 5.25s-1.25 4-3.25 5.25l-1-1.75c1.25-.75 2-2 2-3.5z"/><path d="M12 9.5c-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5-1.1-2.5-2.5-2.5z"/><path d="M9.5 12c0-1.5.75-2.75 2-3.5l-1-1.75c-2 1.25-3.25 3.5-3.25 5.25s1.25 4 3.25 5.25l1-1.75c-1.25-.75-2-2-2-3.5z"/></svg>
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H5a2 2 0 00-2 2v12a2 2 0 002 2h6m0 0h6a2 2 0 002-2V6a2 2 0 00-2-2h-6"/></svg>
-                    </span>
-                    — focus here and scan.
+                    <span>Bluetooth or wired barcode scanners act as keyboards — or use camera</span>
                 </p>
-                <input type="text" x-ref="barcodeInput" x-model="barcodeInput" @keydown.enter.prevent="lookupAndAdd()"
-                       placeholder="Scan product barcode or type and press Enter"
-                       class="w-full rounded-lg border-slate-300 py-3 px-4 text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12"
-                       autofocus>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" x-ref="barcodeInput" x-model="barcodeInput" @keydown.enter.prevent="lookupAndAdd()"
+                           placeholder="Scan product barcode or type and press Enter"
+                           class="flex-1 min-w-0 rounded-lg border-slate-300 py-3 px-4 text-base sm:text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           autofocus>
+                    <button type="button" @click="openCameraScanner()"
+                            class="flex items-center justify-center gap-2 px-4 py-3 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7"/></svg>
+                        <span class="hidden sm:inline">Camera</span>
+                    </button>
+                </div>
             </div>
             <div class="bg-white rounded-lg shadow p-4 mb-4">
                 <div class="flex items-center gap-2 mb-2">
@@ -73,11 +78,16 @@
                         'requires_serial' => $p->requires_serial,
                         'icon' => $p->icon ?: 'package',
                         'available_serials' => $p->requires_serial ? $p->availableSerials->pluck('serial_number')->values() : [],
+                        'category' => $p->category?->name,
+                        'tyre_size' => $p->tyre_size,
                     ]) }})"
                             class="text-left p-3 rounded-lg bg-blue-50 border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-100 transition flex flex-col items-center gap-2">
                         <x-product-icon :icon="$p->icon ?: 'package'" class="w-10 h-10 text-blue-600 shrink-0" />
                         <div class="w-full text-center">
                             <div class="font-medium text-slate-800 truncate">{{ $p->name }}</div>
+                            @if($p->tyre_size)
+                            <div class="text-xs text-slate-500 font-mono">{{ $p->tyre_size }}</div>
+                            @endif
                             <div class="text-sm text-slate-600">£{{ number_format($p->price, 2) }}</div>
                             @if($p->requires_serial)
                             <div class="text-xs text-amber-600 mt-1">Serial required</div>
@@ -286,6 +296,22 @@
         </div>
     </div>
 
+    {{-- Camera barcode scanner modal --}}
+    <div id="epos-camera-scanner-modal" class="fixed inset-0 z-[100]" x-show="cameraOpen" x-cloak
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="absolute inset-0 bg-slate-900/95 flex flex-col">
+            <div class="flex items-center justify-between px-4 py-3 sm:px-6 bg-slate-800/80 text-white shrink-0">
+                <h3 class="text-base sm:text-lg font-semibold truncate pr-2">Scan barcode or QR code</h3>
+                <button type="button" @click="closeCameraScanner()" class="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 shrink-0" aria-label="Close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="epos-camera-scanner-box" class="flex-1 flex items-center justify-center min-h-0 p-2 sm:p-4 overflow-hidden"></div>
+            <p class="text-center text-slate-400 text-xs sm:text-sm py-2 sm:py-3 px-4">Point your camera at a barcode or QR code</p>
+        </div>
+    </div>
+
     <style>
         [x-cloak]{display:none!important}
         /* Button colors - ensure no white buttons */
@@ -312,6 +338,8 @@
                 tempIdCounter: 0,
                 completing: false,
                 completeError: '',
+                cameraOpen: false,
+                _cameraScanner: null,
                 checkoutOpen: false,
                 paidSale: null,
                 paymentMethod: 'cash',
@@ -364,6 +392,45 @@
                     this.customerAddress = this.customerAddress || '';
                     this.paidSale = null;
                     this.checkoutOpen = true;
+                },
+                openCameraScanner() {
+                    if (typeof Html5Qrcode === 'undefined') {
+                        this.completeError = 'Scanner loading…';
+                        setTimeout(() => { this.completeError = ''; this.openCameraScanner(); }, 500);
+                        return;
+                    }
+                    this.cameraOpen = true;
+                    const comp = this;
+                    setTimeout(() => {
+                        const el = document.getElementById('epos-camera-scanner-box');
+                        if (!el) return;
+                        el.innerHTML = '';
+                        const scanner = new Html5Qrcode('epos-camera-scanner-box');
+                        comp._cameraScanner = scanner;
+                        const qrbox = Math.max(150, Math.min(300, window.innerWidth - 32, window.innerHeight - 120));
+                        scanner.start({ facingMode: 'environment' }, { fps: 10, qrbox },
+                            (decodedText) => {
+                                comp.barcodeInput = decodedText;
+                                scanner.stop().catch(() => {});
+                                comp._cameraScanner = null;
+                                comp.cameraOpen = false;
+                                comp.lookupAndAdd();
+                            },
+                            () => {}
+                        ).catch(err => {
+                            comp.completeError = 'Camera failed: ' + (err.message || 'Permission denied');
+                            comp.cameraOpen = false;
+                            comp._cameraScanner = null;
+                            setTimeout(() => comp.completeError = '', 4000);
+                        });
+                    }, 100);
+                },
+                closeCameraScanner() {
+                    if (this._cameraScanner) {
+                        this._cameraScanner.stop().catch(() => {});
+                        this._cameraScanner = null;
+                    }
+                    this.cameraOpen = false;
                 },
                 assignSerial() {
                     const sn = (this.serialInput || '').trim();

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
@@ -17,7 +18,14 @@ class Product extends Model
         'low_stock_threshold',
         'sort_order',
         'icon',
+        'product_category_id',
+        'tyre_size',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
 
     public static function iconOptions(): array
     {

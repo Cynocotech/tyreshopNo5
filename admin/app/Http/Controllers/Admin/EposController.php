@@ -36,7 +36,7 @@ class EposController extends Controller
     public function index(PaymentGatewayService $paymentGateway): View
     {
         return view('admin.epos.index', [
-            'products' => Product::with('availableSerials')
+            'products' => Product::with(['availableSerials', 'category'])
                 ->orderBy('sort_order')->orderBy('name')->get(),
             'cardTerminalConfig' => $paymentGateway->cardTerminalConfig(),
         ]);
