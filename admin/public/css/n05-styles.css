@@ -88,41 +88,40 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 .booking-step { margin-bottom: 32px; }
 .booking-step-title { font-weight: 700; font-size: 16px; color: #1B263B; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
-/* Responsive menu - React index (site-header) */
+/* Responsive menu - React index (site-header)
+   Mobile (<992px): ONLY hamburger. Desktop (992px+): ONLY horizontal nav. */
 .site-header { width: 100%; overflow: visible; }
-/* Base: desktop nav visible, hamburger hidden */
-.site-header .header-nav-desktop {
+
+/* Base: mobile-first — hamburger only, nav hidden */
+.site-header .header-nav-desktop { display: none !important; }
+.site-header .header-hamburger {
   display: flex !important;
   align-items: center;
-  gap: 24px;
-  flex-shrink: 0;
-  visibility: visible !important;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  color: #fff;
 }
-.site-header .header-hamburger {
-  display: none !important;
-  visibility: hidden !important;
-}
-/* Desktop (992px+): keep nav, hide hamburger & mobile menu */
+.site-header .header-tagline { display: none !important; }
+
+/* DESKTOP (992px+): nav only, hamburger hidden */
 @media (min-width: 992px) {
-  .site-header .header-nav-desktop { display: flex !important; visibility: visible !important; }
-  .site-header .header-hamburger { display: none !important; visibility: hidden !important; }
+  .site-header .header-nav-desktop {
+    display: flex !important;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+  .site-header .header-hamburger { display: none !important; }
   .site-header .header-mobile-menu { display: none !important; }
   .site-header .header-tagline { display: block !important; }
 }
-/* Mobile (<992px): hide nav, show hamburger */
+
+/* Mobile dropdown styling */
 @media (max-width: 991px) {
-  .site-header .header-nav-desktop { display: none !important; visibility: hidden !important; }
-  .site-header .header-hamburger {
-    display: flex !important;
-    visibility: visible !important;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
   .site-header .header-mobile-menu {
     left: 0 !important;
     right: 0 !important;
@@ -131,7 +130,6 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
   .header-mobile-menu .nav-link,
   .header-mobile-menu .btn-transition { display: block !important; padding: 14px 0; font-size: 16px; }
   .header-mobile-menu .btn-transition { text-align: center; margin-top: 8px; }
-  .site-header .header-tagline { display: none !important; }
 }
 
 /* Responsive hamburger - static pages (contact, tyres, blog, mot-booking, etc.) */

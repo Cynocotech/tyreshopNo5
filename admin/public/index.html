@@ -76,7 +76,7 @@ const USPS = [
 ];
 
 let STATS = [
-  {value:"£19", label:"MOT + Service", sub:"Save £31 today"},
+  {value:"", label:"MOT + Service", sub:""},
   {value:"500+",label:"Happy Customers",sub:"5-star rated"},
   {value:"15+", label:"Years Experience",sub:"Trusted since 2008"},
   {value:"100%",label:"Satisfaction Rate",sub:"Guaranteed work"},
@@ -122,20 +122,20 @@ let FAQS = [
   {q:"Is MOT included with servicing?",a:"We offer combo pricing — book your MOT with a Full or Major Service and pay just £19 for the MOT, saving at least £31."},
 ];
 
-let FOOTER_MOT_PRICE = '£19';
-let HERO_BOOK_PRICE = '£19';
-let HERO_SAVE = '£31';
+let FOOTER_MOT_PRICE = '';
+let HERO_BOOK_PRICE = '';
+let HERO_SAVE = '';
 let OPENING_HOURS_DISPLAY = 'Mon–Sat: 8am–6pm';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
 let COMBO_SECTION_TITLE = 'Special Offer';
-let COMBO_SECTION_INTRO = "Book your MOT together with a service and pay just £19 — saving at least £31.";
+let COMBO_SECTION_INTRO = 'Book your MOT together with a service and save.';
 let COMBO_COMBINED_DESC = 'MOT Test + Service combined';
 var SHOW_UPDATE_NOTICE = true;
 let FOOTER_OFFER_TITLE = "Today's Offer";
 let FOOTER_OFFER_SUBTITLE = 'Book Today';
 let FOOTER_OFFER_LABEL = 'MOT + Service';
-let FOOTER_OFFER_WAS_PRICE = '£50';
-let FOOTER_OFFER_SAVE = 'Save £31+';
+let FOOTER_OFFER_WAS_PRICE = '';
+let FOOTER_OFFER_SAVE = '';
 let FOOTER_OFFER_FEATURE = '🚗 Free collection & delivery';
 let FOOTER_OFFER_BTN = 'Book Now →';
 let FOOTER_OFFER_DISCLAIMER = '*New bookings only. Excludes commercial vehicles.';
@@ -307,9 +307,9 @@ function HeroSection(){
           fontSize:'clamp(2.2rem,4.5vw,3.8rem)',color:T.white,
         }},
           'MOT + SERVICE',h('br'),
-          h('span',{className:'shimmer-text'},'BOOK FOR ' + (typeof HERO_BOOK_PRICE !== 'undefined' ? HERO_BOOK_PRICE : '£19')),
+          h('span',{className:'shimmer-text'},'BOOK FOR ' + (HERO_BOOK_PRICE || '—')),
           h('br'),
-          h('span',{style:{color:T.yellow}},'SAVE ' + (typeof HERO_SAVE !== 'undefined' ? HERO_SAVE : '£31') + '!'),
+          h('span',{style:{color:T.yellow}},'SAVE ' + (HERO_SAVE || '—') + '!'),
         ),
         h('p',{className:'anim-fade-up delay-300',style:{
           color:'rgba(255,255,255,.7)',fontSize:18,lineHeight:1.7,
@@ -719,7 +719,7 @@ function App(){
 var rootEl = document.getElementById('root');
 var reactRoot = null;
 function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRoot = ReactDOM.createRoot(rootEl); if(reactRoot) reactRoot.render(h(App)); } catch(e){ console.error('N05 render:',e); showErr(e.message||'Failed to render'); } }
-doRender();
+/* Fetch admin settings before first render so prices come from admin only */
 (async function init(){
   try {
     var load = window.N05ServicesLoader&&N05ServicesLoader.loadServices ? N05ServicesLoader.loadServices() : fetch('/data/services.json?v='+Date.now()).then(function(r){ return r.ok?r.json():Promise.reject(new Error('unavailable')); });
@@ -764,24 +764,25 @@ doRender();
       });
     });
 
-    if (byId['mot-full-service']) {
-      const combo = byId['mot-full-service'];
-      const settings = data.settings || {};
-      function parsePrice(v) {
-        if (v == null || v === '') return null;
-        if (typeof v === 'number' && !isNaN(v)) return v;
-        const n = parseFloat(String(v).replace(/[£,\s]/g, ''));
-        return isNaN(n) ? null : n;
-      }
-      const heroMOT = parsePrice(settings.hero_book_price) ?? parsePrice(combo.heroMOTPrice) ?? 19;
-      STATS[0].value = combo.priceDisplay || STATS[0].value;
-      COMBOS[0].price = combo.priceDisplay || COMBOS[0].price;
-      FOOTER_MOT_PRICE = (settings.footer_mot_price && String(settings.footer_mot_price).trim()) ? String(settings.footer_mot_price).trim() : (combo.priceDisplay || FOOTER_MOT_PRICE);
-      HERO_BOOK_PRICE = '£' + heroMOT;
-      const motTest = byId['mot-test'];
-      HERO_SAVE = (settings.hero_save && String(settings.hero_save).trim()) ? String(settings.hero_save).trim() : (motTest && motTest.price != null ? '£' + Math.round(motTest.price - heroMOT) : '£31');
-      const faq = FAQS.find(f=>f.a&&f.a.indexOf('£19')>=0);
-      if (faq) faq.a = faq.a.replace('£19', combo.priceDisplay || '£19');
+    function parsePrice(v) {
+      if (v == null || v === '') return null;
+      if (typeof v === 'number' && !isNaN(v)) return v;
+      const n = parseFloat(String(v).replace(/[£,\s]/g, ''));
+      return isNaN(n) ? null : n;
+    }
+    var s2 = data.settings || {};
+    var combo = byId['mot-full-service'];
+    var heroMOT = parsePrice(s2.hero_book_price) ?? (combo ? parsePrice(combo.heroMOTPrice) : null);
+    HERO_BOOK_PRICE = heroMOT != null ? '£' + heroMOT : '';
+    var motTest = byId['mot-test'];
+    HERO_SAVE = (s2.hero_save && String(s2.hero_save).trim()) ? String(s2.hero_save).trim() : (motTest && motTest.price != null && heroMOT != null ? '£' + Math.round(motTest.price - heroMOT) : '');
+    FOOTER_MOT_PRICE = (s2.footer_mot_price && String(s2.footer_mot_price).trim()) ? String(s2.footer_mot_price).trim() : (combo ? combo.priceDisplay : '') || '';
+    if (combo) {
+      STATS[0].value = FOOTER_MOT_PRICE || combo.priceDisplay || '';
+      STATS[0].sub = HERO_SAVE ? 'Save ' + HERO_SAVE + ' today' : '';
+      COMBOS[0].price = combo.priceDisplay || STATS[0].value || '';
+      var faq = FAQS.find(f=>f.a&&f.a.indexOf('£19')>=0);
+      if (faq) faq.a = faq.a.replace(/£19/g, combo.priceDisplay || HERO_BOOK_PRICE || '—');
     }
     if (byId['mot-major-service']) COMBOS[1].price = byId['mot-major-service'].priceDisplay || COMBOS[1].price;
 
