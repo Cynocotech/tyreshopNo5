@@ -33,17 +33,59 @@ class VehicleController extends Controller
 
         try {
             $base = config('services.checkcar.base', 'https://api.checkcardetails.co.uk');
-            $res = Http::withHeaders(['x-api-key' => $apiKey])
-                ->get("{$base}/ukvd/vehicle-registration", ['vrm' => $vrm]);
+            $attempts = [
+                "{$base}/vehicledata/vehicleregistration?" . http_build_query(['apikey' => $apiKey, 'vrm' => $vrm]),
+                "{$base}/api/vehicle?" . http_build_query(['vrm' => $vrm, 'apikey' => $apiKey]),
+                "{$base}/api/vehicle?" . http_build_query(['registrationNumber' => $vrm, 'apikey' => $apiKey]),
+            ];
 
-            if (! $res->successful()) {
-                return response()->json(['error' => $res->json('message') ?? 'Vehicle lookup failed'], $res->status());
+            $res = null;
+            foreach ($attempts as $url) {
+                $res = Http::get($url);
+                if ($res->successful()) {
+                    break;
+                }
             }
 
-            return response()->json($res->json());
+            if (! $res || ! $res->successful()) {
+                $body = $res ? $res->json() : [];
+                $msg = $body['message'] ?? $body['error'] ?? $body['detail'] ?? ($res ? $res->body() : 'Request failed');
+                return response()->json([
+                    'error' => 'Vehicle lookup failed',
+                    'detail' => is_string($msg) ? substr($msg, 0, 200) : 'Registration not found or API error',
+                ], $res ? $res->status() : 503);
+            }
+
+            $data = $res->json();
+            return response()->json($this->normaliseResponse($data ?? [], $vrm));
         } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Vehicle lookup failed', 'detail' => $e->getMessage()], 500);
         }
+    }
+
+    private function normaliseResponse(array $raw, string $vrm): array
+    {
+        if (empty($raw)) {
+            return ['error' => 'No data returned'];
+        }
+        if (isset($raw['VehicleRegistration']) || isset($raw['Vehicle']['VehicleRegistration'])) {
+            return $raw;
+        }
+        // Map flat/alternate API response to expected structure
+        $vr = $raw['registrationNumber'] ?? $raw['RegistrationNumber'] ?? $vrm;
+        return [
+            'VehicleRegistration' => [
+                'Vrm' => $raw['registrationNumber'] ?? $vr,
+                'Make' => $raw['make'] ?? $raw['Make'] ?? null,
+                'Model' => $raw['model'] ?? $raw['Model'] ?? null,
+                'MakeModel' => ($raw['make'] ?? '') . ' ' . ($raw['model'] ?? ''),
+                'Colour' => $raw['colour'] ?? $raw['Colour'] ?? null,
+                'FuelType' => $raw['fuelType'] ?? $raw['FuelType'] ?? null,
+                'YearOfManufacture' => $raw['yearOfManufacture'] ?? $raw['YearOfManufacture'] ?? null,
+                'Transmission' => $raw['transmission'] ?? $raw['Transmission'] ?? null,
+                ...$raw,
+            ],
+        ];
     }
 
     private function getMockResponse(string $vrm): array
