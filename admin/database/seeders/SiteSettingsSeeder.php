@@ -20,7 +20,7 @@ class SiteSettingsSeeder extends Seeder
             'phone' => '07895 859505',
             'phone_international' => '+447895859505',
             'email' => 'info@no5mot.co.uk',
-            'logo_url' => 'https://no5tyreandmot.co.uk/wp-content/uploads/2025/12/logo.png',
+            'logo_url' => '/images/logo.png',
             'url' => 'https://no5mot.co.uk',
             'opening_days' => 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
             'opening_time' => '08:00',
