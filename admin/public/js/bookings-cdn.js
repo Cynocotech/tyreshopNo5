@@ -23,14 +23,8 @@
         }
 
         try {
-            var Calendar = FullCalendar.Calendar;
-            var dayGridPlugin = FullCalendar.dayGridPlugin;
-            var timeGridPlugin = FullCalendar.timeGridPlugin;
-            var listPlugin = FullCalendar.listPlugin;
-            var interactionPlugin = FullCalendar.interactionPlugin;
-
-            var calendar = new Calendar(calendarEl, {
-                plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
+            // v6 global bundle includes plugins automatically - don't pass them
+            var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 headerToolbar: {
                     left: 'prev,next today',

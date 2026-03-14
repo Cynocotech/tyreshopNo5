@@ -26,20 +26,28 @@ class SiteSettingController extends Controller
             'opening_days', 'opening_time', 'closing_time', 'opening_hours_display',
             'tagline', 'footer_tagline', 'footer_description', 'copyright',
             'hero_book_price', 'hero_save', 'footer_mot_price', 'areas_intro',
+            'show_update_notice',
             'payment_card_provider', 'payment_stripe_secret', 'payment_stripe_publishable', 'payment_stripe_reader_id', 'payment_stripe_enabled',
             'payment_teya_api_url', 'payment_teya_merchant_id', 'payment_teya_api_key', 'payment_teya_enabled',
             'payment_faster_api_url', 'payment_faster_client_id', 'payment_faster_client_secret', 'payment_faster_enabled',
             'payment_lfat_api_url', 'payment_lfat_api_key', 'payment_lfat_enabled',
         ];
+        $checkboxKeys = ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled', 'show_update_notice'];
+        foreach ($checkboxKeys as $key) {
+            if (in_array($key, $allowed)) {
+                $value = in_array($request->input($key), ['1', 1], true) ? '1' : '0';
+                SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+            }
+        }
         foreach ($request->all() as $key => $value) {
-            if (!in_array($key, $allowed)) {
+            if (!in_array($key, $allowed) || in_array($key, $checkboxKeys)) {
                 continue;
             }
             if ($value === null) {
                 continue;
             }
-            if (in_array($key, ['payment_stripe_enabled', 'payment_teya_enabled', 'payment_faster_enabled', 'payment_lfat_enabled'])) {
-                $value = in_array($request->input($key), ['1', 1], true) ? '1' : '0';
+            if (in_array($key, ['payment_card_provider'])) {
+                $value = (string) $value;
             }
             SiteSetting::updateOrCreate(['key' => $key], ['value' => (string) $value]);
         }

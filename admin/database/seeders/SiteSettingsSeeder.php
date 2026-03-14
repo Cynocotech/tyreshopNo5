@@ -34,6 +34,7 @@ class SiteSettingsSeeder extends Seeder
             'hero_save' => '£31',
             'footer_mot_price' => '£19',
             'areas_intro' => 'Serving many North London locations — wherever you are in the area.',
+            'show_update_notice' => '1',
         ];
         foreach ($settings as $key => $value) {
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);

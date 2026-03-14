@@ -44,6 +44,7 @@ class ServicesController extends Controller
             'hero_save' => SiteSetting::get('hero_save'),
             'footer_mot_price' => SiteSetting::get('footer_mot_price'),
             'opening_hours_display' => SiteSetting::get('opening_hours_display'),
+            'show_update_notice' => SiteSetting::get('show_update_notice', '1'),
         ];
 
         return response()->json([

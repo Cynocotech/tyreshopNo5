@@ -7,13 +7,22 @@ use App\Models\ServiceCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Database\Seeders\ServiceCategorySeeder;
 
 class ServiceCategoryController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
+        $categories = ServiceCategory::withCount('services')->orderBy('sort_order')->get();
+
+        // Auto-seed default categories if none exist
+        if ($categories->isEmpty()) {
+            (new ServiceCategorySeeder)->run();
+            return redirect()->route('admin.categories.index')->with('success', 'Default categories have been created.');
+        }
+
         return view('admin.categories.index', [
-            'categories' => ServiceCategory::withCount('services')->orderBy('sort_order')->get(),
+            'categories' => $categories,
         ]);
     }
 

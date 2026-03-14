@@ -15,6 +15,7 @@
     @stack('head')
     @isset($head){!! $head !!}@endisset
     @if(request()->routeIs('admin.bookings.index'))
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     <script src="{{ asset('js/bookings-cdn.js') }}"></script>
     @endif

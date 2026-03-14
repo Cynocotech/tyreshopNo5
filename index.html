@@ -126,6 +126,7 @@ let FOOTER_MOT_PRICE = '£19';
 let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
+var SHOW_UPDATE_NOTICE = true;
 
 const AREAS = [
   "Palmers Green","Southgate","Enfield","Edmonton","Winchmore Hill",
@@ -645,6 +646,8 @@ function App(){
     return ()=>window.removeEventListener('scroll',fn);
   },[]);
   return h('div',{style:{fontFamily:"'Inter',ui-sans-serif,system-ui"}},
+    SHOW_UPDATE_NOTICE ? h('div',{style:{background:'#f59e0b',color:'#fff',textAlign:'center',padding:'10px 20px',fontSize:14,fontWeight:600}},
+      '🔧 Site is under update — please be patient') : null,
     h(TopBar),
     h(Header,{scrolled}),
     h(HeroSection),
@@ -667,6 +670,7 @@ function App(){
     const byValue = map.byValue || {};
 
     var settings = data.settings || {};
+    SHOW_UPDATE_NOTICE = (settings.show_update_notice === '1');
     var heroFromSettings = settings.hero_book_price && String(settings.hero_book_price).trim();
     var saveFromSettings = settings.hero_save && String(settings.hero_save).trim();
     if (heroFromSettings) HERO_BOOK_PRICE = heroFromSettings.indexOf('£') >= 0 ? heroFromSettings : '£' + heroFromSettings;

@@ -147,6 +147,13 @@
                     <label class="block text-sm font-medium text-slate-700">Areas Intro Text</label>
                     <input type="text" name="areas_intro" value="{{ old('areas_intro', $settings['areas_intro'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
                 </div>
+                <div class="pt-3 border-t border-slate-200">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" name="show_update_notice" value="1" {{ old('show_update_notice', $settings['show_update_notice'] ?? '1') === '1' ? 'checked' : '' }}>
+                        <span class="text-sm font-medium text-slate-700">Show “Site under update” notice</span>
+                    </label>
+                    <p class="text-xs text-slate-500 mt-1 ml-6">When enabled, an amber banner appears at the top of the site asking visitors to please be patient during updates.</p>
+                </div>
             </div>
         </div>
 
