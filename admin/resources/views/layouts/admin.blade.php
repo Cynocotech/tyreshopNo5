@@ -19,6 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     <script src="{{ asset('js/bookings-cdn.js') }}"></script>
     @endif
+    {{-- Handle 419 (session expired) on AJAX: reload to get fresh CSRF token --}}
+    <script>
+    (function(){var f=window.fetch;window.fetch=function(){return f.apply(this,arguments).then(function(r){if(r.status===419){window.location.reload();return Promise.reject(new Error('Session expired'));}return r;});};})();
+    </script>
 </head>
 <body class="font-sans antialiased bg-slate-50" x-data="{ sidebarOpen: false }">
     <div class="min-h-screen flex">
