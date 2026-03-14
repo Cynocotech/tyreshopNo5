@@ -34,6 +34,14 @@ class SiteSettingsSeeder extends Seeder
             'hero_save' => '£31',
             'footer_mot_price' => '£19',
             'areas_intro' => 'Serving many North London locations — wherever you are in the area.',
+            'footer_offer_title' => "Today's Offer",
+            'footer_offer_subtitle' => 'Book Today',
+            'footer_offer_label' => 'MOT + Service',
+            'footer_offer_was_price' => '£50',
+            'footer_offer_save' => 'Save £31+',
+            'footer_offer_feature' => '🚗 Free collection & delivery',
+            'footer_offer_btn_text' => 'Book Now →',
+            'footer_offer_disclaimer' => '*New bookings only. Excludes commercial vehicles.',
             'show_update_notice' => '1',
         ];
         foreach ($settings as $key => $value) {

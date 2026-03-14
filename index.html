@@ -127,6 +127,14 @@ let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
 var SHOW_UPDATE_NOTICE = true;
+let FOOTER_OFFER_TITLE = "Today's Offer";
+let FOOTER_OFFER_SUBTITLE = 'Book Today';
+let FOOTER_OFFER_LABEL = 'MOT + Service';
+let FOOTER_OFFER_WAS_PRICE = '£50';
+let FOOTER_OFFER_SAVE = 'Save £31+';
+let FOOTER_OFFER_FEATURE = '🚗 Free collection & delivery';
+let FOOTER_OFFER_BTN = 'Book Now →';
+let FOOTER_OFFER_DISCLAIMER = '*New bookings only. Excludes commercial vehicles.';
 
 const AREAS = [
   "Palmers Green","Southgate","Enfield","Edmonton","Winchmore Hill",
@@ -601,23 +609,23 @@ function Footer(){
       ),
       h('div',null,
         h('h4',{style:{color:T.yellow,fontWeight:700,fontSize:13,
-          letterSpacing:'.08em',textTransform:'uppercase',marginBottom:18}},"Today's Offer"),
+          letterSpacing:'.08em',textTransform:'uppercase',marginBottom:18}},FOOTER_OFFER_TITLE),
         h('div',{style:{background:'linear-gradient(135deg,#1B263B,#243447)',
           border:`1.5px solid ${T.yellow}`,borderRadius:18,padding:'28px 20px',textAlign:'center'}},
           h('div',{style:{fontSize:11,fontWeight:700,color:T.yellow,
-            letterSpacing:'.15em',textTransform:'uppercase',marginBottom:6}},'Book Today'),
+            letterSpacing:'.15em',textTransform:'uppercase',marginBottom:6}},FOOTER_OFFER_SUBTITLE),
           h('div',{style:{fontWeight:900,fontSize:'3.2rem',color:T.yellow,lineHeight:1}},FOOTER_MOT_PRICE),
-          h('div',{style:{color:'#fff',fontWeight:700,fontSize:15,marginTop:6}},'MOT + Service'),
+          h('div',{style:{color:'#fff',fontWeight:700,fontSize:15,marginTop:6}},FOOTER_OFFER_LABEL),
           h('div',{style:{color:'rgba(255,255,255,.45)',fontSize:12,marginTop:4}},
-            h('s',{style:{color:'rgba(255,255,255,.25)'}},'£50'),' Save £31+'),
-          h('div',{style:{color:'rgba(255,255,255,.4)',fontSize:11,marginTop:4}},'🚗 Free collection & delivery'),
+            h('s',{style:{color:'rgba(255,255,255,.25)'}},FOOTER_OFFER_WAS_PRICE),' ',FOOTER_OFFER_SAVE),
+          h('div',{style:{color:'rgba(255,255,255,.4)',fontSize:11,marginTop:4}},FOOTER_OFFER_FEATURE),
           h('a',{href:'mot-booking.html',className:'btn-transition',style:{
             marginTop:18,width:'100%',background:T.yellow,color:T.navy,
             border:'none',borderRadius:10,padding:'12px 0',
             fontWeight:800,fontSize:15,cursor:'pointer',display:'block',
-            textAlign:'center',textDecoration:'none'}},'Book Now →'),
+            textAlign:'center',textDecoration:'none'}},FOOTER_OFFER_BTN),
           h('p',{style:{color:'rgba(255,255,255,.3)',fontSize:10,marginTop:10,lineHeight:1.4}},
-            '*New bookings only. Excludes commercial vehicles.')
+            FOOTER_OFFER_DISCLAIMER)
         )
       )
     ),
@@ -676,6 +684,15 @@ function App(){
     if (heroFromSettings) HERO_BOOK_PRICE = heroFromSettings.indexOf('£') >= 0 ? heroFromSettings : '£' + heroFromSettings;
     if (saveFromSettings) HERO_SAVE = saveFromSettings.indexOf('£') >= 0 ? saveFromSettings : '£' + saveFromSettings;
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
+    var s = data.settings || {};
+    if (s.footer_offer_title) FOOTER_OFFER_TITLE = s.footer_offer_title;
+    if (s.footer_offer_subtitle) FOOTER_OFFER_SUBTITLE = s.footer_offer_subtitle;
+    if (s.footer_offer_label) FOOTER_OFFER_LABEL = s.footer_offer_label;
+    if (s.footer_offer_was_price) FOOTER_OFFER_WAS_PRICE = s.footer_offer_was_price;
+    if (s.footer_offer_save) FOOTER_OFFER_SAVE = s.footer_offer_save;
+    if (s.footer_offer_feature) FOOTER_OFFER_FEATURE = s.footer_offer_feature;
+    if (s.footer_offer_btn) FOOTER_OFFER_BTN = s.footer_offer_btn;
+    if (s.footer_offer_disclaimer) FOOTER_OFFER_DISCLAIMER = s.footer_offer_disclaimer;
 
     if (byId['mot-full-service']) {
       const combo = byId['mot-full-service'];

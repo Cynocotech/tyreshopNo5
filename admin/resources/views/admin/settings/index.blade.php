@@ -143,6 +143,43 @@
                         <input type="text" name="footer_mot_price" value="{{ old('footer_mot_price', $settings['footer_mot_price'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="£19">
                     </div>
                 </div>
+                <div class="pt-4 border-t border-slate-200">
+                    <h4 class="font-semibold text-slate-700 mb-3">Footer “Today’s Offer” Box</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Offer Title</label>
+                            <input type="text" name="footer_offer_title" value="{{ old('footer_offer_title', $settings['footer_offer_title'] ?? "Today's Offer") }}" class="w-full mt-1 rounded border-slate-300" placeholder="Today's Offer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Subtitle</label>
+                            <input type="text" name="footer_offer_subtitle" value="{{ old('footer_offer_subtitle', $settings['footer_offer_subtitle'] ?? 'Book Today') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Book Today">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Offer Label</label>
+                            <input type="text" name="footer_offer_label" value="{{ old('footer_offer_label', $settings['footer_offer_label'] ?? 'MOT + Service') }}" class="w-full mt-1 rounded border-slate-300" placeholder="MOT + Service">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Was Price (strikethrough)</label>
+                            <input type="text" name="footer_offer_was_price" value="{{ old('footer_offer_was_price', $settings['footer_offer_was_price'] ?? '£50') }}" class="w-full mt-1 rounded border-slate-300" placeholder="£50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Save Text</label>
+                            <input type="text" name="footer_offer_save" value="{{ old('footer_offer_save', $settings['footer_offer_save'] ?? 'Save £31+') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Save £31+">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Feature Line</label>
+                            <input type="text" name="footer_offer_feature" value="{{ old('footer_offer_feature', $settings['footer_offer_feature'] ?? '🚗 Free collection & delivery') }}" class="w-full mt-1 rounded border-slate-300" placeholder="🚗 Free collection & delivery">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Button Text</label>
+                            <input type="text" name="footer_offer_btn" value="{{ old('footer_offer_btn', $settings['footer_offer_btn'] ?? 'Book Now →') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Book Now →">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-slate-700">Disclaimer</label>
+                            <input type="text" name="footer_offer_disclaimer" value="{{ old('footer_offer_disclaimer', $settings['footer_offer_disclaimer'] ?? '*New bookings only. Excludes commercial vehicles.') }}" class="w-full mt-1 rounded border-slate-300" placeholder="*New bookings only. Excludes commercial vehicles.">
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Areas Intro Text</label>
                     <input type="text" name="areas_intro" value="{{ old('areas_intro', $settings['areas_intro'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">

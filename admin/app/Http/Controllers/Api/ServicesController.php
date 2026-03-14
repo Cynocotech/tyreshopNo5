@@ -45,6 +45,14 @@ class ServicesController extends Controller
             'footer_mot_price' => SiteSetting::get('footer_mot_price'),
             'opening_hours_display' => SiteSetting::get('opening_hours_display'),
             'show_update_notice' => SiteSetting::get('show_update_notice', '1'),
+            'footer_offer_title' => SiteSetting::get('footer_offer_title', "Today's Offer"),
+            'footer_offer_subtitle' => SiteSetting::get('footer_offer_subtitle', 'Book Today'),
+            'footer_offer_label' => SiteSetting::get('footer_offer_label', 'MOT + Service'),
+            'footer_offer_was_price' => SiteSetting::get('footer_offer_was_price', '£50'),
+            'footer_offer_save' => SiteSetting::get('footer_offer_save', 'Save £31+'),
+            'footer_offer_feature' => SiteSetting::get('footer_offer_feature', '🚗 Free collection & delivery'),
+            'footer_offer_btn_text' => SiteSetting::get('footer_offer_btn_text', 'Book Now →'),
+            'footer_offer_disclaimer' => SiteSetting::get('footer_offer_disclaimer', '*New bookings only. Excludes commercial vehicles.'),
         ];
 
         return response()->json([
