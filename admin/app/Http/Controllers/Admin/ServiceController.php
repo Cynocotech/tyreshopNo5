@@ -41,9 +41,16 @@ class ServiceController extends Controller
             'is_quote' => 'boolean',
             'keywords' => 'nullable|string',
             'sort_order' => 'nullable|integer|min:0',
+            'combo_badge' => 'nullable|string|max:100',
+            'combo_subtitle' => 'nullable|string|max:255',
+            'combo_features' => 'nullable|string',
+            'combo_saving' => 'nullable|string|max:100',
+            'is_combo_hot' => 'boolean',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
+        $validated['is_combo_hot'] = $request->boolean('is_combo_hot');
         $validated['keywords'] = $validated['keywords'] ? array_map('trim', explode("\n", $validated['keywords'])) : [];
+        $validated['combo_features'] = !empty($validated['combo_features']) ? array_map('trim', array_filter(explode("\n", $validated['combo_features']))) : null;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         Service::create($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service created.');
@@ -72,9 +79,16 @@ class ServiceController extends Controller
             'is_quote' => 'boolean',
             'keywords' => 'nullable|string',
             'sort_order' => 'nullable|integer|min:0',
+            'combo_badge' => 'nullable|string|max:100',
+            'combo_subtitle' => 'nullable|string|max:255',
+            'combo_features' => 'nullable|string',
+            'combo_saving' => 'nullable|string|max:100',
+            'is_combo_hot' => 'boolean',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
+        $validated['is_combo_hot'] = $request->boolean('is_combo_hot');
         $validated['keywords'] = $validated['keywords'] ? array_map('trim', explode("\n", $validated['keywords'])) : [];
+        $validated['combo_features'] = !empty($validated['combo_features']) ? array_map('trim', array_filter(explode("\n", $validated['combo_features']))) : null;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $service->update($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');

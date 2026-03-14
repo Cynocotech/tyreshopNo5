@@ -20,13 +20,20 @@ class Service extends Model
         'is_quote',
         'keywords',
         'sort_order',
+        'combo_badge',
+        'combo_subtitle',
+        'combo_features',
+        'combo_saving',
+        'is_combo_hot',
     ];
 
     protected function casts(): array
     {
         return [
             'keywords' => 'array',
+            'combo_features' => 'array',
             'is_quote' => 'boolean',
+            'is_combo_hot' => 'boolean',
             'price' => 'decimal:2',
             'hero_mot_price' => 'decimal:2',
         ];

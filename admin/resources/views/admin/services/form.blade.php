@@ -59,6 +59,36 @@
                     <span class="text-sm text-slate-700">Quote only (no fixed price)</span>
                 </label>
             </div>
+            <div class="pt-4 border-t border-slate-200">
+                <h4 class="font-medium text-slate-700 mb-3">Combo Display (Special Offers)</h4>
+                <p class="text-xs text-slate-500 mb-3">Used when this service is in the Special Offers category. Leave blank to use defaults.</p>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Badge</label>
+                            <input type="text" name="combo_badge" value="{{ old('combo_badge', $service->combo_badge) }}" class="w-full rounded border-slate-300" placeholder="SAVE AT LEAST £31">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Subtitle</label>
+                            <input type="text" name="combo_subtitle" value="{{ old('combo_subtitle', $service->combo_subtitle) }}" class="w-full rounded border-slate-300" placeholder="Special Offer">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Saving Text</label>
+                        <input type="text" name="combo_saving" value="{{ old('combo_saving', $service->combo_saving) }}" class="w-full rounded border-slate-300" placeholder="Save £31+">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Features (one per line)</label>
+                        <textarea name="combo_features" rows="6" class="w-full rounded border-slate-300">{{ old('combo_features', implode("\n", $service->combo_features ?? [])) }}</textarea>
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" name="is_combo_hot" value="1" {{ old('is_combo_hot', $service->is_combo_hot ?? false) ? 'checked' : '' }}>
+                            <span class="text-sm text-slate-700">Mark as MOST POPULAR</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Keywords (one per line)</label>
                 <textarea name="keywords" rows="4" class="w-full rounded border-slate-300">{{ old('keywords', implode("\n", $service->keywords ?? [])) }}</textarea>

@@ -57,32 +57,7 @@ let STATS = [
   {value:"100%",label:"Satisfaction Rate",sub:"Guaranteed work"},
 ];
 
-let COMBOS = [
-  {
-    id:"combo-full", badge:"SAVE AT LEAST £31",
-    title:"Full Service & £19 MOT", subtitle:"Special Offer",
-    includes:[
-      "Full MOT Test",
-      "Full Service: oil/air filter, brakes, steering, suspension, tyre pressure, pollen filter & fluids",
-      "Spark plugs checked (replacement at extra cost if needed)",
-      "Free same-day collection & delivery",
-    ],
-    price:"£19", saving:"Save £31+", hot:true,
-  },
-  {
-    id:"combo-major", badge:"SAVE AT LEAST £31",
-    title:"Major Service & £19 MOT", subtitle:"Special Offer",
-    includes:[
-      "Full MOT Test",
-      "Everything in a Full Service",
-      "Full vehicle component check & all required maintenance",
-      "Level top-ups & filter replacements",
-      "Service book stamped",
-      "Free same-day collection & delivery",
-    ],
-    price:"£19", saving:"Save £31+", hot:false,
-  },
-];
+let COMBOS = [];
 
 let SERVICES = [];
 
@@ -126,6 +101,9 @@ let FOOTER_MOT_PRICE = '£19';
 let HERO_BOOK_PRICE = '£19';
 let HERO_SAVE = '£31';
 let COMBO_SECTION_BADGE = '🔥 Special Offers';
+let COMBO_SECTION_TITLE = 'MOT + Service Combo Deals';
+let COMBO_SECTION_INTRO = "Book your MOT together with a service and pay just £19 — saving at least £31.";
+let COMBO_COMBINED_DESC = 'MOT Test + Service combined';
 var SHOW_UPDATE_NOTICE = true;
 var SHOW_MAINTENANCE_NOTICE = false;
 var MAINTENANCE_MESSAGE = "Site maintenance — we'll be back shortly";
@@ -366,9 +344,9 @@ function ComboDeals(){
           textTransform:'uppercase',background:T.navy,display:'inline-block',
           padding:'4px 16px',borderRadius:50,marginBottom:14}},COMBO_SECTION_BADGE),
         h('h2',{style:{fontWeight:900,fontSize:'clamp(1.8rem,3vw,2.6rem)',
-          color:T.navy,margin:'0 0 12px'}},'MOT + Service Combo Deals'),
+          color:T.navy,margin:'0 0 12px'}},COMBO_SECTION_TITLE),
         h('p',{style:{color:T.gray500,fontSize:16,maxWidth:500,margin:'0 auto'}},
-          'Book your MOT together with a service and pay just £19 — saving at least £31.')
+          COMBO_SECTION_INTRO)
       ),
       h('div',{className:'combo-grid',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24}},
         ...COMBOS.map((c,i)=>h('div',{key:i,style:{
@@ -393,7 +371,7 @@ function ComboDeals(){
               h('span',{style:{color:T.green,fontWeight:700,fontSize:14,
                 background:'rgba(34,197,94,.1)',padding:'2px 8px',borderRadius:20}},c.saving)
             ),
-            h('div',{style:{color:T.gray500,fontSize:13,marginBottom:20}},'MOT Test + Service combined'),
+            h('div',{style:{color:T.gray500,fontSize:13,marginBottom:20}},COMBO_COMBINED_DESC),
             h('ul',{style:{margin:'0 0 24px',padding:0,listStyle:'none'}},
               ...c.includes.map(f=>h('li',{key:f,style:{
                 display:'flex',alignItems:'flex-start',gap:10,
@@ -690,6 +668,24 @@ function App(){
     if (heroFromSettings) HERO_BOOK_PRICE = heroFromSettings.indexOf('£') >= 0 ? heroFromSettings : '£' + heroFromSettings;
     if (saveFromSettings) HERO_SAVE = saveFromSettings.indexOf('£') >= 0 ? saveFromSettings : '£' + saveFromSettings;
     if (data.categories && data.categories['special-offers']) COMBO_SECTION_BADGE = data.categories['special-offers'].label;
+    if (settings.combo_section_title) COMBO_SECTION_TITLE = settings.combo_section_title;
+    if (settings.combo_section_intro) COMBO_SECTION_INTRO = settings.combo_section_intro;
+    if (settings.combo_combined_desc) COMBO_COMBINED_DESC = settings.combo_combined_desc;
+    var comboServices = (data.services || []).filter(function(x){ return x.category === 'special-offers'; });
+    COMBOS.length = 0;
+    comboServices.forEach(function(s){
+      var ex = SERVICE_EXTRAS[s.id] || {};
+      COMBOS.push({
+        id: s.id,
+        badge: s.comboBadge || ex.badge || 'SAVE AT LEAST £31',
+        title: s.title,
+        subtitle: s.comboSubtitle || 'Special Offer',
+        includes: (s.comboFeatures && s.comboFeatures.length) ? s.comboFeatures : (ex.features || []),
+        price: s.priceDisplay || '£19',
+        saving: s.comboSaving || 'Save £31+',
+        hot: !!s.isComboHot
+      });
+    });
     var s = data.settings || {};
     if (s.footer_offer_title) FOOTER_OFFER_TITLE = s.footer_offer_title;
     if (s.footer_offer_subtitle) FOOTER_OFFER_SUBTITLE = s.footer_offer_subtitle;
@@ -703,7 +699,7 @@ function App(){
     if (byId['mot-full-service']) {
       const combo = byId['mot-full-service'];
       STATS[0].value = combo.priceDisplay || STATS[0].value;
-      COMBOS[0].price = combo.priceDisplay || COMBOS[0].price;
+      if (COMBOS[0]) COMBOS[0].price = combo.priceDisplay || COMBOS[0].price;
       FOOTER_MOT_PRICE = combo.priceDisplay || FOOTER_MOT_PRICE;
       if (!heroFromSettings) {
         const heroMOT = combo.heroMOTPrice != null ? combo.heroMOTPrice : 19;
@@ -717,7 +713,7 @@ function App(){
       const faq = FAQS.find(f=>f.a&&f.a.indexOf('£19')>=0);
       if (faq) faq.a = faq.a.replace('£19', combo.priceDisplay || '£19');
     }
-    if (byId['mot-major-service']) COMBOS[1].price = byId['mot-major-service'].priceDisplay || COMBOS[1].price;
+    if (byId['mot-major-service'] && COMBOS[1]) COMBOS[1].price = byId['mot-major-service'].priceDisplay || COMBOS[1].price;
 
     const catOrder = { 'special-offers': 1, 'servicing-mot': 2, 'tyres-other': 3 };
     const list = (data.services || []).slice().sort(function(a, b) {

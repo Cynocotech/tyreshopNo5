@@ -180,6 +180,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="pt-4 border-t border-slate-200">
+                    <h4 class="font-medium text-slate-700 mb-3">Combo Deals Section</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600">Section Title</label>
+                            <input type="text" name="combo_section_title" value="{{ old('combo_section_title', $settings['combo_section_title'] ?? 'MOT + Service Combo Deals') }}" class="w-full mt-1 rounded border-slate-300" placeholder="MOT + Service Combo Deals">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600">Intro Text</label>
+                            <input type="text" name="combo_section_intro" value="{{ old('combo_section_intro', $settings['combo_section_intro'] ?? "Book your MOT together with a service and pay just £19 — saving at least £31.") }}" class="w-full mt-1 rounded border-slate-300" placeholder="Book your MOT together with a service and pay just £19 — saving at least £31.">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600">Combined Description (under price)</label>
+                            <input type="text" name="combo_combined_desc" value="{{ old('combo_combined_desc', $settings['combo_combined_desc'] ?? 'MOT Test + Service combined') }}" class="w-full mt-1 rounded border-slate-300" placeholder="MOT Test + Service combined">
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Areas Intro Text</label>
                     <input type="text" name="areas_intro" value="{{ old('areas_intro', $settings['areas_intro'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">

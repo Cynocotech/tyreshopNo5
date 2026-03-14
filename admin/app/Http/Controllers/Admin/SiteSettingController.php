@@ -29,6 +29,7 @@ class SiteSettingController extends Controller
             'footer_offer_title', 'footer_offer_subtitle', 'footer_offer_label',
             'footer_offer_was_price', 'footer_offer_save', 'footer_offer_feature',
             'footer_offer_btn_text', 'footer_offer_disclaimer',
+            'combo_section_title', 'combo_section_intro', 'combo_combined_desc',
             'show_update_notice', 'show_maintenance_notice', 'maintenance_message',
             'payment_card_provider', 'payment_stripe_secret', 'payment_stripe_publishable', 'payment_stripe_reader_id', 'payment_stripe_enabled',
             'payment_teya_api_url', 'payment_teya_merchant_id', 'payment_teya_api_key', 'payment_teya_enabled',
