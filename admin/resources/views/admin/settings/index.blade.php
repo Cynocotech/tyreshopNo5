@@ -442,20 +442,17 @@
             </div>
 
             <div class="mb-6 pb-4 border-b border-slate-200">
-                <h4 class="font-medium text-slate-700 mb-2">Twilio (SMS marketing)</h4>
-                <p class="text-xs text-slate-500 mb-3">Used for SMS Marketing. Sign up at <a href="https://www.twilio.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">twilio.com</a>. Account SID, Auth Token, and a phone number (From) are required.</p>
+                <h4 class="font-medium text-slate-700 mb-2">VoodooSMS (booking confirmations &amp; SMS marketing)</h4>
+                <p class="text-xs text-slate-500 mb-3">Used to send booking confirmation SMS to customers and for SMS Marketing. Get your API key from <a href="https://www.voodoosms.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">voodoosms.com</a>.</p>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Twilio Account SID</label>
-                        <input type="text" name="twilio_sid" value="{{ old('twilio_sid', $settings['twilio_sid'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="ACxxxxxxxx" autocomplete="off">
+                        <label class="block text-sm font-medium text-slate-700">VoodooSMS API Key</label>
+                        <input type="password" name="voodoo_api_key" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Twilio Auth Token</label>
-                        <input type="password" name="twilio_token" value="" class="w-full mt-1 rounded border-slate-300" placeholder="Leave blank to keep current" autocomplete="new-password">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">From (phone number)</label>
-                        <input type="text" name="twilio_from" value="{{ old('twilio_from', $settings['twilio_from'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="+447123456789">
+                        <label class="block text-sm font-medium text-slate-700">Sender Name</label>
+                        <input type="text" name="voodoo_sender" value="{{ old('voodoo_sender', $settings['voodoo_sender'] ?? 'NO5Tyres') }}" class="w-full mt-1 rounded border-slate-300" placeholder="NO5Tyres" maxlength="11">
+                        <p class="text-xs text-slate-400 mt-1">Max 11 characters, no spaces (shown as sender on customer's phone)</p>
                     </div>
                 </div>
             </div>

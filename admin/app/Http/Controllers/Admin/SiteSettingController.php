@@ -39,7 +39,7 @@ class SiteSettingController extends Controller
             'payment_faster_api_url', 'payment_faster_client_id', 'payment_faster_client_secret', 'payment_faster_enabled',
             'payment_lfat_api_url', 'payment_lfat_api_key', 'payment_lfat_enabled',
             'vrn_api_key', 'logto_url', 'telegram_bot_token', 'telegram_chat_id',
-            'twilio_sid', 'twilio_token', 'twilio_from',
+            'voodoo_api_key', 'voodoo_sender',
             'mail_driver', 'mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption',
             'mail_resend_api_key', 'mail_from_address', 'mail_from_name', 'admin_email',
         ];
@@ -58,7 +58,7 @@ class SiteSettingController extends Controller
                 continue;
             }
             // Don't overwrite sensitive fields when left blank (keep existing)
-            if (in_array($key, ['mail_password', 'mail_resend_api_key', 'telegram_bot_token', 'twilio_token']) && (string) $value === '') {
+            if (in_array($key, ['mail_password', 'mail_resend_api_key', 'telegram_bot_token', 'voodoo_api_key']) && (string) $value === '') {
                 continue;
             }
             if (in_array($key, ['payment_card_provider'])) {

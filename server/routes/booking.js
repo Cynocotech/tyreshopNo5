@@ -1,5 +1,5 @@
 /**
- * MOT booking: create booking, Stripe Checkout, Telegram notify, send email
+ * MOT booking: create booking, Stripe Checkout, Telegram notify, send email, SMS confirmation
  */
 const express = require('express');
 const router = express.Router();
@@ -8,6 +8,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 const stripePublishableKey = process.env.STRIPE_PUBLISHABLE_KEY || '';
@@ -204,6 +205,51 @@ router.post('/confirm-booking', async (req, res) => {
   }
 });
 
+// ── VoodooSMS helper ────────────────────────────────────────────────────────
+async function sendSms(to, message) {
+  const apiKey = process.env.VOODOO_API_KEY;
+  const sender = process.env.VOODOO_SENDER || 'NO5Tyres';
+  if (!apiKey || !to) return;
+
+  // Normalise to UK format without +
+  let n = to.replace(/\D/g, '');
+  if (n.startsWith('0')) n = '44' + n.slice(1);
+  else if (!n.startsWith('44')) n = '44' + n;
+
+  try {
+    const fetch = (await import('node-fetch').catch(() => null));
+    const fetchFn = fetch ? fetch.default || fetch : null;
+    if (!fetchFn) {
+      // Fallback: use https module
+      return new Promise((resolve) => {
+        const body = JSON.stringify({ to: n, from: sender, msg: message });
+        const req = https.request({
+          hostname: 'www.voodoosms.com',
+          path: '/vapi/sms/sendSMS',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': apiKey, 'Content-Length': Buffer.byteLength(body) }
+        }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => { console.log('VoodooSMS:', data); resolve(); });
+        });
+        req.on('error', (e) => { console.error('VoodooSMS error:', e.message); resolve(); });
+        req.write(body);
+        req.end();
+      });
+    }
+    const res = await fetchFn('https://www.voodoosms.com/vapi/sms/sendSMS', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': apiKey },
+      body: JSON.stringify({ to: n, from: sender, msg: message }),
+    });
+    const json = await res.json();
+    console.log('VoodooSMS result:', json);
+  } catch (e) {
+    console.error('VoodooSMS error:', e.message);
+  }
+}
+
 async function notifyAndEmail(metadata, email) {
   const {
     bookingId,
@@ -285,6 +331,12 @@ async function notifyAndEmail(metadata, email) {
     subject: `MOT Booking Confirmed - ${data.bookingId}`,
     html
   });
+
+  // SMS confirmation to customer
+  if (data.customerPhone && data.customerPhone !== '-') {
+    const smsText = `Hi ${data.customerName}, your ${data.serviceType} at N05 Tyre & MOT is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
+    await sendSms(data.customerPhone, smsText).catch(() => {});
+  }
 }
 
 router.get('/available-slots', (req, res) => {
