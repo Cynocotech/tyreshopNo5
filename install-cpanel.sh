@@ -43,7 +43,6 @@ fi
 echo "[1/6] Setting up .env"
 if [ ! -f .env ]; then
   [ -f .env.example ] && cp .env.example .env && echo "  Created .env from .env.example"
-  php artisan key:generate --force
 else
   echo "  .env exists"
 fi
@@ -55,7 +54,7 @@ $COMPOSER install --optimize-autoloader --no-dev 2>/dev/null || \
 
 # --- Step 3: Laravel ---
 echo "[3/6] Laravel setup"
-php artisan key:generate --force 2>/dev/null || true
+php artisan key:generate --force
 php artisan migrate --force
 php artisan config:cache
 php artisan route:cache
