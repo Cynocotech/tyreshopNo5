@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Services & Prices — N05 Tyre & MOT</title>
+  <meta name="description" content="Full price list for MOT, car servicing, tyres, brakes, exhausts, diagnostics and more at N05 Tyre & MOT, Palmers Green, North London.">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"N05 Tyre & MOT Service","description":"MOT testing, car servicing, tyre fitting in Palmers Green, North London.","address":{"@type":"PostalAddress","streetAddress":"6A Bourne Hill","addressLocality":"Southgate","addressRegion":"London","postalCode":"N13 4LG","addressCountry":"GB"},"telephone":"+447895859505","url":"https://no5mot.co.uk","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"08:00","closes":"18:00"}],"priceRange":"££"}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="/css/n05-styles.css?v=3" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;}
+    body{margin:0;font-family:'Inter',sans-serif;background:#fff;color:#1B263B;}
+    .top-bar{background:#fede00;padding:8px 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#1B263B;}
+    .header{background:#1B263B;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;}
+    .header .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+    .header .tagline{color:#fede00;font-size:11px;}
+    .header nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+    .header nav a{color:rgba(255,255,255,.82);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s;}
+    .header nav a:hover,.header nav a.active{color:#fede00;}
+    .header nav .btn-book{background:#fede00;color:#1B263B;padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;text-decoration:none;}
+    .header .header-hamburger{display:none;background:none;border:none;color:#fff;padding:8px;min-width:44px;min-height:44px;cursor:pointer;align-items:center;justify-content:center;}
+    @media(max-width:768px){
+      .header nav{display:none!important;}
+      .header .header-hamburger{display:flex!important;}
+      .header .tagline{display:none!important;}
+      .header.open nav{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#1B263B;padding:16px 24px 24px;box-shadow:0 10px 40px rgba(0,0,0,.3);z-index:9999;}
+      .header.open nav a{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);display:block;}
+      .header.open nav a:last-of-type{border-bottom:none;}
+      .header.open nav .btn-book{margin-top:8px;text-align:center;}
+    }
+    @media(min-width:769px){.header .header-hamburger{display:none!important;}}
+
+    /* Hero */
+    .page-hero{background:linear-gradient(135deg,#1B263B 0%,#243447 100%);color:#fff;padding:60px 24px;text-align:center;}
+    .page-hero h1{margin:0 0 12px;font-size:2.2rem;font-weight:900;}
+    .page-hero p{margin:0 auto;color:rgba(255,255,255,.8);font-size:18px;max-width:620px;}
+
+    /* Jump nav */
+    .jump-nav{background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:12px 24px;overflow-x:auto;white-space:nowrap;}
+    .jump-nav a{display:inline-block;margin-right:12px;color:#1B263B;font-size:13px;font-weight:600;text-decoration:none;padding:6px 14px;border-radius:50px;border:1px solid #cbd5e1;transition:all .2s;}
+    .jump-nav a:hover{background:#1B263B;color:#fede00;border-color:#1B263B;}
+
+    /* Layout */
+    .prices-wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+
+    /* Category section */
+    .cat-section{margin-bottom:48px;}
+    .cat-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #fede00;}
+    .cat-header h2{margin:0;font-size:1.4rem;font-weight:900;color:#1B263B;}
+    .cat-note{color:#475569;font-size:14px;margin:0 0 16px;line-height:1.6;}
+
+    /* Price table */
+    .price-table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+    .price-table tr:nth-child(even){background:#f8fafc;}
+    .price-table tr:nth-child(odd){background:#fff;}
+    .price-table td{padding:13px 18px;font-size:14px;border-bottom:1px solid #e2e8f0;}
+    .price-table tr:last-child td{border-bottom:none;}
+    .price-table td:first-child{color:#374151;font-weight:500;}
+    .price-table td.note{color:#64748b;font-size:12px;font-style:italic;padding-top:2px;padding-bottom:10px;}
+    .price-table td:last-child{text-align:right;font-weight:700;color:#1B263B;white-space:nowrap;}
+    .price-table td.price-free{color:#16a34a;}
+    .price-table tr.highlight td{background:#fff8d6;}
+    .price-table tr.highlight td:last-child{color:#b45309;}
+
+    /* Sub-label inside row */
+    .sub{display:block;font-size:11px;color:#94a3b8;font-weight:400;margin-top:2px;}
+
+    /* Eligibility badges */
+    .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;}
+    .badge{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:50px;padding:4px 12px;font-size:12px;font-weight:600;color:#475569;}
+
+    /* CTA box */
+    .cta-box{background:#1B263B;color:#fff;border-radius:16px;padding:28px 32px;text-align:center;margin:40px 0;}
+    .cta-box h3{margin:0 0 8px;color:#fede00;font-size:1.2rem;}
+    .cta-box p{color:rgba(255,255,255,.8);margin:0 0 16px;}
+    .cta-buttons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+    .btn-yellow{background:#fede00;color:#1B263B;padding:12px 24px;border-radius:10px;font-weight:800;text-decoration:none;font-size:14px;}
+    .btn-outline{border:2px solid rgba(255,255,255,.4);color:#fff;padding:10px 22px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px;}
+    .btn-outline:hover{border-color:#fede00;color:#fede00;}
+
+    /* Why choose us */
+    .why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-top:16px;}
+    .why-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px 16px;text-align:center;}
+    .why-card .icon{font-size:1.8rem;margin-bottom:8px;}
+    .why-card p{margin:0;font-size:13px;font-weight:600;color:#1B263B;}
+
+    /* Footer */
+    .footer{background:#0d1117;color:#fff;padding:48px 24px 24px;margin-top:48px;}
+    .footer-inner{max-width:1280px;margin:0 auto;}
+    .footer p{color:rgba(255,255,255,.5);font-size:13px;margin:8px 0;}
+    .footer a{color:rgba(255,255,255,.5);text-decoration:none;}
+    .footer a:hover{color:#fede00;}
+
+    @media(max-width:600px){
+      .page-hero h1{font-size:1.7rem;}
+      .cat-header h2{font-size:1.2rem;}
+      .price-table td{padding:11px 12px;font-size:13px;}
+      .cta-box{padding:20px 18px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div><span>📞 07895 859505</span> &nbsp; <span>📍 6A Bourne Hill, Southgate N13</span></div>
+  <span>🕐 Mon–Sat: 8am–6pm</span>
+</div>
+
+<header class="header">
+  <a href="/" class="logo">
+    <img src="https://no5tyreandmot.co.uk/images/logo.png" alt="N05 Tyre & MOT Service" style="height:44px;width:auto">
+    <div class="tagline">Palmers Green · North London</div>
+  </a>
+  <button type="button" class="header-hamburger" aria-label="Toggle menu" onclick="this.closest('.header').classList.toggle('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/car-servicing-mot">Car Servicing &amp; MOT</a>
+    <a href="/tyres">Tyres</a>
+    <a href="/other-services">Other Services</a>
+    <a href="/prices" class="active">Prices</a>
+    <a href="/blog">Blog</a>
+    <a href="/contact">Contact</a>
+    <a href="/mot-booking" class="btn-book">Book Now</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <h1>🚗 Our Services &amp; Prices</h1>
+  <p>Transparent pricing on everything we do — no hidden extras. Palmers Green, North London.</p>
+</div>
+
+<div class="jump-nav">
+  <a href="#tyres">🛞 Tyres</a>
+  <a href="#alignment">🔧 Wheel Alignment</a>
+  <a href="#mot">🚗 MOT (Class 4)</a>
+  <a href="#van-mot">🚐 Van MOT (Class 7)</a>
+  <a href="#servicing">🛠 Servicing</a>
+  <a href="#brakes">🛑 Brakes</a>
+  <a href="#suspension">⚙️ Suspension</a>
+  <a href="#steering">🔩 Steering</a>
+  <a href="#battery">🔋 Battery</a>
+  <a href="#aircon">❄️ Air Con</a>
+  <a href="#exhaust">🔧 Exhaust</a>
+  <a href="#diagnostics">🔍 Diagnostics</a>
+  <a href="#lighting">💡 Lighting</a>
+</div>
+
+<div class="prices-wrap">
+
+  <!-- TYRES -->
+  <div class="cat-section" id="tyres">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🛞</span>
+      <h2>Tyre Services</h2>
+    </div>
+    <table class="price-table">
+      <tr class="highlight">
+        <td>Tyre Supply &amp; Fitting — Budget<span class="sub">Fully fitted &amp; balanced</span></td>
+        <td>from £45</td>
+      </tr>
+      <tr>
+        <td>Tyre Supply &amp; Fitting — Mid-Range<span class="sub">Michelin, Continental, Goodyear &amp; more</span></td>
+        <td>from £60</td>
+      </tr>
+      <tr>
+        <td>Tyre Supply &amp; Fitting — Premium<span class="sub">Pirelli, Bridgestone, Yokohama &amp; more</span></td>
+        <td>from £85</td>
+      </tr>
+      <tr>
+        <td>Run Flat Tyres<span class="sub">24-hour appointment required</span></td>
+        <td>from £95</td>
+      </tr>
+      <tr>
+        <td>Tyre Fitting (customer-supplied tyre)<span class="sub">Per tyre / full set of 4</span></td>
+        <td>£25 / £40</td>
+      </tr>
+      <tr>
+        <td>Puncture Repair</td>
+        <td>£20</td>
+      </tr>
+      <tr>
+        <td>Wheel Balancing<span class="sub">Per wheel</span></td>
+        <td>£7</td>
+      </tr>
+      <tr>
+        <td>Seasonal Tyre Change<span class="sub">Full set swap &amp; balance</span></td>
+        <td>£40</td>
+      </tr>
+      <tr>
+        <td>Locking Wheel Nut Removal</td>
+        <td>from £25</td>
+      </tr>
+      <tr>
+        <td>Tyre Pressure Check</td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr>
+        <td>Tyre Safety Check</td>
+        <td class="price-free">Free</td>
+      </tr>
+    </table>
+    <div class="cta-buttons" style="margin-top:16px;">
+      <a href="/mot-booking" class="btn-yellow">Book Tyre Fitting →</a>
+      <a href="tel:07895859505" class="btn-outline" style="background:transparent;border:2px solid #1B263B;color:#1B263B;">📞 Get a Quote</a>
+    </div>
+  </div>
+
+  <!-- WHEEL ALIGNMENT -->
+  <div class="cat-section" id="alignment">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🔧</span>
+      <h2>Wheel Alignment</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Front Wheel Alignment</td>
+        <td>£50</td>
+      </tr>
+      <tr>
+        <td>4-Wheel Alignment</td>
+        <td>£89</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>Book Your MOT Online</h3>
+    <p>Class 4 &amp; Class 7 available. Same-day results. Free retest within 10 days.</p>
+    <div class="cta-buttons">
+      <a href="/mot-booking" class="btn-yellow">Book MOT Now →</a>
+      <a href="tel:07895859505" class="btn-outline">📞 Call 07895 859505</a>
+    </div>
+  </div>
+
+  <!-- MOT CLASS 4 -->
+  <div class="cat-section" id="mot">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🚗</span>
+      <h2>MOT Testing — Class 4</h2>
+    </div>
+    <p class="cat-note">DVSA-approved test centre. Pre-test check included. Same-day results.</p>
+    <table class="price-table">
+      <tr class="highlight">
+        <td>Class 4 MOT Test</td>
+        <td>£49</td>
+      </tr>
+      <tr>
+        <td>MOT Retest<span class="sub">Within 10 working days</span></td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr>
+        <td>MOT + Interim Service</td>
+        <td>from £99</td>
+      </tr>
+      <tr>
+        <td>MOT + Full Service</td>
+        <td>from £165</td>
+      </tr>
+    </table>
+    <div class="badge-row">
+      <span class="badge">✔ Cars</span>
+      <span class="badge">✔ Small vans up to 3,000kg</span>
+      <span class="badge">✔ Taxis &amp; private vehicles</span>
+    </div>
+  </div>
+
+  <!-- VAN MOT CLASS 7 -->
+  <div class="cat-section" id="van-mot">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🚐</span>
+      <h2>Van MOT — Class 7</h2>
+    </div>
+    <p class="cat-note">For larger vans and light commercial vehicles between 3,000kg – 3,500kg.</p>
+    <table class="price-table">
+      <tr class="highlight">
+        <td>Class 7 Van MOT Test</td>
+        <td>£69</td>
+      </tr>
+      <tr>
+        <td>MOT Retest<span class="sub">Within 10 working days</span></td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr>
+        <td>MOT + Interim Service</td>
+        <td>from £139</td>
+      </tr>
+      <tr>
+        <td>MOT + Full Service</td>
+        <td>from £195</td>
+      </tr>
+    </table>
+    <div class="badge-row">
+      <span class="badge">✔ Transit vans</span>
+      <span class="badge">✔ Delivery vans</span>
+      <span class="badge">✔ Work vans</span>
+    </div>
+  </div>
+
+  <!-- SERVICING -->
+  <div class="cat-section" id="servicing">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🛠</span>
+      <h2>Vehicle Servicing</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Interim Service<span class="sub">Oil, filter &amp; key safety checks</span></td>
+        <td>from £85</td>
+      </tr>
+      <tr class="highlight">
+        <td>Full Service<span class="sub">Oil, filter, brakes, steering, fluids, pollen filter</span></td>
+        <td>from £159</td>
+      </tr>
+      <tr>
+        <td>Major Service<span class="sub">Full service + comprehensive component inspection</span></td>
+        <td>from £199</td>
+      </tr>
+      <tr>
+        <td>Oil &amp; Filter Change</td>
+        <td>£85</td>
+      </tr>
+      <tr>
+        <td>Engine Oil Change</td>
+        <td>£45</td>
+      </tr>
+      <tr>
+        <td>Service Reset</td>
+        <td>£20</td>
+      </tr>
+    </table>
+    <div class="cta-buttons" style="margin-top:16px;">
+      <a href="/mot-booking" class="btn-yellow">Book a Service →</a>
+    </div>
+  </div>
+
+  <!-- BRAKES -->
+  <div class="cat-section" id="brakes">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🛑</span>
+      <h2>Brake Services</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Brake Inspection</td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr>
+        <td>Front Brake Pads Replacement</td>
+        <td>from £70</td>
+      </tr>
+      <tr>
+        <td>Rear Brake Pads Replacement</td>
+        <td>from £70</td>
+      </tr>
+      <tr class="highlight">
+        <td>Brake Discs &amp; Pads</td>
+        <td>from £150</td>
+      </tr>
+      <tr>
+        <td>Brake Fluid Change</td>
+        <td>£50</td>
+      </tr>
+      <tr>
+        <td>Handbrake Adjustment</td>
+        <td>£30</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SUSPENSION -->
+  <div class="cat-section" id="suspension">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">⚙️</span>
+      <h2>Suspension Repairs</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Suspension Check</td>
+        <td>£25</td>
+      </tr>
+      <tr>
+        <td>Shock Absorber Replacement<span class="sub">Per side</span></td>
+        <td>from £80</td>
+      </tr>
+      <tr>
+        <td>Coil Spring Replacement<span class="sub">Per side</span></td>
+        <td>from £90</td>
+      </tr>
+      <tr>
+        <td>Suspension Arm Replacement</td>
+        <td>from £120</td>
+      </tr>
+      <tr>
+        <td>Drop Link Replacement</td>
+        <td>from £60</td>
+      </tr>
+      <tr>
+        <td>Bush Replacement</td>
+        <td>from £70</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- STEERING -->
+  <div class="cat-section" id="steering">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🔩</span>
+      <h2>Steering Services</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Steering System Inspection</td>
+        <td>£30</td>
+      </tr>
+      <tr>
+        <td>Track Rod End Replacement</td>
+        <td>from £60</td>
+      </tr>
+      <tr>
+        <td>Power Steering Fluid Top-Up</td>
+        <td>£15</td>
+      </tr>
+      <tr>
+        <td>Steering Rack Replacement</td>
+        <td>from £250</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BATTERY -->
+  <div class="cat-section" id="battery">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🔋</span>
+      <h2>Battery Services</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Battery Test</td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr class="highlight">
+        <td>Battery Replacement</td>
+        <td>from £80</td>
+      </tr>
+      <tr>
+        <td>Alternator Check</td>
+        <td>£40</td>
+      </tr>
+      <tr>
+        <td>Starter Motor Replacement</td>
+        <td>from £150</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- AIR CON -->
+  <div class="cat-section" id="aircon">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">❄️</span>
+      <h2>Air Conditioning</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Air Con Re-Gas — Old Gas (R134a)<span class="sub">Standard refrigerant</span></td>
+        <td>from £80</td>
+      </tr>
+      <tr class="highlight">
+        <td>Air Con Re-Gas — New Gas (R1234yf)<span class="sub">Modern hybrid/newer vehicles</span></td>
+        <td>from £149</td>
+      </tr>
+      <tr>
+        <td>Cabin Filter Replacement</td>
+        <td>£25</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- EXHAUST -->
+  <div class="cat-section" id="exhaust">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🔧</span>
+      <h2>Exhaust Repairs</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Exhaust Inspection</td>
+        <td class="price-free">Free</td>
+      </tr>
+      <tr>
+        <td>Exhaust Repair</td>
+        <td>from £60</td>
+      </tr>
+      <tr>
+        <td>Exhaust Replacement</td>
+        <td>from £120</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- DIAGNOSTICS -->
+  <div class="cat-section" id="diagnostics">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">🔍</span>
+      <h2>Diagnostics &amp; Checks</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Engine Diagnostic Scan</td>
+        <td>£30</td>
+      </tr>
+      <tr>
+        <td>Warning Light Diagnosis</td>
+        <td>£30</td>
+      </tr>
+      <tr>
+        <td>Vehicle Health Check</td>
+        <td class="price-free">Free</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- LIGHTING -->
+  <div class="cat-section" id="lighting">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">💡</span>
+      <h2>Lighting &amp; Electrical</h2>
+    </div>
+    <table class="price-table">
+      <tr>
+        <td>Bulb Replacement</td>
+        <td>from £10</td>
+      </tr>
+      <tr>
+        <td>Headlight Polishing<span class="sub">Per pair</span></td>
+        <td>£35</td>
+      </tr>
+      <tr>
+        <td>Electrical Fault Diagnosis</td>
+        <td>£60</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- WHY CHOOSE US -->
+  <div class="cat-section" id="why">
+    <div class="cat-header">
+      <span style="font-size:1.8rem;">⭐</span>
+      <h2>Why Choose Us</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><div class="icon">⚡</div><p>Same Day Service</p></div>
+      <div class="why-card"><div class="icon">💰</div><p>Affordable Prices</p></div>
+      <div class="why-card"><div class="icon">🔧</div><p>Experienced Technicians</p></div>
+      <div class="why-card"><div class="icon">✅</div><p>Quality Parts</p></div>
+      <div class="why-card"><div class="icon">😊</div><p>Friendly Customer Service</p></div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="cta-box">
+    <h3>Ready to Book?</h3>
+    <p>Book online in under 60 seconds or call us for a same-day appointment.</p>
+    <div class="cta-buttons">
+      <a href="/mot-booking" class="btn-yellow">Book MOT →</a>
+      <a href="/mot-booking" class="btn-yellow">Book a Service →</a>
+      <a href="/tyres" class="btn-yellow">Get Tyres Quote →</a>
+      <a href="tel:07895859505" class="btn-outline">📞 Call Now</a>
+    </div>
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;text-align:center;margin-top:24px;">All prices are indicative and may vary depending on vehicle make, model and parts required. Free collection &amp; delivery within 3 miles.</p>
+
+</div><!-- /prices-wrap -->
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p><strong>N05 TYRE &amp; MOT SERVICE</strong> · Formerly Palmers Green Tyres</p>
+    <p>📍 6A Bourne Hill, Southgate, London N13 4LG · 📞 07895 859505</p>
+    <p>🕐 Mon–Sat 8am–6pm · 🚗 Free collection &amp; delivery (3 miles max)</p>
+    <p style="margin-top:24px;color:rgba(255,255,255,.3);font-size:12px;">© 2026 N05 Tyre and MOT Service Ltd. All rights reserved.</p>
+    <p style="margin-top:12px;color:rgba(255,255,255,.25);font-size:11px;">Site powered by <a href="https://cybercina.co.uk" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><img src="https://cybercina.co.uk/wp-content/uploads/2025/10/cropped-2.png" alt="Cybercina" style="height:22px;width:auto;vertical-align:middle"> Cybercina</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
