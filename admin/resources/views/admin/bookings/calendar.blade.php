@@ -34,7 +34,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <form action="{{ route('admin.bookings.store') }}" method="POST" class="space-y-3">
+            <form action="{{ route('admin.bookings.store') }}" method="POST" class="space-y-3" onsubmit="return validateBookingForm(this)">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -88,17 +88,35 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label for="service_type" class="block text-sm font-medium text-slate-700 mb-1">Service <span class="text-red-500">*</span></label>
-                        <select name="service_type" id="service_type" required class="w-full rounded-lg border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                onchange="updateAmountFromService(this)">
-                            <option value="">— Select service —</option>
-                            @foreach($services ?? [] as $svc)
-                            @php $p = (float)$svc->price; @endphp
-                            <option value="{{ e($svc->title) }}" data-price="{{ $p > 0 ? $p : '' }}">
-                                {{ $svc->title }}{{ $p > 0 ? ' — £' . number_format($p, 2) : ' (Quote)' }}
-                            </option>
-                            @endforeach
-                        </select>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Service <span class="text-red-500">*</span></label>
+                        {{-- Hidden input carries the actual submitted value --}}
+                        <input type="hidden" name="service_type" id="service_type_value" required>
+                        <div class="relative" id="service-combobox">
+                            <input type="text" id="service_search"
+                                   autocomplete="off"
+                                   placeholder="Search service…"
+                                   class="w-full rounded-lg border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pr-8"
+                                   oninput="filterServices(this.value)"
+                                   onfocus="openServiceDropdown()"
+                                   onblur="closeServiceDropdown()">
+                            <span class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+                            </span>
+                            <ul id="service-dropdown"
+                                class="absolute z-50 w-full bg-white border border-slate-200 rounded-lg shadow-lg mt-1 max-h-56 overflow-y-auto hidden text-sm">
+                                @foreach($services ?? [] as $svc)
+                                @php $p = (float)$svc->price; @endphp
+                                <li class="service-option px-3 py-2 cursor-pointer hover:bg-blue-50 flex justify-between items-center gap-2"
+                                    data-value="{{ e($svc->title) }}"
+                                    data-price="{{ $p > 0 ? $p : '' }}"
+                                    data-label="{{ e($svc->title) }}{{ $p > 0 ? ' — £' . number_format($p, 2) : ' (Quote)' }}"
+                                    onmousedown="selectService(this)">
+                                    <span>{{ $svc->title }}</span>
+                                    <span class="text-slate-400 whitespace-nowrap text-xs">{{ $p > 0 ? '£' . number_format($p, 2) : 'Quote' }}</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                     <div>
                         <label for="total_amount" class="block text-sm font-medium text-slate-700 mb-1">Amount (£)</label>
@@ -119,12 +137,52 @@
         </div>
     </div>
     <script>
-    function updateAmountFromService(sel) {
-        const opt = sel.options[sel.selectedIndex];
-        const price = opt && opt.dataset.price ? parseFloat(opt.dataset.price) : null;
+    // ── Service search combobox ──────────────────────────────────────────────
+    function openServiceDropdown() {
+        const dd = document.getElementById('service-dropdown');
+        if (dd) { filterServices(document.getElementById('service_search').value); dd.classList.remove('hidden'); }
+    }
+    function closeServiceDropdown() {
+        const dd = document.getElementById('service-dropdown');
+        if (dd) dd.classList.add('hidden');
+    }
+    function filterServices(query) {
+        const q = query.toLowerCase();
+        const dd = document.getElementById('service-dropdown');
+        if (!dd) return;
+        let hasVisible = false;
+        dd.querySelectorAll('.service-option').forEach(li => {
+            const match = li.dataset.label.toLowerCase().includes(q);
+            li.style.display = match ? '' : 'none';
+            if (match) hasVisible = true;
+        });
+        dd.classList.toggle('hidden', !hasVisible);
+    }
+    function selectService(li) {
+        document.getElementById('service_type_value').value = li.dataset.value;
+        document.getElementById('service_search').value = li.dataset.label;
+        const price = li.dataset.price ? parseFloat(li.dataset.price) : null;
         const amt = document.getElementById('total_amount');
         if (amt) amt.value = price !== null && !isNaN(price) ? price.toFixed(2) : '';
     }
+    // Clear hidden value if user clears the search box
+    document.addEventListener('input', function(e) {
+        if (e.target.id === 'service_search' && e.target.value === '') {
+            document.getElementById('service_type_value').value = '';
+        }
+    });
+    function validateBookingForm(form) {
+        const val = document.getElementById('service_type_value').value;
+        if (!val) {
+            const inp = document.getElementById('service_search');
+            inp.classList.add('border-red-500');
+            inp.placeholder = 'Please select a service';
+            inp.focus();
+            return false;
+        }
+        return true;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const openCreate = {{ ($openCreate ?? false) ? 'true' : 'false' }};
         if (openCreate) document.getElementById('create-booking-modal').classList.remove('hidden');
