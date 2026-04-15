@@ -102,21 +102,25 @@
                             <span class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-slate-400">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
                             </span>
-                            <ul id="service-dropdown"
-                                class="absolute z-50 w-full bg-white border border-slate-200 rounded-lg shadow-lg mt-1 max-h-56 overflow-y-auto hidden text-sm">
-                                @foreach($services ?? [] as $svc)
-                                @php $p = (float)$svc->price; @endphp
-                                <li class="service-option px-3 py-2 cursor-pointer hover:bg-blue-50 flex justify-between items-center gap-2"
-                                    data-value="{{ e($svc->title) }}"
-                                    data-price="{{ $p > 0 ? $p : '' }}"
-                                    data-label="{{ e($svc->title) }}{{ $p > 0 ? ' — £' . number_format($p, 2) : ' (Quote)' }}"
-                                    onmousedown="selectService(this)">
-                                    <span>{{ $svc->title }}</span>
-                                    <span class="text-slate-400 whitespace-nowrap text-xs">{{ $p > 0 ? '£' . number_format($p, 2) : 'Quote' }}</span>
-                                </li>
-                                @endforeach
-                            </ul>
                         </div>
+                        {{-- Dropdown rendered outside modal so it isn't clipped by overflow-y-auto --}}
+                        <ul id="service-dropdown"
+                            style="display:none;position:fixed;z-index:9999;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;box-shadow:0 10px 25px -5px rgba(0,0,0,.15);font-size:.875rem;">
+                            @foreach($services ?? [] as $svc)
+                            @php $p = (float)$svc->price; @endphp
+                            <li class="service-option"
+                                style="padding:.5rem .75rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;"
+                                data-value="{{ e($svc->title) }}"
+                                data-price="{{ $p > 0 ? $p : '' }}"
+                                data-label="{{ e($svc->title) }}{{ $p > 0 ? ' — £' . number_format($p, 2) : ' (Quote)' }}"
+                                onmousedown="selectService(this)"
+                                onmouseover="this.style.background='#eff6ff'"
+                                onmouseout="this.style.background=''">
+                                <span>{{ $svc->title }}</span>
+                                <span style="color:#94a3b8;white-space:nowrap;font-size:.75rem;">{{ $p > 0 ? '£' . number_format($p, 2) : 'Quote' }}</span>
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
                     <div>
                         <label for="total_amount" class="block text-sm font-medium text-slate-700 mb-1">Amount (£)</label>
@@ -138,13 +142,32 @@
     </div>
     <script>
     // ── Service search combobox ──────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+        // Move dropdown to body so modal overflow doesn't clip it
+        const dd = document.getElementById('service-dropdown');
+        if (dd) document.body.appendChild(dd);
+    });
+
+    function positionServiceDropdown() {
+        const inp = document.getElementById('service_search');
+        const dd  = document.getElementById('service-dropdown');
+        if (!inp || !dd) return;
+        const r = inp.getBoundingClientRect();
+        dd.style.top   = (r.bottom + window.scrollY + 4) + 'px';
+        dd.style.left  = (r.left  + window.scrollX) + 'px';
+        dd.style.width = r.width + 'px';
+    }
+
     function openServiceDropdown() {
         const dd = document.getElementById('service-dropdown');
-        if (dd) { filterServices(document.getElementById('service_search').value); dd.classList.remove('hidden'); }
+        if (!dd) return;
+        filterServices(document.getElementById('service_search').value);
+        positionServiceDropdown();
+        dd.style.display = 'block';
     }
     function closeServiceDropdown() {
         const dd = document.getElementById('service-dropdown');
-        if (dd) dd.classList.add('hidden');
+        if (dd) dd.style.display = 'none';
     }
     function filterServices(query) {
         const q = query.toLowerCase();
@@ -153,10 +176,10 @@
         let hasVisible = false;
         dd.querySelectorAll('.service-option').forEach(li => {
             const match = li.dataset.label.toLowerCase().includes(q);
-            li.style.display = match ? '' : 'none';
+            li.style.display = match ? 'flex' : 'none';
             if (match) hasVisible = true;
         });
-        dd.classList.toggle('hidden', !hasVisible);
+        dd.style.display = hasVisible ? 'block' : 'none';
     }
     function selectService(li) {
         document.getElementById('service_type_value').value = li.dataset.value;
@@ -164,6 +187,7 @@
         const price = li.dataset.price ? parseFloat(li.dataset.price) : null;
         const amt = document.getElementById('total_amount');
         if (amt) amt.value = price !== null && !isNaN(price) ? price.toFixed(2) : '';
+        closeServiceDropdown();
     }
     // Clear hidden value if user clears the search box
     document.addEventListener('input', function(e) {
@@ -171,11 +195,15 @@
             document.getElementById('service_type_value').value = '';
         }
     });
+    // Reposition on scroll/resize
+    window.addEventListener('scroll', positionServiceDropdown, true);
+    window.addEventListener('resize', positionServiceDropdown);
+
     function validateBookingForm(form) {
         const val = document.getElementById('service_type_value').value;
         if (!val) {
             const inp = document.getElementById('service_search');
-            inp.classList.add('border-red-500');
+            inp.style.borderColor = '#ef4444';
             inp.placeholder = 'Please select a service';
             inp.focus();
             return false;
