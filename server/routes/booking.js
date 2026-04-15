@@ -335,7 +335,8 @@ async function notifyAndEmail(metadata, email, opts = {}) {
 
   // SMS confirmation to customer — only once (not from webhook, which fires after confirm-booking)
   if (shouldSendSms && data.customerPhone && data.customerPhone !== '-') {
-    const smsText = `Hi ${data.customerName}, your ${data.serviceType} at N05 Tyre & MOT is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
+    const serviceType = data.serviceType.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+    const smsText = `Hi ${data.customerName}, your ${serviceType} at N05 Tyre & MOT is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
     await sendSms(data.customerPhone, smsText).catch(() => {});
   }
 }

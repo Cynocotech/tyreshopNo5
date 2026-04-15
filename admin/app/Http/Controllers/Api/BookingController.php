@@ -308,7 +308,8 @@ class BookingController extends Controller
                     $n = preg_replace('/\D/', '', $phone);
                     if (str_starts_with($n, '0')) $n = '44' . substr($n, 1);
                     elseif (!str_starts_with($n, '44')) $n = '44' . $n;
-                    $smsText = "Hi {$data['customerName']}, your {$data['serviceType']} at N05 Tyre & MOT is confirmed for {$data['appointmentDate']} at {$data['appointmentTime']}. Ref: {$data['bookingId']}. Questions? Call 07895 859505.";
+                    $serviceType = html_entity_decode($data['serviceType'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $smsText = "Hi {$data['customerName']}, your {$serviceType} at N05 Tyre & MOT is confirmed for {$data['appointmentDate']} at {$data['appointmentTime']}. Ref: {$data['bookingId']}. Questions? Call 07895 859505.";
                     \App\Http\Controllers\Admin\SmsMarketingController::sendViaSms($apiKey, $sender, $n, $smsText);
                 }
             } catch (\Throwable $e) {
