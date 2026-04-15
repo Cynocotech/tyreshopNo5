@@ -1,0 +1,16 @@
+node_modules
+admin/node_modules
+admin/vendor
+admin/.env
+admin/storage/logs
+admin/storage/framework/cache
+admin/storage/framework/sessions
+admin/storage/framework/views
+admin/bootstrap/cache
+.git
+.gitignore
+*.md
+deploy-to-public-html.sh
+install-cpanel.sh
+push-services.sh
+data/*.json

@@ -1,0 +1,38 @@
+# Laravel PHP — admin panel (port 80)
+FROM php:8.2-apache
+
+RUN apt-get update && apt-get install -y \
+    git zip unzip libzip-dev libonig-dev libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite mbstring zip \
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY . .
+
+RUN cd admin && composer install --optimize-autoloader --no-dev --no-interaction
+
+# Point Apache document root to admin/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/admin/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+        /etc/apache2/sites-available/*.conf && \
+    sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
+        /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Allow .htaccess overrides
+RUN echo '<Directory ${APACHE_DOCUMENT_ROOT}>\n\tAllowOverride All\n\tRequire all granted\n</Directory>' \
+    >> /etc/apache2/apache2.conf
+
+RUN chown -R www-data:www-data admin/storage admin/bootstrap/cache \
+    && chmod -R 755 admin/storage admin/bootstrap/cache
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
