@@ -24,7 +24,9 @@
                     </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Icon</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Title</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Category</th>
+                    <th id="sort-category-th" class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase cursor-pointer select-none hover:text-blue-600" title="Click to sort by category">
+                        Category <span id="sort-indicator" class="ml-1 text-slate-400">↕</span>
+                    </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-slate-600 uppercase">Price</th>
                     <th class="px-4 py-3 text-right text-xs font-medium text-slate-600 uppercase">Actions</th>
                 </tr>
@@ -85,17 +87,43 @@
             updateCheckboxUi();
         }
 
+        // ── Shared ──
+        var tbody = document.getElementById('sortable-services');
+
+        function getRows() {
+            return Array.prototype.slice.call(tbody ? tbody.querySelectorAll('tr[data-id]') : []);
+        }
+
+        // ── Sort by category ──
+        var sortTh        = document.getElementById('sort-category-th');
+        var sortIndicator = document.getElementById('sort-indicator');
+        var sortDir       = 0; // 0=default, 1=asc, -1=desc
+
+        if (sortTh && tbody) {
+            sortTh.addEventListener('click', function () {
+                sortDir = sortDir === 1 ? -1 : 1;
+                sortIndicator.textContent = sortDir === 1 ? '↑' : '↓';
+                sortIndicator.classList.toggle('text-blue-600', true);
+                sortIndicator.classList.remove('text-slate-400');
+
+                var rows = getRows();
+                rows.sort(function (a, b) {
+                    var ca = (a.querySelector('td:nth-child(6)') || a.cells[5] || {}).textContent.trim().toLowerCase();
+                    var cb = (b.querySelector('td:nth-child(6)') || b.cells[5] || {}).textContent.trim().toLowerCase();
+                    if (ca < cb) return -1 * sortDir;
+                    if (ca > cb) return  1 * sortDir;
+                    return 0;
+                });
+                rows.forEach(function (r) { tbody.appendChild(r); });
+            });
+        }
+
         // ── Drag-and-drop reorder ──
-        var tbody    = document.getElementById('sortable-services');
         var status   = document.getElementById('reorder-status');
         var dragSrc  = null;
         var saveTimer = null;
 
         if (!tbody) return;
-
-        function getRows() {
-            return Array.prototype.slice.call(tbody.querySelectorAll('tr[data-id]'));
-        }
 
         function saveOrder() {
             var ids = getRows().map(function (r) { return parseInt(r.getAttribute('data-id'), 10); });
