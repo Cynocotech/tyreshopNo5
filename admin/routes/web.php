@@ -60,6 +60,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/', [DashboardController::class, '__invoke'])->name('dashboard');
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::get('/export', [ExportController::class, '__invoke'])->name('export')->middleware('throttle:10,1');
+    Route::post('/services/reorder', [ServiceController::class, 'reorder'])->name('services.reorder');
     Route::resource('services', ServiceController::class)->names('services');
     Route::post('/services/bulk-delete', [ServiceController::class, 'destroyBulk'])->name('services.bulk-delete');
     Route::resource('products', ProductController::class)->names('products');

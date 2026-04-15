@@ -100,6 +100,20 @@ class ServiceController extends Controller
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');
     }
 
+    public function reorder(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:services,id',
+        ]);
+
+        foreach ($validated['ids'] as $order => $id) {
+            Service::where('id', $id)->update(['sort_order' => $order]);
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function destroy(Service $service): RedirectResponse
     {
         $service->delete();
