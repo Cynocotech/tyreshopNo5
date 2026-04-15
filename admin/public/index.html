@@ -21,7 +21,7 @@
   <style>#root-fallback-header{position:relative;max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}#root-fallback-hamburger{display:none;background:none;border:none;color:#fff;padding:8px;cursor:pointer;min-width:44px;min-height:44px;align-items:center;justify-content:center}@media(max-width:991px){#root-fallback-nav{display:none!important}#root-fallback-hamburger{display:flex!important}#root-fallback-header.open #root-fallback-nav{display:flex!important;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#1B263B;padding:16px 24px 24px;box-shadow:0 10px 40px rgba(0,0,0,.3);z-index:50}#root-fallback-header.open #root-fallback-nav a{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1)}#root-fallback-header.open #root-fallback-nav a:last-child{border-bottom:none}}</style>
   <div style="background:#fede00;color:#1B263B;padding:8px 24px;font-size:13px;font-weight:600;text-align:center">📞 07895 859505 &nbsp; 📍 6A Bourne Hill, Southgate N13 4LG &nbsp; 🕐 Mon–Sat: 8am–6pm</div>
   <header id="root-fallback-header" onclick="var t=event.target;if(t.id==='root-fallback-hamburger'||t.closest('#root-fallback-hamburger'))this.classList.toggle('open')">
-    <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit"><img src="/images/logo.png" alt="N05" style="height:44px;width:auto"><span style="color:#fede00;font-size:11px">Palmers Green · North London</span></a>
+    <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit"><img src="https://no5tyreandmot.co.uk/images/logo.png" alt="N05" style="height:44px;width:auto"><span style="color:#fede00;font-size:11px">Palmers Green · North London</span></a>
     <button type="button" id="root-fallback-hamburger" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <nav id="root-fallback-nav" style="display:flex;gap:24px;flex-wrap:wrap"><a href="/car-servicing-mot" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Car Servicing & MOT</a><a href="/tyres" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Tyres</a><a href="/contact" style="color:rgba(255,255,255,.9);text-decoration:none;font-size:14px">Contact</a><a href="/mot-booking" style="background:#fede00;color:#1B263B;padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;text-decoration:none">Book Now</a></nav>
   </header>
@@ -89,10 +89,10 @@ let SERVICES = [];
 const SERVICE_EXTRAS = {
   "mot-full-service": { badge:"SPECIAL OFFER", desc:"Full annual service with full MOT test. Oil & air filter, brakes, steering, fluids. Same-day collection & delivery included.", features:["Full MOT Test","Oil & air filter","Brake & steering check","Fluid top-ups","Same-day collection & delivery"] },
   "mot-major-service": { badge:"SPECIAL OFFER", desc:"Major service with full MOT. Everything in a full service plus full component check. Service book stamped.", features:["Full MOT Test","Everything in Full Service","Full component inspection","Service book stamped","Same-day collection & delivery"] },
-  "mot-test": { badge:"MOT TEST", desc:"DVLA-approved MOT testing with a full safety check. Same-day results. Combined with service for best value.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Combined with service = best price","Free collection & delivery"] },
-  "full-service": { badge:"MOST POPULAR", desc:"Comprehensive 10,000-mile / 12-month service. Oil & air filter, brake check, steering, suspension, tyre pressure, pollen filter and fluids.", features:["Oil & air filter replacement","Brake & steering check","Tyre pressure & pollen filter","Fluid top-ups included","Spark plugs (extra if needed)","Free collection & delivery"] },
-  "major-service": { badge:"FULL COVERAGE", desc:"Everything in a Full Service plus a thorough check of all vehicle components. Level top-ups, filter replacements and service book stamp.", features:["Everything in Full Service","Full component inspection","All maintenance performed","Level top-ups & filter changes","Service book stamped","Free collection & delivery"] },
-  "van-servicing": { badge:"LIGHT VANS", desc:"Full and interim servicing for light commercial vans. Same quality and competitive pricing as our car servicing.", features:["Full & interim service","Light commercial vans","Competitive pricing","Service book stamp","Parts meet OEM standards","Free collection & delivery"] },
+  "mot-test": { badge:"MOT TEST", desc:"DVLA-approved MOT testing with a full safety check. Same-day results. Combined with service for best value.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Combined with service = best price","Free collection & delivery (3 miles max)"] },
+  "full-service": { badge:"MOST POPULAR", desc:"Comprehensive 10,000-mile / 12-month service. Oil & air filter, brake check, steering, suspension, tyre pressure, pollen filter and fluids.", features:["Oil & air filter replacement","Brake & steering check","Tyre pressure & pollen filter","Fluid top-ups included","Spark plugs (extra if needed)","Free collection & delivery (3 miles max)"] },
+  "major-service": { badge:"FULL COVERAGE", desc:"Everything in a Full Service plus a thorough check of all vehicle components. Level top-ups, filter replacements and service book stamp.", features:["Everything in Full Service","Full component inspection","All maintenance performed","Level top-ups & filter changes","Service book stamped","Free collection & delivery (3 miles max)"] },
+  "van-servicing": { badge:"LIGHT VANS", desc:"Full and interim servicing for light commercial vans. Same quality and competitive pricing as our car servicing.", features:["Full & interim service","Light commercial vans","Competitive pricing","Service book stamp","Parts meet OEM standards","Free collection & delivery (3 miles max)"] },
   "tyre-fitting": { badge:"ALL BRANDS", desc:"Michelin, Pirelli, Continental, Bridgestone and budget options. Fitted, balanced and aligned while you wait or via free collection.", features:["Michelin, Pirelli & more","Wheel balancing included","4-wheel alignment available","Budget & premium brands","Puncture repair service","Price-match promise"] },
   "brakes-discs": { badge:"GUARANTEED", desc:"Full brake inspection, pad and disc replacement using OEM-quality parts. All work guaranteed for 12 months.", features:["Pads & disc replacement","OEM-quality parts","12-month guarantee","Free brake inspection","Drums & callipers too","Same-day service"] },
   "exhaust-systems": { badge:"SAME DAY", desc:"Full and partial exhaust replacements, catalytic converter repair. Wide range for cars and vans. Same-day fitting.", features:["Full or partial replacement","Catalytic converter repair","Cars & vans covered","Same-day fitting","Quality branded parts","Competitive pricing"] },
@@ -119,7 +119,7 @@ let FAQS = [
   {q:"Can I book online?",a:"Absolutely — book using our online system, choosing the date and time that suits you from our live service diary."},
   {q:"Do you service vans?",a:"Yes — our servicing covers both cars and light vans with professional care and competitive pricing."},
   {q:"What areas do you serve?",a:"Palmers Green, Arnos Grove, Wood Green, Tottenham, New Southgate, East Barnet, Winchmore Hill, Southgate, Bounds Green, Bowes Park, Friern Barnet, Muswell Hill, Highgate, Crouch End, Stoke Newington, Tottenham Hale, Walthamstow, Leyton, Leytonstone, Hackney, Clapton, Dalston, Chingford and wider North & East London."},
-  {q:"Is MOT included with servicing?",a:"We offer combo pricing — book your MOT with a Full or Major Service and pay just £19 for the MOT, saving at least £31."},
+  {q:"Is MOT included with servicing?",a:"Yes — we offer MOT + Service package pricing. Check the latest combo prices on this page or in the booking form."},
 ];
 
 let FOOTER_MOT_PRICE = '';
@@ -155,7 +155,7 @@ const FOOTER_SVCS = [
   "Clutch Replacement","Window Tinting","Van Servicing","Free Collection & Delivery",
 ];
 
-let LOGO_URL = '/images/logo.png';
+let LOGO_URL = 'https://no5tyreandmot.co.uk/images/logo.png';
 let HEADER_TAGLINE = 'Palmers Green · North London';
 const PHONE_TEL = 'tel:+447895859505';
 
@@ -388,8 +388,8 @@ function CollectionBanner(){
       h('div',{style:{display:'flex',alignItems:'center',gap:16}},
         h('span',{style:{fontSize:32}},'🚗'),
         h('div',null,
-          h('div',{style:{color:'#fff',fontWeight:800,fontSize:18}},'FREE Collection & Delivery — Every Service & MOT Booking'),
-          h('div',{style:{color:'rgba(255,255,255,.7)',fontSize:14,marginTop:2}},'We come to you anywhere in North London. Same-day return. No hidden charges.')
+          h('div',{style:{color:'#fff',fontWeight:800,fontSize:18}},'FREE Collection & Delivery — Every Service & MOT Booking (within 2 miles)'),
+          h('div',{style:{color:'rgba(255,255,255,.7)',fontSize:14,marginTop:2}},'We come to you within 2 miles. Same-day return. No hidden charges.')
         )
       ),
       h('a',{href:'#book',className:'btn-transition',style:{
@@ -401,6 +401,14 @@ function CollectionBanner(){
 }
 
 function ComboDeals(){
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  useEffect(() => {
+    const update = () => setIsSmallScreen(window.innerWidth <= 900);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   return h('section',{style:{background:T.gray50,padding:'80px 24px 40px'}},
     h('div',{style:{maxWidth:1280,margin:'0 auto'}},
       h('div',{style:{textAlign:'center',marginBottom:48}},
@@ -412,41 +420,45 @@ function ComboDeals(){
         h('p',{style:{color:T.gray500,fontSize:16,maxWidth:500,margin:'0 auto'}},
           COMBO_SECTION_INTRO)
       ),
-      h('div',{className:'combo-grid',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24}},
+      h('div',{className:'combo-grid',style:{
+        display:'grid',
+        gridTemplateColumns: isSmallScreen ? '1fr' : 'repeat(2, minmax(0, 1fr))',
+        gap:14
+      }},
         ...COMBOS.map((c,i)=>h('div',{key:i,style:{
-          background:'#fff',borderRadius:20,overflow:'hidden',
-          boxShadow:'0 8px 32px rgba(0,0,0,.10)',
+          background:'#fff',borderRadius:16,overflow:'hidden',
+          boxShadow:'0 6px 22px rgba(0,0,0,.09)',
           border:c.hot?`2px solid ${T.yellow}`:'2px solid transparent',
           position:'relative',
         }},
           c.hot&&h('div',{style:{position:'absolute',top:0,right:0,
             background:T.red,color:'#fff',fontSize:10,fontWeight:800,
             padding:'5px 14px',borderRadius:'0 18px 0 10px'}},'MOST POPULAR'),
-          h('div',{style:{background:T.navy,padding:'28px 28px 22px'}},
+          h('div',{style:{background:T.navy,padding:'20px 20px 16px'}},
             h('div',{style:{display:'inline-block',background:'rgba(254,222,0,.18)',
               border:'1px solid rgba(254,222,0,.4)',borderRadius:50,
-              padding:'3px 12px',marginBottom:12,color:T.yellow,fontSize:11,fontWeight:700}},c.badge),
-            h('h3',{style:{color:'#fff',fontWeight:900,fontSize:24,margin:'0 0 4px'}},c.title),
-            h('div',{style:{color:T.yellow,fontSize:14,fontWeight:600}},c.subtitle),
+              padding:'2px 10px',marginBottom:10,color:T.yellow,fontSize:10,fontWeight:700}},c.badge),
+            h('h3',{style:{color:'#fff',fontWeight:900,fontSize:20,margin:'0 0 3px'}},c.title),
+            h('div',{style:{color:T.yellow,fontSize:13,fontWeight:600}},c.subtitle),
           ),
-          h('div',{style:{padding:'24px 28px 28px'}},
-            h('div',{style:{display:'flex',alignItems:'baseline',gap:8,marginBottom:8,flexWrap:'wrap'}},
-              h('span',{style:{fontWeight:900,fontSize:'3rem',color:T.navy,lineHeight:1}},c.price),
-              h('span',{style:{color:T.green,fontWeight:700,fontSize:14,
-                background:'rgba(34,197,94,.1)',padding:'2px 8px',borderRadius:20}},c.saving)
+          h('div',{style:{padding:'18px 20px 20px'}},
+            h('div',{style:{display:'flex',alignItems:'baseline',gap:7,marginBottom:6,flexWrap:'wrap'}},
+              h('span',{style:{fontWeight:900,fontSize:'2.35rem',color:T.navy,lineHeight:1}},c.price),
+              h('span',{style:{color:T.green,fontWeight:700,fontSize:12,
+                background:'rgba(34,197,94,.1)',padding:'2px 7px',borderRadius:20}},c.saving)
             ),
-            h('div',{style:{color:T.gray500,fontSize:13,marginBottom:20}},COMBO_COMBINED_DESC),
-            h('ul',{style:{margin:'0 0 24px',padding:0,listStyle:'none'}},
+            h('div',{style:{color:T.gray500,fontSize:12,marginBottom:14}},COMBO_COMBINED_DESC),
+            h('ul',{style:{margin:'0 0 16px',padding:0,listStyle:'none'}},
               ...c.includes.map(f=>h('li',{key:f,style:{
                 display:'flex',alignItems:'flex-start',gap:10,
-                fontSize:14,color:T.gray600,marginBottom:10,lineHeight:1.5,
-              }},h('span',{style:{color:T.green,fontSize:16,marginTop:1,flexShrink:0}},'✓'),f))
+                fontSize:13,color:T.gray600,marginBottom:8,lineHeight:1.45,
+              }},h('span',{style:{color:T.green,fontSize:14,marginTop:1,flexShrink:0}},'✓'),f))
             ),
             h('a',{href:'/mot-booking' + (c.id ? '?service=' + encodeURIComponent(c.id) : ''),className:'btn-transition',style:{
-              width:'100%',padding:'14px',borderRadius:12,
+              width:'100%',padding:'11px',borderRadius:10,
               background:c.hot?T.yellow:'transparent',
               border:c.hot?'none':`2px solid ${T.navy}`,
-              color:T.navy,fontWeight:800,fontSize:16,cursor:'pointer',
+              color:T.navy,fontWeight:800,fontSize:14,cursor:'pointer',
               display:'block',textAlign:'center',textDecoration:'none',boxSizing:'border-box',
             }},'Book Combo →')
           )
@@ -457,6 +469,27 @@ function ComboDeals(){
 }
 
 function ServicesSection(){
+  const PAGE_SIZE = 8;
+  const totalSlides = Math.max(1, Math.ceil(SERVICES.length / PAGE_SIZE));
+  const [activeSlide, setActiveSlide] = useState(0);
+  const safeSlide = Math.min(activeSlide, totalSlides - 1);
+  const start = safeSlide * PAGE_SIZE;
+  const visibleServices = SERVICES.slice(start, start + PAGE_SIZE);
+  const goPrev = () => setActiveSlide((current) => (current - 1 + totalSlides) % totalSlides);
+  const goNext = () => setActiveSlide((current) => (current + 1) % totalSlides);
+
+  useEffect(() => {
+    if (activeSlide >= totalSlides) setActiveSlide(0);
+  }, [activeSlide, totalSlides]);
+
+  useEffect(() => {
+    if (totalSlides <= 1) return undefined;
+    const timer = setInterval(() => {
+      setActiveSlide((current) => (current + 1) % totalSlides);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [totalSlides]);
+
   return h('section',{style:{background:T.white,padding:'60px 24px 96px'}},
     h('div',{style:{maxWidth:1280,margin:'0 auto'}},
       h('div',{style:{textAlign:'center',marginBottom:48}},
@@ -468,10 +501,42 @@ function ServicesSection(){
         h('p',{style:{color:T.gray500,fontSize:16,maxWidth:520,margin:'0 auto'}},
           'From MOT tests to tyres and tinting — everything your vehicle needs, all under one roof in North London.')
       ),
+      h('div',{style:{
+        display:'flex',alignItems:'center',justifyContent:'space-between',
+        gap:12,marginBottom:18,flexWrap:'wrap'
+      }},
+        h('div',{style:{color:T.gray500,fontSize:13,fontWeight:600}},
+          `Slide ${safeSlide + 1} of ${totalSlides}`
+        ),
+        h('div',{style:{display:'flex',gap:8}},
+          h('button',{
+            type:'button',
+            onClick:goPrev,
+            className:'btn-transition',
+            disabled: totalSlides <= 1,
+            style:{
+              border:`2px solid ${T.yellow}`,background:'#fff',color:T.navy,
+              borderRadius:10,padding:'7px 12px',fontWeight:800,cursor:'pointer',
+              opacity: totalSlides <= 1 ? 0.5 : 1
+            }
+          },'← Prev'),
+          h('button',{
+            type:'button',
+            onClick:goNext,
+            className:'btn-transition',
+            disabled: totalSlides <= 1,
+            style:{
+              border:`2px solid ${T.yellow}`,background:T.yellow,color:T.navy,
+              borderRadius:10,padding:'7px 12px',fontWeight:800,cursor:'pointer',
+              opacity: totalSlides <= 1 ? 0.5 : 1
+            }
+          },'Next →')
+        )
+      ),
       h('div',{className:'services-grid',style:{
         display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:20,
       }},
-        ...SERVICES.map((svc,i)=>h('div',{key:i,className:'card-hover',style:{
+        ...visibleServices.map((svc,i)=>h('div',{key:`${safeSlide}-${i}`,className:'card-hover',style:{
           background:T.gray50,borderRadius:18,overflow:'hidden',cursor:'pointer',
           boxShadow:'0 2px 12px rgba(0,0,0,.06)',border:'1px solid #e8edf2',
         }},
@@ -501,6 +566,27 @@ function ServicesSection(){
             )
           )
         ))
+      ),
+      h('div',{style:{
+        display:'flex',justifyContent:'center',gap:8,marginTop:20,flexWrap:'wrap'
+      }},
+        ...Array.from({length: totalSlides}).map((_, i) =>
+          h('button',{
+            key:`dot-${i}`,
+            type:'button',
+            onClick:()=>setActiveSlide(i),
+            ariaLabel:`Go to services slide ${i + 1}`,
+            style:{
+              width: i === safeSlide ? 26 : 10,
+              height: 10,
+              borderRadius: 999,
+              border: 'none',
+              background: i === safeSlide ? T.yellow : '#cbd5e1',
+              cursor: 'pointer',
+              transition: 'all .2s ease'
+            }
+          })
+        )
       )
     )
   );
@@ -678,13 +764,10 @@ function Footer(){
       borderTop:'1px solid rgba(255,255,255,.08)',textAlign:'center'}},
       h('p',{style:{color:'#fff',fontSize:12,marginBottom:8}},
         '© 2026 N05 Tyre and MOT Service Ltd. Formerly Palmers Green Tyres. All rights reserved.'),
-      h('p',{style:{color:'#fff',fontSize:10,lineHeight:1.8}},
-        'MOT & Tyre Fitting serving: '+AREAS.join(' · ')),
-      h('p',{style:{marginTop:16,color:'rgba(255,255,255,.2)',fontSize:11}},
+      h('p',{style:{marginTop:16,color:'#fff',fontSize:11}},
         'Site powered by ',
-        h('a',{href:'https://cybercina.co.uk',target:'_blank',rel:'noopener noreferrer',style:{color:'inherit',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}},
-          h('img',{src:'https://cybercina.co.uk/wp-content/uploads/2025/10/cropped-2.png',alt:'Cybercina',style:{height:22,width:'auto',verticalAlign:'middle'}}),
-          ' Cybercina'
+        h('a',{href:'https://cybercina.co.uk',target:'_blank',rel:'noopener noreferrer',style:{color:'#fff',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6,fontWeight:600}},
+          h('img',{src:'https://cybercina.co.uk/wp-content/uploads/2025/10/cropped-2.png',alt:'Cybercina',style:{height:22,width:'auto',verticalAlign:'middle'}})
         )
       )
     )
@@ -770,19 +853,44 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
       const n = parseFloat(String(v).replace(/[£,\s]/g, ''));
       return isNaN(n) ? null : n;
     }
+    function serviceDisplayPrice(svc) {
+      if (!svc) return '';
+      if (svc.priceDisplay && String(svc.priceDisplay).trim()) return String(svc.priceDisplay).trim();
+      if (svc.priceLabel && String(svc.priceLabel).trim()) return String(svc.priceLabel).trim();
+      var n = parsePrice(svc.price);
+      return n != null ? ('£' + n) : '';
+    }
+
     var s2 = data.settings || {};
     var combo = byId['mot-full-service'];
-    var heroMOT = parsePrice(s2.hero_book_price) ?? (combo ? parsePrice(combo.heroMOTPrice) : null);
-    HERO_BOOK_PRICE = heroMOT != null ? '£' + heroMOT : '';
     var motTest = byId['mot-test'];
-    HERO_SAVE = (s2.hero_save && String(s2.hero_save).trim()) ? String(s2.hero_save).trim() : (motTest && motTest.price != null && heroMOT != null ? '£' + Math.round(motTest.price - heroMOT) : '');
-    FOOTER_MOT_PRICE = (s2.footer_mot_price && String(s2.footer_mot_price).trim()) ? String(s2.footer_mot_price).trim() : (combo ? combo.priceDisplay : '') || '';
+    var fullService = byId['full-service'];
+
+    var comboDisplay = serviceDisplayPrice(combo);
+    var comboNumber = parsePrice(comboDisplay) ?? parsePrice(combo && combo.price);
+    var motNumber = parsePrice(serviceDisplayPrice(motTest)) ?? parsePrice(motTest && motTest.price);
+    var fullNumber = parsePrice(serviceDisplayPrice(fullService)) ?? parsePrice(fullService && fullService.price);
+
+    var saveNumber = null;
+    if (comboNumber != null && motNumber != null && fullNumber != null) {
+      saveNumber = Math.round((fullNumber + motNumber) - comboNumber);
+    } else if (comboNumber != null && motNumber != null) {
+      saveNumber = Math.round(motNumber - comboNumber);
+    }
+
+    HERO_BOOK_PRICE = (s2.hero_book_price && String(s2.hero_book_price).trim())
+      ? String(s2.hero_book_price).trim()
+      : comboDisplay;
+    if (HERO_BOOK_PRICE && /^[0-9]+(\.[0-9]+)?$/.test(HERO_BOOK_PRICE)) HERO_BOOK_PRICE = '£' + HERO_BOOK_PRICE;
+
+    HERO_SAVE = (s2.hero_save && String(s2.hero_save).trim())
+      ? String(s2.hero_save).trim()
+      : (saveNumber != null && saveNumber > 0 ? ('£' + saveNumber) : '');
+    FOOTER_MOT_PRICE = (s2.footer_mot_price && String(s2.footer_mot_price).trim()) ? String(s2.footer_mot_price).trim() : comboDisplay || '';
     if (combo) {
-      STATS[0].value = FOOTER_MOT_PRICE || combo.priceDisplay || '';
+      STATS[0].value = FOOTER_MOT_PRICE || comboDisplay || '';
       STATS[0].sub = HERO_SAVE ? 'Save ' + HERO_SAVE + ' today' : '';
-      COMBOS[0].price = combo.priceDisplay || STATS[0].value || '';
-      var faq = FAQS.find(f=>f.a&&f.a.indexOf('£19')>=0);
-      if (faq) faq.a = faq.a.replace(/£19/g, combo.priceDisplay || HERO_BOOK_PRICE || '—');
+      COMBOS[0].price = comboDisplay || STATS[0].value || '';
     }
     if (byId['mot-major-service']) COMBOS[1].price = byId['mot-major-service'].priceDisplay || COMBOS[1].price;
 
@@ -798,7 +906,7 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
         title: s.title,
         badge: ex.badge || (s.isQuote ? 'QUOTE' : '£' + s.price),
         desc: ex.desc || 'Professional ' + s.title + ' at competitive prices. Book online for North London.',
-        features: ex.features || ['Free collection & delivery', 'Expert technicians', 'Quality guaranteed'],
+        features: (s.features && s.features.length) ? s.features : (ex.features || ['Free collection & delivery (3 miles max)', 'Expert technicians', 'Quality guaranteed']),
         price: s.priceLabel || s.priceDisplay || (s.isQuote ? 'Free Quote' : '£' + s.price)
       });
     });

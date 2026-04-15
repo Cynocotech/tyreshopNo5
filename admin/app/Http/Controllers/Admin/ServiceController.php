@@ -47,11 +47,13 @@ class ServiceController extends Controller
             'combo_saving' => 'nullable|string|max:100',
             'combo_display_price' => 'nullable|string|max:50',
             'is_combo_hot' => 'boolean',
+            'features' => 'nullable|string',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
         $validated['is_combo_hot'] = $request->boolean('is_combo_hot');
         $validated['keywords'] = $validated['keywords'] ? array_map('trim', explode("\n", $validated['keywords'])) : [];
         $validated['combo_features'] = !empty($validated['combo_features']) ? array_map('trim', array_filter(explode("\n", $validated['combo_features']))) : null;
+        $validated['features'] = !empty($validated['features']) ? array_map('trim', array_filter(explode("\n", $validated['features']))) : null;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         Service::create($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service created.');
@@ -86,11 +88,13 @@ class ServiceController extends Controller
             'combo_saving' => 'nullable|string|max:100',
             'combo_display_price' => 'nullable|string|max:50',
             'is_combo_hot' => 'boolean',
+            'features' => 'nullable|string',
         ]);
         $validated['is_quote'] = $request->boolean('is_quote');
         $validated['is_combo_hot'] = $request->boolean('is_combo_hot');
         $validated['keywords'] = $validated['keywords'] ? array_map('trim', explode("\n", $validated['keywords'])) : [];
         $validated['combo_features'] = !empty($validated['combo_features']) ? array_map('trim', array_filter(explode("\n", $validated['combo_features']))) : null;
+        $validated['features'] = !empty($validated['features']) ? array_map('trim', array_filter(explode("\n", $validated['features']))) : null;
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $service->update($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');
@@ -100,5 +104,20 @@ class ServiceController extends Controller
     {
         $service->delete();
         return redirect()->route('admin.services.index')->with('success', 'Service deleted.');
+    }
+
+    public function destroyBulk(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'service_ids' => 'required|array|min:1',
+            'service_ids.*' => 'integer|exists:services,id',
+        ]);
+
+        $ids = array_values(array_unique($validated['service_ids']));
+        $deleted = Service::whereIn('id', $ids)->delete();
+
+        return redirect()
+            ->route('admin.services.index')
+            ->with('success', $deleted . ' service(s) deleted.');
     }
 }

@@ -61,6 +61,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::get('/export', [ExportController::class, '__invoke'])->name('export')->middleware('throttle:10,1');
     Route::resource('services', ServiceController::class)->names('services');
+    Route::post('/services/bulk-delete', [ServiceController::class, 'destroyBulk'])->name('services.bulk-delete');
     Route::resource('products', ProductController::class)->names('products');
     Route::resource('product-categories', ProductCategoryController::class)->names('product-categories')->except('show');
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');

@@ -32,7 +32,7 @@ function getServicesFromDb() {
     try {
       services = db.prepare(
         `SELECT slug, value, title, icon, price, hero_mot_price, price_label, price_display, service_category_id, is_quote, keywords, sort_order,
-         combo_badge, combo_subtitle, combo_features, combo_saving, is_combo_hot, combo_display_price FROM services ORDER BY sort_order, title`
+         features, combo_badge, combo_subtitle, combo_features, combo_saving, is_combo_hot, combo_display_price FROM services ORDER BY sort_order, title`
       ).all();
     } catch {
       services = db.prepare(
@@ -44,6 +44,7 @@ function getServicesFromDb() {
     const servicesOut = services.map((s) => {
       const cat = catById[s.service_category_id];
       let keywords = s.keywords ? (typeof s.keywords === 'string' ? (() => { try { return JSON.parse(s.keywords); } catch (_) { return []; } })() : s.keywords) : [];
+      let features = (s.features != null) ? (typeof s.features === 'string' ? (() => { try { return JSON.parse(s.features); } catch (_) { return []; } })() : s.features) : [];
       let comboFeatures = (s.combo_features != null) ? (typeof s.combo_features === 'string' ? (() => { try { return JSON.parse(s.combo_features); } catch (_) { return []; } })() : s.combo_features) : [];
       return {
         id: s.slug,
@@ -57,6 +58,7 @@ function getServicesFromDb() {
         category: cat ? cat.slug : '',
         isQuote: Boolean(s.is_quote),
         keywords,
+        features: Array.isArray(features) ? features : [],
         comboBadge: s.combo_badge || null,
         comboSubtitle: s.combo_subtitle || null,
         comboFeatures: Array.isArray(comboFeatures) ? comboFeatures : [],
@@ -76,7 +78,7 @@ function getServicesFromDb() {
 
     const rawSettings = getSettings(db);
     const settings = {
-      logo_url: rawSettings.logo_url || '/images/logo.png',
+      logo_url: rawSettings.logo_url || 'https://no5tyreandmot.co.uk/images/logo.png',
       tagline: rawSettings.tagline || 'Palmers Green · North London',
       hero_book_price: rawSettings.hero_book_price,
       hero_save: rawSettings.hero_save,

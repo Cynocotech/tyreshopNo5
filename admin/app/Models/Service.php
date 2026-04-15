@@ -26,12 +26,14 @@ class Service extends Model
         'combo_saving',
         'is_combo_hot',
         'combo_display_price',
+        'features',
     ];
 
     protected function casts(): array
     {
         return [
             'keywords' => 'array',
+            'features' => 'array',
             'combo_features' => 'array',
             'is_quote' => 'boolean',
             'is_combo_hot' => 'boolean',

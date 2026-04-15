@@ -36,6 +36,7 @@ class ServicesController extends Controller
                 'category' => $s->category?->slug ?? '',
                 'isQuote' => $s->is_quote,
                 'keywords' => $s->keywords ?? [],
+                'features' => $s->features ?? [],
                 'comboBadge' => $s->combo_badge,
                 'comboSubtitle' => $s->combo_subtitle,
                 'comboFeatures' => $s->combo_features ?? [],
@@ -46,7 +47,7 @@ class ServicesController extends Controller
         }
 
         $settings = [
-            'logo_url' => SiteSetting::get('logo_url', '/images/logo.png'),
+            'logo_url' => SiteSetting::get('logo_url', 'https://no5tyreandmot.co.uk/images/logo.png'),
             'tagline' => SiteSetting::get('tagline', 'Palmers Green · North London'),
             'hero_book_price' => SiteSetting::get('hero_book_price'),
             'hero_save' => SiteSetting::get('hero_save'),

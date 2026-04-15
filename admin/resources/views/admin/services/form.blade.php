@@ -95,6 +95,11 @@
                     </div>
                 </div>
             </div>
+            <div class="pt-4 border-t border-slate-200">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Service Card Features (one per line)</label>
+                <p class="text-xs text-slate-500 mb-2">Shown as bullet points on the service card. Leave blank to use the site defaults.</p>
+                <textarea name="features" rows="5" class="w-full rounded border-slate-300" placeholder="Free collection &amp; delivery (3 miles max)&#10;Expert technicians&#10;Quality guaranteed">{{ old('features', implode("\n", $service->features ?? [])) }}</textarea>
+            </div>
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Keywords (one per line)</label>
                 <textarea name="keywords" rows="4" class="w-full rounded border-slate-300">{{ old('keywords', implode("\n", $service->keywords ?? [])) }}</textarea>
