@@ -157,7 +157,7 @@ class BookingController extends Controller
         }
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
-            $this->notifyAndEmail((array) $session->metadata, $session->customer_email ?? '');
+            $this->notifyAndEmail((array) $session->metadata, $session->customer_email ?? '', sendSms: false);
         }
         return response()->json(['received' => true]);
     }
@@ -225,7 +225,7 @@ class BookingController extends Controller
         File::put($this->slotsPath(), json_encode(['slots' => $slots], JSON_PRETTY_PRINT));
     }
 
-    private function notifyAndEmail(array $m, string $email): void
+    private function notifyAndEmail(array $m, string $email, bool $sendSms = true): void
     {
         $data = [
             'bookingId' => $m['bookingId'] ?? 'N05-' . time(),
@@ -299,9 +299,9 @@ class BookingController extends Controller
             ]);
         }
 
-        // SMS confirmation to customer
+        // SMS confirmation to customer — only once (not from webhook, which fires after confirm-booking)
         $phone = $data['customerPhone'] ?? '';
-        if ($phone && $phone !== '-') {
+        if ($sendSms && $phone && $phone !== '-') {
             try {
                 [$apiKey, $sender] = \App\Http\Controllers\Admin\SmsMarketingController::credentialsStatic();
                 if ($apiKey && $sender) {

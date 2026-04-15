@@ -177,7 +177,7 @@ async function stripeWebhookHandler(req, res) {
   }
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    await notifyAndEmail(session.metadata, session.customer_email);
+    await notifyAndEmail(session.metadata, session.customer_email, { sendSms: false });
   }
   res.json({ received: true });
 }
@@ -250,7 +250,8 @@ async function sendSms(to, message) {
   }
 }
 
-async function notifyAndEmail(metadata, email) {
+async function notifyAndEmail(metadata, email, opts = {}) {
+  const { sendSms: shouldSendSms = true } = opts;
   const {
     bookingId,
     customerName,
@@ -332,8 +333,8 @@ async function notifyAndEmail(metadata, email) {
     html
   });
 
-  // SMS confirmation to customer
-  if (data.customerPhone && data.customerPhone !== '-') {
+  // SMS confirmation to customer — only once (not from webhook, which fires after confirm-booking)
+  if (shouldSendSms && data.customerPhone && data.customerPhone !== '-') {
     const smsText = `Hi ${data.customerName}, your ${data.serviceType} at N05 Tyre & MOT is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
     await sendSms(data.customerPhone, smsText).catch(() => {});
   }
