@@ -224,8 +224,8 @@ async function sendSms(to, message) {
       return new Promise((resolve) => {
         const body = JSON.stringify({ to: n, from: sender, msg: message });
         const req = https.request({
-          hostname: 'www.voodoosms.com',
-          path: '/vapi/sms/sendSMS',
+          hostname: 'api.voodoosms.com',
+          path: '/sendsms',
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': apiKey, 'Content-Length': Buffer.byteLength(body) }
         }, (res) => {
@@ -238,7 +238,7 @@ async function sendSms(to, message) {
         req.end();
       });
     }
-    const res = await fetchFn('https://www.voodoosms.com/vapi/sms/sendSMS', {
+    const res = await fetchFn('https://api.voodoosms.com/sendsms', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': apiKey },
       body: JSON.stringify({ to: n, from: sender, msg: message }),

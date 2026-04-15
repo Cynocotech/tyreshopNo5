@@ -121,14 +121,15 @@ class SmsMarketingController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => $apiKey,
                 'Content-Type'  => 'application/json',
-            ])->post('https://www.voodoosms.com/vapi/sms/sendSMS', [
+            ])->post('https://api.voodoosms.com/sendsms', [
                 'to'   => $to,
                 'from' => $sender,
                 'msg'  => $message,
             ]);
 
             $body = $response->json();
-            if ($response->successful() && ($body['result'] ?? '') === 'success') {
+            $status = $body['messages'][0]['status'] ?? '';
+            if ($response->successful() && in_array($status, ['PENDING_SENT', 'SENT', 'DELIVERED'], true)) {
                 return true;
             }
             Log::warning('VoodooSMS send failed', ['to' => $to, 'status' => $response->status(), 'body' => $body]);
