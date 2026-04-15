@@ -93,8 +93,9 @@
                                 onchange="updateAmountFromService(this)">
                             <option value="">— Select service —</option>
                             @foreach($services ?? [] as $svc)
-                            <option value="{{ e($svc->title) }}" data-price="{{ $svc->is_quote ? '' : (float)$svc->price }}">
-                                {{ $svc->title }}{{ $svc->is_quote ? ' (Quote)' : ' — £' . number_format((float)$svc->price, 2) }}
+                            @php $p = (float)$svc->price; @endphp
+                            <option value="{{ e($svc->title) }}" data-price="{{ $p > 0 ? $p : '' }}">
+                                {{ $svc->title }}{{ $p > 0 ? ' — £' . number_format($p, 2) : ' (Quote)' }}
                             </option>
                             @endforeach
                         </select>
