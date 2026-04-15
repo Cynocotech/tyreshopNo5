@@ -13,7 +13,7 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN cd admin && composer install --optimize-autoloader --no-dev --no-interaction
+RUN cd admin && composer install --optimize-autoloader --no-dev --no-interaction --no-scripts
 
 # Point Apache document root to admin/public
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/admin/public

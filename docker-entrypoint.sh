@@ -22,6 +22,9 @@ grep -q "^APP_KEY=$" .env && php artisan key:generate --force || true
 mkdir -p database
 touch database/database.sqlite
 
+# Finish composer setup (skipped during build — needs .env)
+php artisan package:discover --ansi
+
 # Run migrations
 php artisan migrate --force
 
