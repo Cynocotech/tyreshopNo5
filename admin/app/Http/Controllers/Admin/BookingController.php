@@ -50,6 +50,7 @@ class BookingController extends Controller
         ]);
 
         $bookingId = 'N05-' . time() . '-' . substr(bin2hex(random_bytes(4)), 0, 4);
+        $date = \Carbon\Carbon::parse($valid['appointment_date'])->format('D d M Y');
         Booking::create([
             'booking_id' => $bookingId,
             'customer_name' => $valid['customer_name'],
@@ -63,6 +64,20 @@ class BookingController extends Controller
             'service_type' => $valid['service_type'],
             'total_amount' => $valid['total_amount'] ?? null,
         ]);
+
+        // SMS confirmation to customer
+        try {
+            [$apiKey, $sender] = SmsMarketingController::credentialsStatic();
+            if ($apiKey && $sender) {
+                $n = preg_replace('/\D/', '', $valid['customer_phone']);
+                if (str_starts_with($n, '0')) $n = '44' . substr($n, 1);
+                elseif (!str_starts_with($n, '44')) $n = '44' . $n;
+                $smsText = "Hi {$valid['customer_name']}, your {$valid['service_type']} at N05 Tyre & MOT is confirmed for {$date} at {$valid['appointment_time']}. Ref: {$bookingId}. Questions? Call 07895 859505.";
+                SmsMarketingController::sendViaSms($apiKey, $sender, $n, $smsText);
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Admin booking SMS failed', ['error' => $e->getMessage()]);
+        }
 
         return redirect()->route('admin.bookings.index')->with('success', "Booking {$bookingId} created.");
     }
