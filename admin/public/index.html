@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
   <title>N05 Tyre &amp; MOT — Palmers Green Service Centre</title>
   <!-- GTM/GA: Add scripts when you have real IDs (GTM-XXXXXX, G-XXXXXXXXXX). Placeholders cause console errors. -->
   <!-- GBP LocalBusiness Schema -->
@@ -14,9 +11,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="/css/n05-styles.css?v=4" rel="stylesheet" />
-  <script src="js/services-loader.js"></script>
-  <script src="js/react.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js';this.onerror=null"></script>
-  <script src="js/react-dom.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js';this.onerror=null"></script>
 </head>
 <body style="margin:0;background:#1B263B">
 <div id="root"><div style="background:#1B263B;color:#fff;font-family:Inter,sans-serif;min-height:100vh">
@@ -35,6 +29,9 @@
   <footer style="background:#0d1117;padding:24px;text-align:center;margin-top:48px"><p style="margin:0;color:rgba(255,255,255,.6);font-size:13px">N05 Tyre &amp; MOT · 6A Bourne Hill, Southgate N13 4LG · 07895 859505</p></footer>
 </div></div>
 <noscript><div style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:99999"><p style="background:#fff;padding:24px;border-radius:12px">Please enable JavaScript to view this site.</p></div></noscript>
+<script src="js/services-loader.js"></script>
+<script src="js/react.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js';this.onerror=null"></script>
+<script src="js/react-dom.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js';this.onerror=null"></script>
 <script>
 (function(){
   var root = document.getElementById('root');
@@ -842,11 +839,21 @@ function App(){
 var rootEl = document.getElementById('root');
 var reactRoot = null;
 function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRoot = ReactDOM.createRoot(rootEl); if(reactRoot) reactRoot.render(h(App)); } catch(e){ console.error('N05 render:',e); showErr(e.message||'Failed to render'); } }
-/* Fetch admin settings before first render so prices come from admin only */
+/* First paint immediately (fallback shell + layout); second render after prices load */
+doRender();
 (async function init(){
   try {
-    var load = window.N05ServicesLoader&&N05ServicesLoader.loadServices ? N05ServicesLoader.loadServices() : fetch('/data/services.json?v='+Date.now()).then(function(r){ return r.ok?r.json():Promise.reject(new Error('unavailable')); });
-    var data = await Promise.race([load.catch(function(){ return {services:[],categories:{},settings:{}}; }), new Promise(function(r){ setTimeout(function(){ r({services:[],categories:{},settings:{}}); }, 2000); })]);
+    function fetchJson(url) {
+      return fetch(url, { credentials: 'same-origin' }).then(function(r) { return r.ok ? r.json() : Promise.reject(); });
+    }
+    var load = window.N05ServicesLoader && N05ServicesLoader.loadServices
+      ? N05ServicesLoader.loadServices()
+      : fetchJson('/data/services.json?v=6');
+    var data = await load.catch(function() { return { services: [], categories: {}, settings: {} }; });
+    if (!data.services || data.services.length === 0) {
+      var retry = await fetchJson('/data/services.json?t=' + Date.now()).catch(function() { return null; });
+      if (retry && retry.services && retry.services.length) data = retry;
+    }
     const settings = data.settings || {};
     if (settings.opening_hours_display && String(settings.opening_hours_display).trim()) OPENING_HOURS_DISPLAY = String(settings.opening_hours_display).trim();
     if (settings.logo_url && String(settings.logo_url).trim()) LOGO_URL = String(settings.logo_url).trim();
@@ -906,9 +913,12 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
     var fullService = byId['full-service-only'];
 
     var comboDisplay = serviceDisplayPrice(combo);
-    var comboNumber = parsePrice(comboDisplay) ?? parsePrice(combo && combo.price);
-    var motNumber = parsePrice(serviceDisplayPrice(motTest)) ?? parsePrice(motTest && motTest.price);
-    var fullNumber = parsePrice(serviceDisplayPrice(fullService)) ?? parsePrice(fullService && fullService.price);
+    var comboNumber = parsePrice(comboDisplay);
+    if (comboNumber == null) comboNumber = parsePrice(combo && combo.price);
+    var motNumber = parsePrice(serviceDisplayPrice(motTest));
+    if (motNumber == null) motNumber = parsePrice(motTest && motTest.price);
+    var fullNumber = parsePrice(serviceDisplayPrice(fullService));
+    if (fullNumber == null) fullNumber = parsePrice(fullService && fullService.price);
 
     var saveNumber = null;
     if (comboNumber != null && motNumber != null && fullNumber != null) {

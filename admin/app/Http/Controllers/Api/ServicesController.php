@@ -67,6 +67,36 @@ class ServicesController extends Controller
             'combo_combined_desc' => SiteSetting::get('combo_combined_desc', 'MOT Test + Service combined'),
         ];
 
+        if (count($servicesOut) === 0) {
+            $path = base_path('../data/services.json');
+            if (is_readable($path)) {
+                $file = json_decode((string) file_get_contents($path), true);
+                if (is_array($file) && ! empty($file['services'])) {
+                    $servicesOut = $file['services'];
+                    if (! empty($file['categories']) && is_array($file['categories'])) {
+                        $categoriesOut = [];
+                        foreach ($file['categories'] as $slug => $cat) {
+                            if (! is_array($cat)) {
+                                continue;
+                            }
+                            $categoriesOut[$slug] = [
+                                'label' => $cat['label'] ?? $slug,
+                                'sortOrder' => (int) ($cat['sortOrder'] ?? 0),
+                            ];
+                        }
+                    }
+                    $fromFile = $file['settings'] ?? [];
+                    if (is_array($fromFile)) {
+                        foreach ($fromFile as $key => $val) {
+                            if ($val !== null && $val !== '') {
+                                $settings[$key] = $val;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return response()->json([
             'services' => $servicesOut,
             'categories' => $categoriesOut,

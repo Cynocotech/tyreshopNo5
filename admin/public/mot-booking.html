@@ -198,12 +198,27 @@
   let SERVICE_ZERO_IS_QUOTE = {}; // true when price £0 means quote (not a free service)
 
   async function loadServices() {
+    async function pullJson(url) {
+      const r = await fetch(url, { credentials: 'same-origin' });
+      if (!r.ok) throw new Error('services fetch failed');
+      return r.json();
+    }
     try {
-      const r = await fetch('/data/services.json?v=' + Date.now());
-      const data = await r.json();
+      let data;
+      try {
+        data = await pullJson('/data/services.json?v=6');
+      } catch (e1) {
+        data = { services: [] };
+      }
+      if (!data.services || data.services.length === 0) {
+        try {
+          data = await pullJson('/data/services.json?t=' + Date.now());
+        } catch (e2) { /* keep empty */ }
+      }
       const services = data.services || [];
       const categories = data.categories || {};
       const select = document.getElementById('serviceType');
+      if (!select) return;
       select.innerHTML = '';
       SERVICE_PRICES = {};
       SERVICE_ZERO_IS_QUOTE = {};
@@ -229,8 +244,19 @@
         });
         select.appendChild(g);
       });
+      if (select.options.length === 0 && services.length > 0) {
+        const g = document.createElement('optgroup');
+        g.label = 'Services';
+        services.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.value;
+          opt.textContent = s.value + ' — ' + (s.priceLabel || (s.isQuote ? 'Quote' : '£' + s.price));
+          g.appendChild(opt);
+        });
+        select.appendChild(g);
+      }
       if (select.options.length === 0) {
-        select.innerHTML = '<option value="">No services loaded</option>';
+        select.innerHTML = '<option value="">No services loaded — run import or check data/services.json</option>';
       }
       const preService = new URLSearchParams(window.location.search).get('service');
       if (preService) {
