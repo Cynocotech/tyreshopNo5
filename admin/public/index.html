@@ -10,8 +10,10 @@
   <!-- GTM/GA: Add scripts when you have real IDs (GTM-XXXXXX, G-XXXXXXXXXX). Placeholders cause console errors. -->
   <!-- GBP LocalBusiness Schema -->
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"N05 Tyre & MOT Service","description":"MOT testing, car servicing, tyre fitting in Palmers Green, North London.","address":{"@type":"PostalAddress","streetAddress":"6A Bourne Hill","addressLocality":"Southgate","addressRegion":"London","postalCode":"N13 4LG","addressCountry":"GB"},"telephone":"+447895859505","url":"https://no5mot.co.uk","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"08:00","closes":"18:00"}],"priceRange":"££"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link href="/css/n05-styles.css?v=3" rel="stylesheet" />
+  <link href="/css/n05-styles.css?v=4" rel="stylesheet" />
   <script src="js/services-loader.js"></script>
   <script src="js/react.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js';this.onerror=null"></script>
   <script src="js/react-dom.production.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js';this.onerror=null"></script>
@@ -88,11 +90,12 @@ let COMBOS = [];
 let SERVICES = [];
 
 const SERVICE_EXTRAS = {
-  "mot-full-service": { badge:"SPECIAL OFFER", desc:"Full annual service with full MOT test. Oil & air filter, brakes, steering, fluids. Same-day collection & delivery included.", features:["Full MOT Test","Oil & air filter","Brake & steering check","Fluid top-ups","Same-day collection & delivery"] },
-  "mot-major-service": { badge:"SPECIAL OFFER", desc:"Major service with full MOT. Everything in a full service plus full component check. Service book stamped.", features:["Full MOT Test","Everything in Full Service","Full component inspection","Service book stamped","Same-day collection & delivery"] },
-  "mot-test": { badge:"MOT TEST", desc:"DVLA-approved MOT testing with a full safety check. Same-day results. Combined with service for best value.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Combined with service = best price","Free collection & delivery (3 miles max)"] },
-  "full-service": { badge:"MOST POPULAR", desc:"Comprehensive 10,000-mile / 12-month service. Oil & air filter, brake check, steering, suspension, tyre pressure, pollen filter and fluids.", features:["Oil & air filter replacement","Brake & steering check","Tyre pressure & pollen filter","Fluid top-ups included","Spark plugs (extra if needed)","Free collection & delivery (3 miles max)"] },
-  "major-service": { badge:"FULL COVERAGE", desc:"Everything in a Full Service plus a thorough check of all vehicle components. Level top-ups, filter replacements and service book stamp.", features:["Everything in Full Service","Full component inspection","All maintenance performed","Level top-ups & filter changes","Service book stamped","Free collection & delivery (3 miles max)"] },
+  "full-service-mot": { badge:"SPECIAL OFFER", desc:"Full service plus official MOT in one visit. Oil & filter, safety checks, fluids — book together and save.", features:["Full MOT test included","Engine oil & filter change","Brake & tyre checks","Fluid top-ups & safety inspection","Free collection & delivery (within 2 miles)"] },
+  "major-service-mot": { badge:"SPECIAL OFFER", desc:"Our deepest service plus MOT. Ideal when you want maximum peace of mind before your test.", features:["Full MOT test included","Everything in Major Service","Spark plugs & filters (as applicable)","Full system inspection","Free collection & delivery (within 2 miles)"] },
+  "mot-class-a": { badge:"MOT TEST", desc:"DVSA Class A MOT for cars — full legal safety inspection.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Class A (cars)","Free collection & delivery (within 2 miles)"] },
+  "mot-class-b-van": { badge:"VAN MOT", desc:"Class B MOT for light commercial vehicles.", features:["DVSA-approved","Light commercial vehicles","Same-day results","Free collection & delivery (within 2 miles)"] },
+  "full-service-only": { badge:"MOST POPULAR", desc:"Full annual service without MOT — oil, filters, brakes, tyres, fluids and safety checks.", features:["Oil & filter change","Air filter check/replace","Brake & tyre inspection","Battery test & lights check","Fluid top-ups"] },
+  "major-service": { badge:"FULL COVERAGE", desc:"Major service — everything in Full Service plus plugs, fuel filter where applicable, cabin filter and deeper checks.", features:["All Full Service items","Spark plugs & deeper engine checks","Fuel & cabin filters (as applicable)","Full system inspection","Service book stamped"] },
   "van-servicing": { badge:"LIGHT VANS", desc:"Full and interim servicing for light commercial vans. Same quality and competitive pricing as our car servicing.", features:["Full & interim service","Light commercial vans","Competitive pricing","Service book stamp","Parts meet OEM standards","Free collection & delivery (3 miles max)"] },
   "tyre-fitting": { badge:"ALL BRANDS", desc:"Michelin, Pirelli, Continental, Bridgestone and budget options. Fitted, balanced and aligned while you wait or via free collection.", features:["Michelin, Pirelli & more","Wheel balancing included","4-wheel alignment available","Budget & premium brands","Puncture repair service","Price-match promise"] },
   "brakes-discs": { badge:"GUARANTEED", desc:"Full brake inspection, pad and disc replacement using OEM-quality parts. All work guaranteed for 12 months.", features:["Pads & disc replacement","OEM-quality parts","12-month guarantee","Free brake inspection","Drums & callipers too","Same-day service"] },
@@ -151,9 +154,9 @@ const AREAS = [
 ];
 
 const FOOTER_SVCS = [
-  "MOT Testing","Full Service","Interim Service","Major Service",
-  "Tyre Fitting","Wheel Alignment","Brakes & Discs","Exhaust Systems",
-  "Clutch Replacement","Window Tinting","Van Servicing","Free Collection & Delivery",
+  "MOT Class A & B","Full & Major Service","MOT + Service bundles",
+  "Tyres & punctures","Brakes","Diagnostics","Gearbox","Air con regas",
+  "Free health checks","Collection & delivery",
 ];
 
 let LOGO_URL = 'https://no5tyreandmot.co.uk/images/logo.png';
@@ -182,8 +185,8 @@ function MobileFAB(){
   );
   var btns=[
     {label:'Booking',href:'/mot-booking',icon:calendarIcon},
-    {label:'MOT',href:'/mot-booking?service=mot-test',icon:motIcon},
-    {label:'Tyres',href:'/mot-booking?service=tyre-fitting',icon:tyreIcon},
+    {label:'MOT',href:'/mot-booking?service='+encodeURIComponent('MOT Class A (cars)'),icon:motIcon},
+    {label:'Tyres',href:'/mot-booking?service='+encodeURIComponent('New Tyre Replacement'),icon:tyreIcon},
   ];
   return h('div',{className:'mobile-fab-bar','aria-label':'Quick booking shortcuts'},
     ...btns.map(function(btn){
@@ -313,7 +316,7 @@ function HeroSection(){
       }
     }catch(e){
       setLookupOk(false);
-      setLookupError('Lookup failed. Make sure the server is running on port 3001.');
+      setLookupError('Lookup failed. You can still book from the MOT booking page.');
     }
     setLookupLoading(false);
     setSubmitted(true);
@@ -490,7 +493,7 @@ function ComboDeals(){
                 fontSize:13,color:T.gray600,marginBottom:8,lineHeight:1.45,
               }},h('span',{style:{color:T.green,fontSize:14,marginTop:1,flexShrink:0}},'✓'),f))
             ),
-            h('a',{href:'/mot-booking' + (c.id ? '?service=' + encodeURIComponent(c.id) : ''),className:'btn-transition',style:{
+            h('a',{href:'/mot-booking' + (c.bookValue ? '?service=' + encodeURIComponent(c.bookValue) : ''),className:'btn-transition',style:{
               width:'100%',padding:'11px',borderRadius:10,
               background:c.hot?T.yellow:'transparent',
               border:c.hot?'none':`2px solid ${T.navy}`,
@@ -803,7 +806,7 @@ function Footer(){
       h('p',{style:{marginTop:16,color:'#fff',fontSize:11}},
         'Site powered by ',
         h('a',{href:'https://cybercina.co.uk',target:'_blank',rel:'noopener noreferrer',style:{color:'#fff',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6,fontWeight:600}},
-          h('img',{src:'https://cybercina.co.uk/wp-content/uploads/2025/10/cropped-2.png',alt:'Cybercina',style:{height:22,width:'auto',verticalAlign:'middle'}})
+          h('img',{src:'https://cybercina.co.uk/wp-content/uploads/2025/10/cropped-2.png',alt:'Cybercina',loading:'lazy',decoding:'async',style:{height:22,width:'auto',verticalAlign:'middle'}})
         )
       )
     )
@@ -862,25 +865,24 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
     if (s.footer_offer_feature) FOOTER_OFFER_FEATURE = s.footer_offer_feature;
     if (s.footer_offer_btn || s.footer_offer_btn_text) FOOTER_OFFER_BTN = s.footer_offer_btn || s.footer_offer_btn_text;
     if (s.footer_offer_disclaimer) FOOTER_OFFER_DISCLAIMER = s.footer_offer_disclaimer;
-    if (s.combo_section_title) COMBO_SECTION_TITLE = s.combo_section_title;
-    if (s.combo_section_intro) COMBO_SECTION_INTRO = s.combo_section_intro;
-    if (s.combo_combined_desc) COMBO_COMBINED_DESC = s.combo_combined_desc;
     const map = (window.N05ServicesLoader && N05ServicesLoader.getPriceMap) ? N05ServicesLoader.getPriceMap(data) : { byValue:{}, byId:{} };
     const byId = map.byId || {};
     const byValue = map.byValue || {};
-    var comboServices = (data.services || []).filter(function(x){ return x.category === 'special-offers'; });
+    var comboOfferIds = ['full-service-mot', 'major-service-mot'];
+    var comboServices = comboOfferIds.map(function(oid){ return byId[oid]; }).filter(Boolean);
     COMBOS.length = 0;
     comboServices.forEach(function(svc){
       var ex = SERVICE_EXTRAS[svc.id] || {};
       COMBOS.push({
         id: svc.id,
-        badge: svc.comboBadge || ex.badge || 'SAVE AT LEAST £31',
+        bookValue: svc.value || '',
+        badge: svc.comboBadge || ex.badge || 'PACKAGE',
         title: svc.title,
-        subtitle: svc.comboSubtitle || 'Special Offer',
+        subtitle: svc.comboSubtitle || 'MOT + Service',
         includes: (svc.comboFeatures && svc.comboFeatures.length) ? svc.comboFeatures : (ex.features || []),
-        price: (svc.comboDisplayPrice && String(svc.comboDisplayPrice).trim()) ? String(svc.comboDisplayPrice).trim() : (svc.priceDisplay || ''),
-        saving: svc.comboSaving || 'Save £31+',
-        hot: !!svc.isComboHot
+        price: (svc.comboDisplayPrice && String(svc.comboDisplayPrice).trim()) ? String(svc.comboDisplayPrice).trim() : (svc.priceDisplay || svc.priceLabel || ''),
+        saving: svc.comboSaving || 'Bundle value',
+        hot: !!svc.isComboHot || svc.id === 'full-service-mot'
       });
     });
 
@@ -899,9 +901,9 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
     }
 
     var s2 = data.settings || {};
-    var combo = byId['mot-full-service'];
-    var motTest = byId['mot-test'];
-    var fullService = byId['full-service'];
+    var combo = byId['full-service-mot'];
+    var motTest = byId['mot-class-a'];
+    var fullService = byId['full-service-only'];
 
     var comboDisplay = serviceDisplayPrice(combo);
     var comboNumber = parsePrice(comboDisplay) ?? parsePrice(combo && combo.price);
@@ -924,15 +926,25 @@ function doRender(){ try { if(!reactRoot&&window.ReactDOM&&window.React) reactRo
       ? String(s2.hero_save).trim()
       : (saveNumber != null && saveNumber > 0 ? ('£' + saveNumber) : '');
     FOOTER_MOT_PRICE = (s2.footer_mot_price && String(s2.footer_mot_price).trim()) ? String(s2.footer_mot_price).trim() : comboDisplay || '';
-    if (combo) {
+    if (combo && COMBOS.length) {
       STATS[0].value = FOOTER_MOT_PRICE || comboDisplay || '';
       STATS[0].sub = HERO_SAVE ? 'Save ' + HERO_SAVE + ' today' : '';
-      COMBOS[0].price = comboDisplay || STATS[0].value || '';
+      for (var ci = 0; ci < COMBOS.length; ci++) {
+        if (COMBOS[ci].id === 'full-service-mot') COMBOS[ci].price = comboDisplay || COMBOS[ci].price || STATS[0].value || '';
+        if (COMBOS[ci].id === 'major-service-mot' && byId['major-service-mot']) {
+          COMBOS[ci].price = serviceDisplayPrice(byId['major-service-mot']) || COMBOS[ci].price;
+        }
+      }
     }
-    if (byId['mot-major-service']) COMBOS[1].price = byId['mot-major-service'].priceDisplay || COMBOS[1].price;
 
-    const catOrder = { 'special-offers': 1, 'servicing-mot': 2, 'tyres-other': 3 };
-    const list = (data.services || []).slice().sort(function(a, b) {
+    const catOrder = {
+      'mot-testing': 1, 'servicing': 2, 'inspections-free': 3, 'tyres': 4,
+      'engine-maintenance': 5, 'brakes': 6, 'diagnostics': 7, 'gearbox': 8,
+      'electrical': 9, 'air-conditioning': 10, 'special-offers': 0
+    };
+    const list = (data.services || []).filter(function(s) {
+      return s.id !== 'full-service-mot' && s.id !== 'major-service-mot';
+    }).slice().sort(function(a, b) {
       return (catOrder[a.category] || 99) - (catOrder[b.category] || 99);
     });
     SERVICES.length = 0;

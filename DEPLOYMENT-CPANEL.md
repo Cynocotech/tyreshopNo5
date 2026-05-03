@@ -86,8 +86,10 @@ This exports services from your local database to `data/services.json` and print
 
 ```bash
 cd ~/tyre/admin
-php artisan no5:import-services ../data/services.json
+php artisan no5:import-services ../data/services.json --prune
 ```
+
+`--prune` deletes services and categories that are **not** in the JSON file. Without it, old rows stay in the database and still appear on the site, because **`/data/services.json` is served from the database**, not from the file on disk.
 
 See `push-services.sh` for upload options (SSH, cPanel File Manager, or Git).
 

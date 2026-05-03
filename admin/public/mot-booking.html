@@ -232,6 +232,12 @@
       if (select.options.length === 0) {
         select.innerHTML = '<option value="">No services loaded</option>';
       }
+      const preService = new URLSearchParams(window.location.search).get('service');
+      if (preService) {
+        const decoded = decodeURIComponent(preService);
+        const opt = Array.from(select.options).find(o => o.value === decoded);
+        if (opt) select.value = decoded;
+      }
       updatePayButton();
     } catch (e) {
       document.getElementById('serviceType').innerHTML = '<option value="">Could not load services</option>';

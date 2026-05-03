@@ -10,7 +10,7 @@ class ImportServicesCommand extends Command
 {
     protected $signature = 'no5:import-services 
                             {file? : Path to JSON file (default: data/services.json)}
-                            {--force : Overwrite existing services}';
+                            {--prune : Remove services and categories that are not in the JSON file}';
 
     protected $description = 'Import services and categories from JSON (from local no5:export-services)';
 
@@ -53,8 +53,10 @@ class ImportServicesCommand extends Command
         $catMap = ServiceCategory::pluck('id', 'slug')->toArray();
 
         $imported = 0;
+        $importedSlugs = [];
         foreach ($services as $i => $svc) {
             $slug = $svc['id'] ?? $svc['slug'] ?? ('service-' . $i);
+            $importedSlugs[] = $slug;
             $catSlug = $svc['category'] ?? '';
             $catId = $catMap[$catSlug] ?? ServiceCategory::first()?->id;
 
@@ -89,6 +91,16 @@ class ImportServicesCommand extends Command
             );
             $imported++;
             $this->line('  Service: ' . $payload['title']);
+        }
+
+        if ($this->option('prune')) {
+            $removed = Service::whereNotIn('slug', $importedSlugs)->delete();
+            $this->info("Pruned {$removed} services not listed in JSON.");
+            $keepCatSlugs = array_keys($categories);
+            if ($keepCatSlugs !== []) {
+                $removedCats = ServiceCategory::whereNotIn('slug', $keepCatSlugs)->delete();
+                $this->info("Pruned {$removedCats} categories not listed in JSON.");
+            }
         }
 
         $this->info("Imported {$imported} services and " . count($categories) . ' categories.');
