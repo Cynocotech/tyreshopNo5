@@ -11,6 +11,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -31,10 +32,10 @@ class DashboardController extends Controller
 
         $topProducts = SaleItem::query()
             ->selectRaw('product_id, SUM(quantity) as total_qty')
-            ->with('product:id,name')
             ->groupBy('product_id')
             ->orderByDesc('total_qty')
             ->limit(5)
+            ->with('product:id,name')
             ->get();
 
         $salesThisMonth = Sale::whereNotNull('completed_at')
@@ -49,18 +50,23 @@ class DashboardController extends Controller
         $ordersLast90 = (clone $salesLast90)->count();
         $revenueLast90 = (clone $salesLast90)->sum('total');
 
-        // Monthly revenue for bar chart (last 12 months) - db-agnostic
-        $months = collect();
+        // Monthly revenue (last 12 months) — one grouped query instead of 12 round-trips
+        $from = now()->subMonths(11)->startOfMonth();
+        $driver = Sale::query()->getConnection()->getDriverName();
+        $monthExpr = $driver === 'sqlite'
+            ? "strftime('%Y-%m', completed_at)"
+            : "DATE_FORMAT(completed_at, '%Y-%m')";
+        $rows = Sale::query()
+            ->whereNotNull('completed_at')
+            ->where('completed_at', '>=', $from)
+            ->selectRaw("{$monthExpr} as ym, SUM(total) as revenue")
+            ->groupBy(DB::raw($monthExpr))
+            ->pluck('revenue', 'ym');
+        $monthlyRevenue = collect();
         for ($i = 11; $i >= 0; $i--) {
-            $d = now()->subMonths($i);
-            $key = $d->format('Y-m');
-            $total = Sale::whereNotNull('completed_at')
-                ->whereYear('completed_at', $d->year)
-                ->whereMonth('completed_at', $d->month)
-                ->sum('total');
-            $months[$key] = (float) $total;
+            $key = now()->subMonths($i)->format('Y-m');
+            $monthlyRevenue[$key] = (float) ($rows[$key] ?? 0);
         }
-        $monthlyRevenue = $months;
 
         // Recent sales (last 10)
         $recentSales = Sale::with(['items.product'])
@@ -75,19 +81,17 @@ class DashboardController extends Controller
             ->orderByDesc('total')
             ->first();
 
-        // Latest customers (recent sales with customer names, unique, with purchase count)
-        $latestCustomers = Sale::whereNotNull('completed_at')
+        // Latest customers — one grouped query (avoid N+1 count per name)
+        $latestCustomers = Sale::query()
+            ->whereNotNull('completed_at')
             ->whereNotNull('customer_name')
             ->where('customer_name', '!=', '')
-            ->orderByDesc('completed_at')
+            ->selectRaw('customer_name, COUNT(*) as purchases, MAX(completed_at) as last_sale_at')
+            ->groupBy('customer_name')
+            ->orderByDesc('last_sale_at')
+            ->limit(5)
             ->get()
-            ->unique('customer_name')
-            ->take(5)
-            ->values()
-            ->map(function ($s) {
-                $count = Sale::where('customer_name', $s->customer_name)->count();
-                return (object)['customer_name' => $s->customer_name, 'purchases' => $count];
-            });
+            ->map(fn ($r) => (object) ['customer_name' => $r->customer_name, 'purchases' => (int) $r->purchases]);
 
         return view('admin.dashboard', [
             'servicesCount' => Service::count(),
