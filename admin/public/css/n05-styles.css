@@ -229,3 +229,78 @@ body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
 .contact-info{background:#f8fafc;border-radius:12px;padding:24px}
 .contact-form input,.contact-form textarea{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;margin-bottom:16px}
 .contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:#fede00}
+
+/* ── Mobile Floating Action Bar ─────────────────────────────────────── */
+.mobile-fab-bar { display: none; }
+
+@media (max-width: 991px) {
+  .mobile-fab-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(17, 25, 39, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(254, 222, 0, 0.22);
+    box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.45), 0 -1px 0 rgba(254, 222, 0, 0.1);
+  }
+
+  .mobile-fab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 6px;
+    border-radius: 20px;
+    background: rgba(254, 222, 0, 0.08);
+    border: 1px solid rgba(254, 222, 0, 0.22);
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    min-height: 58px;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+                box-shadow 0.2s ease, transform 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-fab-btn:hover,
+  .mobile-fab-btn:active {
+    background: #fede00;
+    color: #1B263B;
+    border-color: #fede00;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(254, 222, 0, 0.35);
+  }
+
+  .mobile-fab-icon {
+    color: #fede00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-fab-btn:hover .mobile-fab-icon,
+  .mobile-fab-btn:active .mobile-fab-icon { color: #1B263B; }
+
+  .mobile-fab-label { line-height: 1; }
+
+  /* Lift the emergency call button above the FAB bar */
+  .emergency-call-btn { bottom: 92px !important; }
+
+  /* Extra bottom padding on footer so the last content clears the FAB */
+  .site-footer { padding-bottom: 96px !important; }
+}

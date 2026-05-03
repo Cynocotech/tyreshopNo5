@@ -195,6 +195,7 @@
   const API_BASE = '/admin/api';
   let vehicleData = null;
   let SERVICE_PRICES = {}; // populated from data/services.json
+  let SERVICE_ZERO_IS_QUOTE = {}; // true when price £0 means quote (not a free service)
 
   async function loadServices() {
     try {
@@ -205,12 +206,14 @@
       const select = document.getElementById('serviceType');
       select.innerHTML = '';
       SERVICE_PRICES = {};
+      SERVICE_ZERO_IS_QUOTE = {};
       const byCat = {};
       services.forEach(s => {
         const cat = s.category || 'other';
         if (!byCat[cat]) byCat[cat] = [];
         byCat[cat].push(s);
         SERVICE_PRICES[s.value] = s.price;
+        if (s.price === 0 && s.isQuote) SERVICE_ZERO_IS_QUOTE[s.value] = true;
       });
       const catOrder = Object.entries(categories).sort((a,b) => (a[1].sortOrder||99) - (b[1].sortOrder||99));
       catOrder.forEach(([catId, cat]) => {
@@ -429,7 +432,8 @@
   function updatePayButton() {
     const sel = document.getElementById('serviceType');
     const price = SERVICE_PRICES[sel.value] ?? 19;
-    document.getElementById('pay-btn').textContent = price === 0 ? '✓ Confirm Booking (Quote)' : '✓ Confirm Booking';
+    const quoteZero = SERVICE_ZERO_IS_QUOTE[sel.value];
+    document.getElementById('pay-btn').textContent = price === 0 && quoteZero ? '✓ Confirm Booking (Quote)' : '✓ Confirm Booking';
     document.getElementById('pay-btn').disabled = !vehicleData;
   }
 
@@ -511,7 +515,8 @@
     const model = getVal(vr, 'Model', 'model');
 
     const sel = document.getElementById('serviceType');
-    const total = SERVICE_PRICES[sel.value] ?? 19;
+      const rawPrice = SERVICE_PRICES[sel.value];
+      const total = rawPrice === undefined ? 19 : rawPrice;
     const bookingId = 'N05-' + Date.now();
     const base = window.location.origin;
     const date = document.getElementById('appointmentDate').value;
@@ -527,7 +532,7 @@
       appointmentDate: date,
       appointmentTime: time,
       serviceType: sel.value,
-      totalAmount: total === 0 ? 'Quote' : String(total)
+      totalAmount: total === 0 && SERVICE_ZERO_IS_QUOTE[sel.value] ? 'Quote' : String(total)
     };
 
     try {
@@ -547,7 +552,12 @@
       }
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = document.getElementById('serviceType').value && SERVICE_PRICES[document.getElementById('serviceType').value] === 0 ? '✓ Confirm Booking (Quote)' : '✓ Confirm Booking';
+      (function() {
+        const st = document.getElementById('serviceType');
+        const p = SERVICE_PRICES[st.value];
+        const qz = SERVICE_ZERO_IS_QUOTE[st.value];
+        document.getElementById('pay-btn').textContent = p === 0 && qz ? '✓ Confirm Booking (Quote)' : '✓ Confirm Booking';
+      })();
       alert(err.message || 'Something went wrong. Ensure the server is running.');
     }
   });
