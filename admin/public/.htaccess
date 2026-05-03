@@ -25,6 +25,10 @@
     # Serve index.html for root
     RewriteRule ^$ index.html [L]
 
+    # Blog index: /blog must map to blog.html. A real /blog/ directory exists for posts;
+    # without this rule Apache treats /blog as that folder → no index → 403 (Indexes off).
+    RewriteRule ^blog/?$ blog.html [L]
+
     # Always serve /data/services.json from Laravel (admin panel database)
     RewriteRule ^data/services\.json$ index.php [L,QSA]
 
