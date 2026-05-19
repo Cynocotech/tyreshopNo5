@@ -49,6 +49,36 @@
     if (el) el.textContent = JSON.stringify(schema);
   }
 
+  function injectGTM(gtmId) {
+    if (!gtmId || document.getElementById('gtm-script')) return;
+    // Head script
+    var s = document.createElement('script');
+    s.id = 'gtm-script';
+    s.innerHTML = "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','" + gtmId + "');";
+    document.head.appendChild(s);
+    // Body noscript iframe
+    var ns = document.createElement('noscript');
+    ns.id = 'gtm-noscript';
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.googletagmanager.com/ns.html?id=' + gtmId;
+    iframe.height = '0'; iframe.width = '0';
+    iframe.style.display = 'none'; iframe.style.visibility = 'hidden';
+    ns.appendChild(iframe);
+    document.body.insertBefore(ns, document.body.firstChild);
+  }
+
+  function injectGA(gaId) {
+    if (!gaId || document.getElementById('ga-script')) return;
+    var s = document.createElement('script');
+    s.id = 'ga-script';
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+    document.head.appendChild(s);
+    var s2 = document.createElement('script');
+    s2.innerHTML = "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','" + gaId + "');";
+    document.head.appendChild(s2);
+  }
+
   function apply(settings) {
     if (!settings) return;
     var siteName = text(settings.site_name) || 'Bourn Hill Tyre & MOT | London';
@@ -85,6 +115,9 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-site-hours]'), function(el) { el.textContent = hours; });
 
     updateSchema(settings);
+
+    if (settings.gtm_id && String(settings.gtm_id).trim()) injectGTM(String(settings.gtm_id).trim());
+    else if (settings.ga_id && String(settings.ga_id).trim()) injectGA(String(settings.ga_id).trim());
   }
 
   function load() {

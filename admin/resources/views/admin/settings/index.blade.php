@@ -51,6 +51,21 @@
                     <label class="block text-sm font-medium text-slate-700">URL</label>
                     <input type="url" name="url" value="{{ old('url', $settings['url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
                 </div>
+                <div class="border-t border-slate-200 pt-3 mt-3">
+                    <h4 class="text-sm font-semibold text-slate-700 mb-2">Analytics & Tracking</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Google Tag Manager ID</label>
+                            <input type="text" name="gtm_id" value="{{ old('gtm_id', $settings['gtm_id'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="GTM-XXXXXXX">
+                            <p class="text-xs text-slate-500 mt-1">Injected into all pages automatically. Format: GTM-XXXXXXX</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700">Google Analytics ID (GA4)</label>
+                            <input type="text" name="ga_id" value="{{ old('ga_id', $settings['ga_id'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="G-XXXXXXXXXX">
+                            <p class="text-xs text-slate-500 mt-1">Only needed if not using GTM. Format: G-XXXXXXXXXX</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

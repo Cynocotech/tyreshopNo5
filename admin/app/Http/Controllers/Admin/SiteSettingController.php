@@ -26,6 +26,7 @@ class SiteSettingController extends Controller
         $allowed = [
             'site_name', 'site_description', 'address_street', 'address_locality', 'address_region', 'address_postcode', 'address_country',
             'phone', 'phone_international', 'email', 'logo_url', 'logo_link', 'url', 'google_review_url', 'topbar_message',
+            'gtm_id', 'ga_id',
             'seo_title', 'seo_description', 'seo_keywords', 'hero_image_url',
             'opening_days', 'opening_time', 'closing_time', 'opening_hours_display', 'slot_interval',
             'sunday_opening_time', 'sunday_closing_time',
