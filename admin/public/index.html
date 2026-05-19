@@ -274,7 +274,7 @@ function Header({scrolled}){
       ),
       h('nav',{className:'header-nav-desktop',style:{display:'flex',alignItems:'center',gap:24}},
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
-          style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:500}},l.label)),
+          style:{color:'rgba(255,255,255,.82)',fontSize:14,fontWeight:700}},l.label)),
         h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{
           background:T.yellow,color:T.navy,padding:'10px 22px',borderRadius:50,
           fontWeight:800,fontSize:14,textDecoration:'none',display:'inline-block',
@@ -293,7 +293,7 @@ function Header({scrolled}){
         onClick:function(e){ if(e.target.tagName!=='A') setMenuOpen(false); }
       },
         ...NAV_LINKS.map(l=>h('a',{key:l.label,className:'nav-link',href:l.href,
-          style:{display:'block',color:'rgba(255,255,255,.9)',fontSize:16,fontWeight:500,padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,.1)'}},l.label)),
+          style:{display:'block',color:'rgba(255,255,255,.9)',fontSize:16,fontWeight:700,padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,.1)'}},l.label)),
         h('a',{href:'/mot-booking',className:'btn-transition anim-pulse-cta',style:{
           display:'block',textAlign:'center',background:T.yellow,color:T.navy,padding:'14px 22px',borderRadius:50,
           fontWeight:800,fontSize:16,textDecoration:'none',marginTop:16,
