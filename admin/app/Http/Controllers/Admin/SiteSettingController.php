@@ -69,8 +69,58 @@ class SiteSettingController extends Controller
             SiteSetting::updateOrCreate(['key' => $key], ['value' => (string) $value]);
         }
         Cache::forget('site_settings');
+
+        // Sync mail settings to .env so Laravel picks them up immediately
+        $this->syncMailEnv();
+
         $tab = $request->input('_tab', 'general');
         return redirect()->route('admin.settings.index', ['tab' => $tab])->with('success', 'Settings saved.');
+    }
+
+    private function syncMailEnv(): void
+    {
+        $map = [
+            'MAIL_MAILER'       => SiteSetting::get('mail_driver', ''),
+            'MAIL_HOST'         => SiteSetting::get('mail_host', ''),
+            'MAIL_PORT'         => SiteSetting::get('mail_port', '587'),
+            'MAIL_ENCRYPTION'   => SiteSetting::get('mail_encryption', 'tls'),
+            'MAIL_USERNAME'     => SiteSetting::get('mail_username', ''),
+            'MAIL_PASSWORD'     => SiteSetting::get('mail_password', ''),
+            'MAIL_FROM_ADDRESS' => SiteSetting::get('mail_from_address', ''),
+            'MAIL_FROM_NAME'    => SiteSetting::get('mail_from_name', ''),
+            'ADMIN_EMAIL'       => SiteSetting::get('admin_email', ''),
+            'RESEND_API_KEY'    => SiteSetting::get('mail_resend_api_key', ''),
+        ];
+
+        $envPath = base_path('.env');
+        if (!file_exists($envPath)) return;
+
+        $env = file_get_contents($envPath);
+
+        foreach ($map as $key => $value) {
+            // Quote values with spaces
+            $escaped = str_contains($value, ' ') ? '"' . $value . '"' : $value;
+            if (preg_match('/^' . preg_quote($key, '/') . '=.*/m', $env)) {
+                $env = preg_replace('/^' . preg_quote($key, '/') . '=.*/m', $key . '=' . $escaped, $env);
+            } else {
+                $env .= "\n" . $key . '=' . $escaped;
+            }
+        }
+
+        file_put_contents($envPath, $env);
+
+        // Re-apply to running config so it takes effect without restart
+        config([
+            'mail.default'                    => SiteSetting::get('mail_driver', 'smtp'),
+            'mail.mailers.smtp.host'          => SiteSetting::get('mail_host', ''),
+            'mail.mailers.smtp.port'          => (int) SiteSetting::get('mail_port', 587),
+            'mail.mailers.smtp.encryption'    => SiteSetting::get('mail_encryption', 'tls') ?: null,
+            'mail.mailers.smtp.username'      => SiteSetting::get('mail_username', ''),
+            'mail.mailers.smtp.password'      => SiteSetting::get('mail_password', ''),
+            'mail.from.address'               => SiteSetting::get('mail_from_address', ''),
+            'mail.from.name'                  => SiteSetting::get('mail_from_name', ''),
+            'services.resend.key'             => SiteSetting::get('mail_resend_api_key', ''),
+        ]);
     }
 
     public function sendTestEmail(Request $request): RedirectResponse
