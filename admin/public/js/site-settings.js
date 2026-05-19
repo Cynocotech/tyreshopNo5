@@ -71,7 +71,7 @@
     setMeta('meta[property="og:title"]', 'content', title);
     setMeta('meta[property="og:description"]', 'content', description);
 
-    Array.prototype.forEach.call(document.querySelectorAll('img[src*="logo.png"], img[alt*="N05"], img[alt*="NO5"]'), function(img) {
+    Array.prototype.forEach.call(document.querySelectorAll('#site-logo, img[src*="logo.png"], img[src*="logo2.PNG"], img[src*="Main-Logo"], img[alt*="N05"], img[alt*="NO5"]'), function(img) {
       img.src = logoUrl;
       img.alt = siteName;
     });
