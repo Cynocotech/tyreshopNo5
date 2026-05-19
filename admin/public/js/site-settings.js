@@ -118,6 +118,14 @@
 
     if (settings.gtm_id && String(settings.gtm_id).trim()) injectGTM(String(settings.gtm_id).trim());
     else if (settings.ga_id && String(settings.ga_id).trim()) injectGA(String(settings.ga_id).trim());
+
+    // Update thank-you page contact fields
+    var addrEl  = document.getElementById('site-address');
+    var phoneEl = document.getElementById('site-phone');
+    var hoursEl = document.getElementById('site-hours');
+    if (addrEl && address)  addrEl.textContent  = address;
+    if (phoneEl && phone)   phoneEl.textContent = phone;
+    if (hoursEl && hours)   hoursEl.textContent = hours;
   }
 
   function load() {
