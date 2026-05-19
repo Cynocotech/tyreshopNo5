@@ -6,3 +6,10 @@ admin/database/*.sqlite*
 
 # Dependencies
 node_modules/
+
+# Explicit .env protection for all subdirs
+server/.env
+admin/.env
+*.env
+*.env.*
+!*.env.example

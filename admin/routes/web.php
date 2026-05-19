@@ -23,12 +23,19 @@ use Illuminate\Support\Facades\Route;
 
 // Public API under /admin/api (cPanel setups often only route /admin to Laravel)
 Route::prefix('admin')->group(function () {
-    Route::get('api/vehicle/lookup', [VehicleController::class, 'lookup']);
-    Route::get('api/booking/available-slots', [ApiBookingController::class, 'availableSlots']);
-    Route::get('api/booking/config', [ApiBookingController::class, 'config']);
-    Route::post('api/booking/create-checkout-session', [ApiBookingController::class, 'createCheckoutSession']);
-    Route::post('api/booking/confirm-booking', [ApiBookingController::class, 'confirmBooking']);
-    Route::post('api/booking/mot-notify', [ApiBookingController::class, 'motNotify']);
+    // Read-only: 60 requests/min per IP
+    Route::middleware('throttle:60,1')->group(function () {
+        Route::get('api/vehicle/lookup', [VehicleController::class, 'lookup']);
+        Route::get('api/booking/available-slots', [ApiBookingController::class, 'availableSlots']);
+        Route::get('api/booking/config', [ApiBookingController::class, 'config']);
+    });
+    // Write endpoints: 10 requests/min per IP (prevents spam bookings)
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('api/booking/create-checkout-session', [ApiBookingController::class, 'createCheckoutSession']);
+        Route::post('api/booking/confirm-booking', [ApiBookingController::class, 'confirmBooking']);
+        Route::post('api/booking/mot-notify', [ApiBookingController::class, 'motNotify']);
+    });
+    // Stripe webhook: no throttle (Stripe may retry)
     Route::post('api/booking/webhook/stripe', [ApiBookingController::class, 'stripeWebhook']);
 });
 

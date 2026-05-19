@@ -3,7 +3,12 @@
  */
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const Stripe = require('stripe');
+
+function generateBookingId() {
+  return 'BHTM-' + crypto.randomBytes(6).toString('hex').toUpperCase();
+}
 const TelegramBot = require('node-telegram-bot-api');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
@@ -147,7 +152,7 @@ router.post('/create-checkout-session', async (req, res) => {
   }
 
   const amount = totalAmount ? Math.round(parseFloat(totalAmount) * 100) : MOT_PRICE_GBP;
-  const bookingId = 'BHTM-' + Date.now();
+  const bookingId = generateBookingId();
 
   if (!stripe) {
     return res.status(503).json({
@@ -303,7 +308,7 @@ async function notifyAndEmail(metadata, email, opts = {}) {
   } = metadata || {};
 
   const data = {
-    bookingId: bookingId || 'BHTM-' + Date.now(),
+    bookingId: bookingId || generateBookingId(),
     customerName: customerName || 'Customer',
     customerEmail: email,
     customerPhone: customerPhone || '-',

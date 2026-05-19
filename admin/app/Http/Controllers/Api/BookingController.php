@@ -61,7 +61,7 @@ class BookingController extends Controller
             'totalAmount' => 'nullable|numeric',
         ]);
         $amount = isset($valid['totalAmount']) ? (int) round((float) $valid['totalAmount'] * 100) : 1900;
-        $bookingId = 'BHTM-' . time();
+        $bookingId = 'BHTM-' . strtoupper(bin2hex(random_bytes(6)));
         $stripe = $this->stripe();
         if (!$stripe) {
             return response()->json(['error' => 'Stripe not configured'], 503);
@@ -113,8 +113,24 @@ class BookingController extends Controller
     {
         $m = $request->input('metadata', $request->all());
         $email = $request->input('customer_email') ?? $m['customerEmail'] ?? $m['customer_email'] ?? null;
-        if (!$email || empty($m['vehicleRegistration'])) {
-            return response()->json(['error' => 'Missing email or vehicleRegistration'], 400);
+
+        // Validate required fields and sanitise
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['error' => 'Valid email address required'], 400);
+        }
+        if (empty($m['vehicleRegistration']) || !preg_match('/^[A-Z0-9 ]{2,8}$/i', $m['vehicleRegistration'])) {
+            return response()->json(['error' => 'Valid vehicle registration required'], 400);
+        }
+        if (empty($m['appointmentDate']) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $m['appointmentDate'])) {
+            return response()->json(['error' => 'Valid appointment date required'], 400);
+        }
+        if (empty($m['appointmentTime']) || !preg_match('/^\d{2}:\d{2}$/', trim($m['appointmentTime']))) {
+            return response()->json(['error' => 'Valid appointment time required'], 400);
+        }
+        // Prevent future dates more than 90 days out
+        $apptDate = \Carbon\Carbon::parse($m['appointmentDate']);
+        if ($apptDate->isPast() || $apptDate->diffInDays(now()) > 90) {
+            return response()->json(['error' => 'Appointment date must be within the next 90 days'], 400);
         }
         $date = $m['appointmentDate'] ?? null;
         $time = $m['appointmentTime'] ?? null;
@@ -228,7 +244,7 @@ class BookingController extends Controller
     private function notifyAndEmail(array $m, string $email, bool $sendSms = true): void
     {
         $data = [
-            'bookingId' => $m['bookingId'] ?? 'BHTM-' . time(),
+            'bookingId' => $m['bookingId'] ?? 'BHTM-' . strtoupper(bin2hex(random_bytes(6))),
             'customerName' => $m['customerName'] ?? 'Customer',
             'customerEmail' => $email,
             'customerPhone' => $m['customerPhone'] ?? '-',
