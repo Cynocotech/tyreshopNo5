@@ -76,8 +76,8 @@
   <!-- Footer -->
   <tr>
     <td style="background:#000000;padding:20px 32px;text-align:center;">
-      <p style="margin:0 0 8px;font-size:12px;color:rgba(255,255,255,0.5);">Admin notification · {{ $siteName ?? 'Bourn Hill Tyre & MOT' }} · {{ date('Y') }}</p>
-      <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.3);">Powered by <a href="https://cybercina.co.uk" target="_blank" style="color:#fede00;text-decoration:none;font-weight:600;">CYBERCINA</a></p>
+      <p style="margin:0 0 8px;font-size:12px;color:#ffffff;">Admin notification · {{ $siteName ?? 'Bourn Hill Tyre & MOT' }} · {{ date('Y') }}</p>
+      <p style="margin:0;font-size:11px;color:#ffffff;">Powered by <a href="https://cybercina.co.uk" target="_blank" style="color:#ffffff;text-decoration:none;font-weight:600;">CYBERCINA</a></p>
     </td>
   </tr>
 

@@ -101,8 +101,8 @@
   <tr>
     <td style="background:#000000;padding:24px 40px;text-align:center;">
       <p style="margin:0 0 6px;font-size:13px;color:rgba(255,255,255,0.7);">{{ $siteName ?? 'Bourn Hill Tyre & MOT' }} · 6a Bourne Hill, Palmers Green, London N13 4LG</p>
-      <p style="margin:0 0 12px;font-size:12px;color:rgba(255,255,255,0.4);">© {{ date('Y') }} {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}. All rights reserved.</p>
-      <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.3);">Powered by <a href="https://cybercina.co.uk" target="_blank" style="color:#fede00;text-decoration:none;font-weight:600;">CYBERCINA</a></p>
+      <p style="margin:0 0 12px;font-size:12px;color:#ffffff;">© {{ date('Y') }} {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}. All rights reserved.</p>
+      <p style="margin:0;font-size:11px;color:#ffffff;">Powered by <a href="https://cybercina.co.uk" target="_blank" style="color:#ffffff;text-decoration:none;font-weight:600;">CYBERCINA</a></p>
     </td>
   </tr>
 
