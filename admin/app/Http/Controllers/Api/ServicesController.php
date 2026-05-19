@@ -64,7 +64,7 @@ class ServicesController extends Controller
             'logo_url' => SiteSetting::get('logo_url', '/images/logo.png'),
             'hero_image_url' => SiteSetting::get('hero_image_url', '/images/hero-garage.jpg'),
             'tagline' => SiteSetting::get('tagline', 'Bourne Hill · London'),
-            'footer_tagline' => SiteSetting::get('footer_tagline', 'Formerly Palmers Green Tyres'),
+            'footer_tagline' => SiteSetting::get('footer_tagline', ''),
             'footer_description' => SiteSetting::get('footer_description', "London's trusted tyre and MOT specialist for MOT testing, tyres, puncture repairs, brakes, diagnostics and servicing."),
             'copyright' => SiteSetting::get('copyright', '© 2026 Bourn Hill Tyre & MOT | London. All rights reserved.'),
             'hero_book_price' => SiteSetting::get('hero_book_price'),
