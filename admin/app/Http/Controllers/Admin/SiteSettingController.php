@@ -53,8 +53,20 @@ class SiteSettingController extends Controller
                 SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
             }
         }
+        // Fields that must always be saved even when blank (clearing is intentional)
+        $clearable = [
+            'address_street', 'address_locality', 'address_region', 'address_postcode', 'address_country',
+            'tagline', 'footer_tagline', 'footer_description', 'topbar_message', 'gtm_id', 'ga_id',
+            'areas_intro', 'hero_image_url', 'logo_url', 'logo_link', 'url', 'google_review_url',
+        ];
+
         foreach ($request->all() as $key => $value) {
             if (!in_array($key, $allowed) || in_array($key, $checkboxKeys)) {
+                continue;
+            }
+            // Always save clearable fields (null or empty string both mean "clear it")
+            if (in_array($key, $clearable)) {
+                SiteSetting::updateOrCreate(['key' => $key], ['value' => (string) ($value ?? '')]);
                 continue;
             }
             if ($value === null) {
@@ -69,7 +81,7 @@ class SiteSettingController extends Controller
             }
             SiteSetting::updateOrCreate(['key' => $key], ['value' => (string) $value]);
         }
-        Cache::forget('site_settings');
+        Cache::flush(); // Hard flush all cache to ensure stale settings don't persist
 
         // Sync mail settings to .env so Laravel picks them up immediately
         $this->syncMailEnv();
