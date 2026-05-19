@@ -14,16 +14,7 @@
   <!-- Header -->
   <tr>
     <td style="background:#000000;padding:28px 40px;text-align:center;">
-      @php
-        $logoSrc = !empty($logoUrl)
-          ? (str_starts_with($logoUrl, 'http') ? $logoUrl : (($siteUrl ?? url('/')) . $logoUrl))
-          : null;
-      @endphp
-      @if($logoSrc)
-        <img src="{{ $logoSrc }}" alt="{{ $siteName ?? 'Bourn Hill Tyre & MOT' }}" style="max-height:64px;max-width:220px;display:inline-block;" />
-      @else
-        <span style="color:#fede00;font-size:22px;font-weight:800;letter-spacing:-0.5px;">{{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</span>
-      @endif
+      <img src="https://no5tyreandmot.co.uk/Main-Logo.PNG" alt="{{ $siteName ?? 'Bourn Hill Tyre & MOT' }}" style="max-height:64px;max-width:220px;display:inline-block;" />
     </td>
   </tr>
 
