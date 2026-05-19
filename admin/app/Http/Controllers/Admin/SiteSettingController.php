@@ -25,8 +25,10 @@ class SiteSettingController extends Controller
     {
         $allowed = [
             'site_name', 'site_description', 'address_street', 'address_locality', 'address_region', 'address_postcode', 'address_country',
-            'phone', 'phone_international', 'email', 'logo_url', 'logo_link', 'url', 'google_review_url',
-            'opening_days', 'opening_time', 'closing_time', 'opening_hours_display',
+            'phone', 'phone_international', 'email', 'logo_url', 'logo_link', 'url', 'google_review_url', 'topbar_message',
+            'seo_title', 'seo_description', 'seo_keywords', 'hero_image_url',
+            'opening_days', 'opening_time', 'closing_time', 'opening_hours_display', 'slot_interval',
+            'sunday_opening_time', 'sunday_closing_time',
             'tagline', 'footer_tagline', 'footer_description', 'copyright',
             'hero_book_price', 'hero_save', 'footer_mot_price', 'areas_intro',
             'footer_offer_title', 'footer_offer_subtitle', 'footer_offer_label',
@@ -78,11 +80,11 @@ class SiteSettingController extends Controller
 
         try {
             Mail::html(
-                '<p>This is a test email from <strong>NO5 Tyre & MOT</strong> admin.</p><p>If you received this, your email settings are configured correctly.</p><p><small>Sent at ' . now()->format('Y-m-d H:i:s') . ' UTC</small></p>',
+                '<p>This is a test email from <strong>Bourn Hill Tyre & MOT | London</strong> admin.</p><p>If you received this, your email settings are configured correctly.</p><p><small>Sent at ' . now()->format('Y-m-d H:i:s') . ' UTC</small></p>',
                 fn ($mail) => $mail
                     ->from(config('mail.from.address'), config('mail.from.name'))
                     ->to($to)
-                    ->subject('Test email — NO5 Tyre & MOT')
+                    ->subject('Test email — Bourn Hill Tyre & MOT | London')
             );
             return redirect()->route('admin.settings.index', ['tab' => 'email'])
                 ->with('success', 'Test email sent to ' . $to . '. Check inbox and spam folder.')
@@ -122,7 +124,7 @@ class SiteSettingController extends Controller
         $to = $request->input('test_email');
 
         $sample = [
-            'bookingId' => 'N05-SAMPLE',
+            'bookingId' => 'BHTM-SAMPLE',
             'customerName' => 'John Smith',
             'customerEmail' => $to,
             'customerPhone' => '07700 900123',
@@ -133,7 +135,7 @@ class SiteSettingController extends Controller
             'appointmentTime' => '10:00',
             'serviceType' => 'MOT Test',
             'totalAmount' => '19.00',
-            'siteName' => SiteSetting::get('site_name', 'NO5 Tyre & MOT'),
+            'siteName' => SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London'),
             'logoUrl' => SiteSetting::get('logo_url'),
             'siteUrl' => SiteSetting::get('url', url('/')),
             'phone' => SiteSetting::get('phone', ''),
@@ -171,7 +173,7 @@ class SiteSettingController extends Controller
         }
 
         try {
-            $msg = "🛞 *Telegram test — NO5 Tyre & MOT*\n\n✓ Your bot is configured correctly.\n\n_" . now()->format('Y-m-d H:i:s') . " UTC_";
+            $msg = "🛞 *Telegram test — Bourn Hill Tyre & MOT | London*\n\n✓ Your bot is configured correctly.\n\n_" . now()->format('Y-m-d H:i:s') . " UTC_";
             $res = Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
                 'chat_id' => $chatId,
                 'text' => $msg,

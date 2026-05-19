@@ -1,6 +1,6 @@
 <?php
 /**
- * N05 Tyre & MOT — Easy Installation Wizard
+ * Bourn Hill Tyre & MOT | London — Easy Installation Wizard
  * Visit /install.php to run. Delete this file after installation.
  */
 $base = dirname(__DIR__);
@@ -118,7 +118,7 @@ foreach ($extensions as $e) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N05 Install Wizard</title>
+    <title>Bourn Hill Install Wizard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
@@ -145,7 +145,7 @@ foreach ($extensions as $e) {
 </head>
 <body>
 <div class="container">
-    <h1>🔧 N05 Install Wizard</h1>
+    <h1>🔧 Bourn Hill Install Wizard</h1>
     <p class="sub">Easy setup for cPanel and shared hosting</p>
 
     <?php foreach ($messages as $m): ?>

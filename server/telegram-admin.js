@@ -1,5 +1,5 @@
 /**
- * Telegram Admin Bot - Price management for N05 services
+ * Telegram Admin Bot - Price management for Bourn Hill services
  * Uses node-telegram-bot-api, responds only to TELEGRAM_CHAT_ID
  */
 const TelegramBot = require('node-telegram-bot-api');
@@ -303,7 +303,7 @@ function initAdminBot(opts = {}) {
     const cmd = parts[0].toLowerCase();
 
     if (cmd === '/start' || cmd === '/menu') {
-      bot.sendMessage(fromChatId, '👋 *N05 Admin* — Tap below to view services & manage prices:', {
+      bot.sendMessage(fromChatId, '👋 *Bourn Hill Admin* — Tap below to view services & manage prices:', {
         parse_mode: 'Markdown',
         reply_markup: buildMenuKeyboard()
       });

@@ -61,7 +61,7 @@ class BookingController extends Controller
             'totalAmount' => 'nullable|numeric',
         ]);
         $amount = isset($valid['totalAmount']) ? (int) round((float) $valid['totalAmount'] * 100) : 1900;
-        $bookingId = 'N05-' . time();
+        $bookingId = 'BHTM-' . time();
         $stripe = $this->stripe();
         if (!$stripe) {
             return response()->json(['error' => 'Stripe not configured'], 503);
@@ -228,7 +228,7 @@ class BookingController extends Controller
     private function notifyAndEmail(array $m, string $email, bool $sendSms = true): void
     {
         $data = [
-            'bookingId' => $m['bookingId'] ?? 'N05-' . time(),
+            'bookingId' => $m['bookingId'] ?? 'BHTM-' . time(),
             'customerName' => $m['customerName'] ?? 'Customer',
             'customerEmail' => $email,
             'customerPhone' => $m['customerPhone'] ?? '-',
@@ -239,7 +239,7 @@ class BookingController extends Controller
             'appointmentTime' => $m['appointmentTime'] ?? '-',
             'serviceType' => $m['serviceType'] ?? 'MOT Test',
             'totalAmount' => $m['totalAmount'] ?? '19.00',
-            'siteName' => SiteSetting::get('site_name', 'NO5 Tyre & MOT'),
+            'siteName' => SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London'),
             'logoUrl' => SiteSetting::get('logo_url'),
             'siteUrl' => SiteSetting::get('url', url('/')),
             'phone' => SiteSetting::get('phone'),
@@ -309,7 +309,7 @@ class BookingController extends Controller
                     if (str_starts_with($n, '0')) $n = '44' . substr($n, 1);
                     elseif (!str_starts_with($n, '44')) $n = '44' . $n;
                     $serviceType = html_entity_decode($data['serviceType'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                    $smsText = "Hi {$data['customerName']}, your {$serviceType} at N05 Tyre & MOT is confirmed for {$data['appointmentDate']} at {$data['appointmentTime']}. Ref: {$data['bookingId']}. Questions? Call 07895 859505.";
+                    $smsText = "Hi {$data['customerName']}, your {$serviceType} at Bourn Hill Tyre & MOT | London is confirmed for {$data['appointmentDate']} at {$data['appointmentTime']}. Ref: {$data['bookingId']}. Questions? Call 07895 859505.";
                     \App\Http\Controllers\Admin\SmsMarketingController::sendViaSms($apiKey, $sender, $n, $smsText);
                 }
             } catch (\Throwable $e) {

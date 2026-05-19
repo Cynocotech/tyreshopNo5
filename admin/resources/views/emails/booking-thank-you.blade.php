@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - {{ $siteName ?? 'NO5 Tyre & MOT' }}</title>
+    <title>Thank You - {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</title>
 </head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f1f5f9;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f1f5f9;">
@@ -14,9 +14,9 @@
 <tr>
 <td style="background:linear-gradient(135deg,#1B263B 0%,#2a3a52 100%);padding:32px 40px;text-align:center;">
 @if(!empty($logoUrl))
-<img src="{{ $logoUrl }}" alt="{{ $siteName ?? 'NO5' }}" style="max-height:56px;max-width:200px;display:inline-block;vertical-align:middle;" />
+<img src="{{ $logoUrl }}" alt="{{ $siteName ?? 'Bourn Hill' }}" style="max-height:56px;max-width:200px;display:inline-block;vertical-align:middle;" />
 @else
-<span style="color:#fede00;font-size:24px;font-weight:700;letter-spacing:0.5px;">{{ $siteName ?? 'NO5 Tyre & MOT' }}</span>
+<span style="color:#fede00;font-size:24px;font-weight:700;letter-spacing:0.5px;">{{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</span>
 @endif
 </td>
 </tr>
@@ -51,8 +51,8 @@ Rate us on Google
 <!-- Footer -->
 <tr>
 <td style="background:#1B263B;padding:24px 40px;text-align:center;">
-<p style="margin:0;font-size:13px;color:rgba(255,255,255,0.8);">{{ $siteName ?? 'NO5 Tyre & MOT' }} · {{ $phone ?? '' }}</p>
-<p style="margin:8px 0 0;font-size:12px;color:rgba(255,255,255,0.6);">© {{ date('Y') }} {{ $siteName ?? 'NO5 Tyre & MOT' }}</p>
+<p style="margin:0;font-size:13px;color:rgba(255,255,255,0.8);">{{ $siteName ?? 'Bourn Hill Tyre & MOT' }} · {{ $phone ?? '' }}</p>
+<p style="margin:8px 0 0;font-size:12px;color:rgba(255,255,255,0.6);">© {{ date('Y') }} {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</p>
 </td>
 </tr>
 </table>

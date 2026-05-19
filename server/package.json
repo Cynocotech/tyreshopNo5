@@ -1,7 +1,7 @@
 {
   "name": "no5-mot-booking",
   "version": "1.0.0",
-  "description": "N05 Tyre & MOT - Booking API with vehicle lookup, Stripe, Telegram, email",
+  "description": "Bourn Hill Tyre & MOT | London - Booking API with vehicle lookup, Stripe, Telegram, email",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

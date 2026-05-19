@@ -34,7 +34,7 @@
         <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
                class="fixed md:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 shrink-0 flex flex-col transition-transform duration-200">
             <div class="px-6 py-6 border-b border-slate-200 flex items-center justify-between">
-                <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold text-slate-800">NO5 Admin</a>
+                <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold text-slate-800">Bourn Hill Admin</a>
                 <button @click="sidebarOpen = false" class="md:hidden p-2.5 rounded-lg hover:bg-slate-100 text-slate-500" aria-label="Close menu">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>

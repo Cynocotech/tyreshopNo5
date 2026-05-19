@@ -13,7 +13,7 @@ class BookingSeeder extends Seeder
         $base = Carbon::today();
         $dummies = [
             [
-                'booking_id' => 'N05-dummy-1',
+                'booking_id' => 'BHTM-dummy-1',
                 'customer_name' => 'John Smith',
                 'customer_email' => 'john.smith@example.com',
                 'customer_phone' => '07895 123456',
@@ -24,7 +24,7 @@ class BookingSeeder extends Seeder
                 'total_amount' => 190.00,
             ],
             [
-                'booking_id' => 'N05-dummy-2',
+                'booking_id' => 'BHTM-dummy-2',
                 'customer_name' => 'Sarah Jones',
                 'customer_email' => 'sarah.jones@example.com',
                 'customer_phone' => '07912 654321',
@@ -35,7 +35,7 @@ class BookingSeeder extends Seeder
                 'total_amount' => 54.85,
             ],
             [
-                'booking_id' => 'N05-dummy-3',
+                'booking_id' => 'BHTM-dummy-3',
                 'customer_name' => 'Mike Wilson',
                 'customer_email' => 'mike.wilson@example.com',
                 'customer_phone' => '07700 900123',

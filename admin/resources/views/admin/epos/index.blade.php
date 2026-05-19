@@ -43,10 +43,10 @@
                     <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <label class="text-sm font-medium text-slate-700">Booking ID</label>
                 </div>
-                <p class="text-xs text-slate-500 mb-2">Enter booking ID (e.g. N05-1234567890-abc1) to load their invoice and pay.</p>
+                <p class="text-xs text-slate-500 mb-2">Enter booking ID (e.g. BHTM-1234567890-abc1) to load their invoice and pay.</p>
                 <div class="flex gap-2">
                     <input type="text" x-model="bookingIdInput" @keydown.enter.prevent="loadBooking()"
-                           placeholder="N05-1234567890-abc1"
+                           placeholder="BHTM-1234567890-abc1"
                            class="flex-1 rounded-lg border-slate-300 py-2 px-4 focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
                     <button type="button" @click="loadBooking()"
                             class="px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700">

@@ -1,0 +1,170 @@
+{
+  "name": "Zoho Mail OpenAI Professional Email Replier",
+  "nodes": [
+    {
+      "parameters": {
+        "mailbox": "INBOX",
+        "postProcessAction": "markAsRead",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "9e2d51a6-5a2f-426a-96f4-19a369c7c6e0",
+      "name": "Zoho IMAP Trigger",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        0
+      ],
+      "credentials": {
+        "imap": {
+          "id": "REPLACE_WITH_ZOHO_IMAP_CREDENTIAL_ID",
+          "name": "Zoho IMAP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\nconst fromRaw = item.from?.text || item.from || item.headers?.from || '';\nconst fromEmail = fromRaw.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i)?.[0] || fromRaw;\nconst subject = item.subject || item.headers?.subject || '(No subject)';\nconst plain = item.textPlain || item.text || item.body || '';\nconst html = item.textHtml || item.html || '';\nconst body = String(plain || html).replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n\nconst originalMessageId = item.messageId || item.headers?.['message-id'] || item.headers?.messageId || '';\nconst replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;\n\nreturn [{\n  json: {\n    fromRaw,\n    fromEmail,\n    subject,\n    replySubject,\n    originalMessageId,\n    body,\n    openaiPayload: {\n      model: 'gpt-5-mini',\n      instructions: [\n        'You write professional customer email replies for the business mailbox.',\n        'Be warm, concise, helpful, and polished.',\n        'Do not invent facts, prices, availability, policies, order details, or commitments that are not present in the email.',\n        'If required information is missing, ask one clear follow-up question.',\n        'Do not include a subject line, markdown, signatures, or placeholders.',\n        'Write only the body of the email reply.'\n      ].join(' '),\n      input: `Incoming email from: ${fromRaw}\\nSubject: ${subject}\\n\\nMessage:\\n${body}`,\n      max_output_tokens: 700,\n      store: false\n    }\n  }\n}];"
+      },
+      "id": "d3d8fcec-97a3-4a9c-8f56-92a3b53213f6",
+      "name": "Prepare Email For OpenAI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.OPENAI_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.openaiPayload) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "d46ae849-dd11-4e1a-9eb4-1f792b9f8ec4",
+      "name": "OpenAI Generate Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const openai = $input.first().json;\nconst previous = $('Prepare Email For OpenAI').first().json;\n\nconst outputText = openai.output_text\n  || openai.output?.flatMap((entry) => entry.content || []).find((content) => content.type === 'output_text')?.text\n  || openai.choices?.[0]?.message?.content\n  || '';\n\nconst cleanedReply = String(outputText).trim();\nif (!cleanedReply) {\n  throw new Error('OpenAI returned an empty email reply.');\n}\n\nreturn [{\n  json: {\n    to: previous.fromEmail,\n    replySubject: previous.replySubject,\n    replyBody: cleanedReply,\n    originalMessageId: previous.originalMessageId\n  }\n}];"
+      },
+      "id": "94fc1f9a-af7b-41ec-9ec2-bf4f2e4d40ee",
+      "name": "Extract Reply Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-address@your-domain.com",
+        "toEmail": "={{$json.to}}",
+        "subject": "={{$json.replySubject}}",
+        "text": "={{$json.replyBody}}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "f2240f2f-0b26-4ec2-aef9-ecab71932e9b",
+      "name": "Send Zoho Reply",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        0
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_ZOHO_SMTP_CREDENTIAL_ID",
+          "name": "Zoho SMTP"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Zoho IMAP Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email For OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Email For OpenAI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Generate Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Generate Reply": {
+      "main": [
+        [
+          {
+            "node": "Extract Reply Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Reply Text": {
+      "main": [
+        [
+          {
+            "node": "Send Zoho Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5d471f28-0171-44a8-a473-bfc58a4f2ea0",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "zoho-openai-email-replier",
+  "tags": []
+}

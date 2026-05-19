@@ -3,9 +3,54 @@
  * Serves /data/services.json in the format expected by the front page
  */
 const path = require('path');
+const fs = require('fs');
+const { execFileSync } = require('child_process');
 const Database = require('better-sqlite3');
 
 const DB_PATH = path.join(__dirname, '../../admin/database/database.sqlite');
+const SERVICES_JSON_PATH = path.join(__dirname, '../../data/services.json');
+let warnedDbFallback = false;
+
+function buildSettings(rawSettings = {}) {
+  return {
+    site_name: rawSettings.site_name || 'Bourn Hill Tyre & MOT | London',
+    site_description: rawSettings.site_description || 'MOT testing, tyre fitting, puncture repairs, wheel alignment and car servicing in London.',
+    seo_title: rawSettings.seo_title || 'Bourn Hill Tyre & MOT | London Tyres, MOT Testing & Car Servicing',
+    seo_description: rawSettings.seo_description || 'Book Bourn Hill Tyre & MOT in London for MOT testing, new tyres, puncture repair, wheel alignment, brakes, diagnostics and car servicing.',
+    seo_keywords: rawSettings.seo_keywords || 'Bourn Hill Tyre & MOT London, tyres near me, MOT near me, MOT test London, tyre fitting London, puncture repair London, car servicing London, wheel alignment London',
+    address_street: rawSettings.address_street || '6A Bourne Hill',
+    address_locality: rawSettings.address_locality || 'Southgate',
+    address_region: rawSettings.address_region || 'London',
+    address_postcode: rawSettings.address_postcode || 'N13 4LG',
+    address_country: rawSettings.address_country || 'GB',
+    phone: rawSettings.phone || '07895 859505',
+    phone_international: rawSettings.phone_international || '+447895859505',
+    email: rawSettings.email || 'info@no5mot.co.uk',
+    url: rawSettings.url || 'https://no5mot.co.uk',
+    logo_url: rawSettings.logo_url || '/images/logo.png',
+    hero_image_url: rawSettings.hero_image_url || '/images/hero-garage.jpg',
+    tagline: rawSettings.tagline || 'Bourne Hill · London',
+    footer_tagline: rawSettings.footer_tagline || 'Formerly Bourne Hill Tyres',
+    footer_description: rawSettings.footer_description || "London's trusted tyre and MOT specialist for MOT testing, tyres, puncture repairs, brakes, diagnostics and servicing.",
+    copyright: rawSettings.copyright || '© 2026 Bourn Hill Tyre & MOT | London. All rights reserved.',
+    hero_book_price: rawSettings.hero_book_price,
+    hero_save: rawSettings.hero_save,
+    footer_mot_price: rawSettings.footer_mot_price,
+    opening_hours_display: rawSettings.opening_hours_display,
+    show_update_notice: rawSettings.show_update_notice ?? '1',
+    footer_offer_title: rawSettings.footer_offer_title || "Today's Offer",
+    footer_offer_subtitle: rawSettings.footer_offer_subtitle || 'Book Today',
+    footer_offer_label: rawSettings.footer_offer_label || 'MOT + Service',
+    footer_offer_was_price: rawSettings.footer_offer_was_price || '£50',
+    footer_offer_save: rawSettings.footer_offer_save || 'Save £31+',
+    footer_offer_feature: rawSettings.footer_offer_feature || '🚗 Free collection & delivery',
+    footer_offer_btn: rawSettings.footer_offer_btn || rawSettings.footer_offer_btn_text || 'Book Now →',
+    footer_offer_disclaimer: rawSettings.footer_offer_disclaimer || '*New bookings only. Excludes commercial vehicles.',
+    combo_section_title: rawSettings.combo_section_title || 'Special Offer',
+    combo_section_intro: rawSettings.combo_section_intro || "Book your MOT together with a service and pay just £19 — saving at least £31.",
+    combo_combined_desc: rawSettings.combo_combined_desc || 'MOT Test + Service combined',
+  };
+}
 
 function getSettings(db) {
   try {
@@ -16,6 +61,37 @@ function getSettings(db) {
   } catch (_) {
     return {};
   }
+}
+
+function getSettingsWithSqliteCli() {
+  try {
+    const out = execFileSync('sqlite3', [
+      DB_PATH,
+      '-json',
+      'SELECT key, value FROM site_settings'
+    ], { encoding: 'utf8', timeout: 3000 });
+    const rows = JSON.parse(out || '[]');
+    const settings = {};
+    for (const row of rows) settings[row.key] = row.value;
+    return settings;
+  } catch (_) {
+    return {};
+  }
+}
+
+function getFileFallback() {
+  let file = {};
+  try {
+    file = JSON.parse(fs.readFileSync(SERVICES_JSON_PATH, 'utf8'));
+  } catch (_) {
+    file = {};
+  }
+  const rawSettings = Object.assign({}, file.settings || {}, getSettingsWithSqliteCli());
+  return {
+    services: Array.isArray(file.services) ? file.services : [],
+    categories: file.categories && typeof file.categories === 'object' ? file.categories : {},
+    settings: buildSettings(rawSettings),
+  };
 }
 
 function getServicesFromDb() {
@@ -77,32 +153,16 @@ function getServicesFromDb() {
     }
 
     const rawSettings = getSettings(db);
-    const settings = {
-      logo_url: rawSettings.logo_url || 'https://no5tyreandmot.co.uk/images/logo.png',
-      tagline: rawSettings.tagline || 'Palmers Green · North London',
-      hero_book_price: rawSettings.hero_book_price,
-      hero_save: rawSettings.hero_save,
-      footer_mot_price: rawSettings.footer_mot_price,
-      opening_hours_display: rawSettings.opening_hours_display,
-      show_update_notice: rawSettings.show_update_notice ?? '1',
-      footer_offer_title: rawSettings.footer_offer_title || "Today's Offer",
-      footer_offer_subtitle: rawSettings.footer_offer_subtitle || 'Book Today',
-      footer_offer_label: rawSettings.footer_offer_label || 'MOT + Service',
-      footer_offer_was_price: rawSettings.footer_offer_was_price || '£50',
-      footer_offer_save: rawSettings.footer_offer_save || 'Save £31+',
-      footer_offer_feature: rawSettings.footer_offer_feature || '🚗 Free collection & delivery',
-      footer_offer_btn: rawSettings.footer_offer_btn || rawSettings.footer_offer_btn_text || 'Book Now →',
-      footer_offer_disclaimer: rawSettings.footer_offer_disclaimer || '*New bookings only. Excludes commercial vehicles.',
-      combo_section_title: rawSettings.combo_section_title || 'Special Offer',
-      combo_section_intro: rawSettings.combo_section_intro || "Book your MOT together with a service and pay just £19 — saving at least £31.",
-      combo_combined_desc: rawSettings.combo_combined_desc || 'MOT Test + Service combined',
-    };
+    const settings = buildSettings(rawSettings);
 
     db.close();
     return { services: servicesOut, categories: categoriesOut, settings };
   } catch (err) {
-    console.error('Services DB error:', err.message);
-    return { services: [], categories: {}, settings: {} };
+    if (!warnedDbFallback) {
+      warnedDbFallback = true;
+      console.warn('Services DB fallback active:', err.message.split('\n')[0]);
+    }
+    return getFileFallback();
   }
 }
 

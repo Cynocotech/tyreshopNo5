@@ -20,7 +20,7 @@ class EposController extends Controller
     protected function businessData(): array
     {
         return [
-            'name' => SiteSetting::get('site_name', 'NO5 Tyre & MOT Service'),
+            'name' => SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London Service'),
             'address' => trim(implode(', ', array_filter([
                 SiteSetting::get('address_street'),
                 SiteSetting::get('address_locality'),

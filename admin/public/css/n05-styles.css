@@ -1,7 +1,7 @@
-/* N05 Tyre & MOT - Main Stylesheet */
+/* Bourn Hill Tyre & MOT | London - Main Stylesheet */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; padding: 0; font-family: 'Inter', ui-sans-serif, system-ui; }
+body { margin: 0; padding: 0; font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif; }
 
 /* UK Plate input */
 .plate-container {

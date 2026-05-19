@@ -22,12 +22,30 @@
             <h3 class="font-semibold text-slate-800 mb-3">General</h3>
             <div class="space-y-3">
                 <div>
+                    <label class="block text-sm font-medium text-slate-700">Top Bar Message</label>
+                    <input type="text" name="topbar_message" value="{{ old('topbar_message', $settings['topbar_message'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="e.g. Free collection & delivery on all bookings!">
+                    <p class="text-xs text-slate-500 mt-1">Optional text shown in the yellow top bar after the phone &amp; address. Leave blank to hide.</p>
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-slate-700">Site Name</label>
                     <input type="text" name="site_name" value="{{ old('site_name', $settings['site_name'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Site Description</label>
                     <input type="text" name="site_description" value="{{ old('site_description', $settings['site_description'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">SEO Title</label>
+                    <input type="text" name="seo_title" value="{{ old('seo_title', $settings['seo_title'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Bourn Hill Tyre & MOT | London">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">SEO Description</label>
+                    <textarea name="seo_description" rows="2" class="w-full mt-1 rounded border-slate-300" placeholder="MOT testing, tyres, servicing and repairs in London.">{{ old('seo_description', $settings['seo_description'] ?? '') }}</textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">SEO Keywords</label>
+                    <textarea name="seo_keywords" rows="3" class="w-full mt-1 rounded border-slate-300" placeholder="Bourn Hill Tyre & MOT London, tyres near me, MOT near me, car servicing London">{{ old('seo_keywords', $settings['seo_keywords'] ?? '') }}</textarea>
+                    <p class="text-xs text-slate-500 mt-1">Comma-separated keywords used for page metadata and local SEO defaults.</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">URL</label>
@@ -107,17 +125,37 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Opens</label>
+                        <label class="block text-sm font-medium text-slate-700">Opens (Mon–Sat)</label>
                         <input type="text" name="opening_time" value="{{ old('opening_time', $settings['opening_time'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="08:00">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Closes</label>
-                        <input type="text" name="closing_time" value="{{ old('closing_time', $settings['closing_time'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="18:00">
+                        <label class="block text-sm font-medium text-slate-700">Closes (Mon–Sat)</label>
+                        <input type="text" name="closing_time" value="{{ old('closing_time', $settings['closing_time'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="19:00">
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Opens (Sunday)</label>
+                        <input type="text" name="sunday_opening_time" value="{{ old('sunday_opening_time', $settings['sunday_opening_time'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="09:30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Closes (Sunday)</label>
+                        <input type="text" name="sunday_closing_time" value="{{ old('sunday_closing_time', $settings['sunday_closing_time'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="16:00">
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500">Leave Sunday fields blank to keep Sunday closed.</p>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Display text (shown on site)</label>
                     <input type="text" name="opening_hours_display" value="{{ old('opening_hours_display', $settings['opening_hours_display'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Mon–Sat: 8am–6pm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Booking slot interval (minutes)</label>
+                    <select name="slot_interval" class="w-full mt-1 rounded border-slate-300">
+                        @foreach([15, 20, 30, 45, 60] as $mins)
+                            <option value="{{ $mins }}" {{ ($settings['slot_interval'] ?? '30') == $mins ? 'selected' : '' }}>{{ $mins }} minutes</option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-slate-500 mt-1">Controls how frequently booking time slots appear (e.g. 30 min = 8:00, 8:30, 9:00…).</p>
                 </div>
             </div>
         </div>
@@ -127,7 +165,7 @@
             <div class="space-y-3">
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Tagline</label>
-                    <input type="text" name="tagline" value="{{ old('tagline', $settings['tagline'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Palmers Green · North London">
+                    <input type="text" name="tagline" value="{{ old('tagline', $settings['tagline'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Bourne Hill · London">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Footer Tagline</label>
@@ -140,6 +178,10 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Copyright</label>
                     <input type="text" name="copyright" value="{{ old('copyright', $settings['copyright'] ?? '') }}" class="w-full mt-1 rounded border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Hero Image URL</label>
+                    <input type="text" name="hero_image_url" value="{{ old('hero_image_url', $settings['hero_image_url'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="/images/hero-garage.jpg">
                 </div>
                 <div class="grid grid-cols-3 gap-3">
                     <div>
@@ -289,7 +331,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700">From Name</label>
-                        <input type="text" name="mail_from_name" value="{{ old('mail_from_name', $settings['mail_from_name'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="NO5 Tyre & MOT">
+                        <input type="text" name="mail_from_name" value="{{ old('mail_from_name', $settings['mail_from_name'] ?? '') }}" class="w-full mt-1 rounded border-slate-300" placeholder="Bourn Hill Tyre & MOT">
                     </div>
                 </div>
                 <div>
@@ -451,7 +493,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700">Sender Name</label>
-                        <input type="text" name="voodoo_sender" value="{{ old('voodoo_sender', $settings['voodoo_sender'] ?? 'NO5Tyres') }}" class="w-full mt-1 rounded border-slate-300" placeholder="NO5Tyres" maxlength="11">
+                        <input type="text" name="voodoo_sender" value="{{ old('voodoo_sender', $settings['voodoo_sender'] ?? 'BournHill') }}" class="w-full mt-1 rounded border-slate-300" placeholder="BournHill" maxlength="11">
                         <p class="text-xs text-slate-400 mt-1">Max 11 characters, no spaces (shown as sender on customer's phone)</p>
                     </div>
                 </div>

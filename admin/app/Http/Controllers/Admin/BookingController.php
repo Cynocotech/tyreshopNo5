@@ -17,7 +17,7 @@ class BookingController extends Controller
     public function index(Request $request): View
     {
         $business = [
-            'name' => SiteSetting::get('site_name', 'N05 Tyre & MOT Service'),
+            'name' => SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London'),
             'address' => trim(implode(', ', array_filter([
                 SiteSetting::get('address_street'),
                 SiteSetting::get('address_locality'),
@@ -49,7 +49,7 @@ class BookingController extends Controller
             'total_amount' => 'nullable|numeric|min:0',
         ]);
 
-        $bookingId = 'N05-' . time() . '-' . substr(bin2hex(random_bytes(4)), 0, 4);
+        $bookingId = 'BHTM-' . time() . '-' . substr(bin2hex(random_bytes(4)), 0, 4);
         $date = \Carbon\Carbon::parse($valid['appointment_date'])->format('D d M Y');
         Booking::create([
             'booking_id' => $bookingId,
@@ -73,7 +73,7 @@ class BookingController extends Controller
                 if (str_starts_with($n, '0')) $n = '44' . substr($n, 1);
                 elseif (!str_starts_with($n, '44')) $n = '44' . $n;
                 $serviceType = html_entity_decode($valid['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                $smsText = "Hi {$valid['customer_name']}, your {$serviceType} at N05 Tyre & MOT is confirmed for {$date} at {$valid['appointment_time']}. Ref: {$bookingId}. Questions? Call 07895 859505.";
+                $smsText = "Hi {$valid['customer_name']}, your {$serviceType} at Bourn Hill Tyre & MOT | London is confirmed for {$date} at {$valid['appointment_time']}. Ref: {$bookingId}. Questions? Call 07895 859505.";
                 SmsMarketingController::sendViaSms($apiKey, $sender, $n, $smsText);
             }
         } catch (\Throwable $e) {
@@ -133,7 +133,7 @@ class BookingController extends Controller
     public function invoice(Booking $booking): View
     {
         $business = [
-            'name' => SiteSetting::get('site_name', 'N05 Tyre & MOT Service'),
+            'name' => SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London'),
             'address' => trim(implode(', ', array_filter([
                 SiteSetting::get('address_street'),
                 SiteSetting::get('address_locality'),
@@ -189,7 +189,7 @@ class BookingController extends Controller
         }
         $booking->update(['attended_at' => now()]);
 
-        $siteName = SiteSetting::get('site_name', 'NO5 Tyre & MOT');
+        $siteName = SiteSetting::get('site_name', 'Bourn Hill Tyre & MOT | London');
         $logoUrl = SiteSetting::get('logo_url');
         $siteUrl = SiteSetting::get('url', url('/'));
         $phone = SiteSetting::get('phone');

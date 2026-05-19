@@ -1,5 +1,5 @@
 /**
- * N05 Tyre & MOT - Booking API Server
+ * Bourn Hill Tyre & MOT | London - Booking API Server
  * Handles: vehicle lookup (checkcardetails.co.uk), MOT booking, Stripe, Telegram, email
  */
 const path = require('path');
@@ -50,7 +50,17 @@ app.use(cors({ origin: true }));
 app.get('/data/services.json', servicesHandler);
 
 // Serve front page and static assets from admin/public (same as production)
-app.use(express.static(path.join(__dirname, '../admin/public')));
+const PUBLIC_DIR = path.join(__dirname, '../admin/public');
+app.use(express.static(PUBLIC_DIR));
+
+// Clean-URL fallback: /mot-booking → mot-booking.html, /blog → blog.html, etc.
+app.use((req, res, next) => {
+  if (req.method !== 'GET' || req.path.startsWith('/api/') || req.path.startsWith('/admin/api/') || req.path.includes('.')) return next();
+  const htmlFile = path.join(PUBLIC_DIR, req.path.replace(/\/$/, '') + '.html');
+  if (fs.existsSync(htmlFile)) return res.sendFile(htmlFile);
+  // SPA fallback
+  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+});
 
 // Stripe webhook needs raw body - mount BEFORE express.json()
 const { stripeWebhookHandler } = require('./routes/booking');
@@ -59,11 +69,14 @@ app.use(express.json());
 
 app.use('/api/vehicle', vehicleRouter);
 app.use('/api/booking', bookingRouter);
+app.use('/admin/api/vehicle', vehicleRouter);
+app.use('/admin/api/booking', bookingRouter);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/admin/api/health', (req, res) => res.json({ ok: true }));
 
 app.listen(PORT, () => {
-  console.log(`N05 MOT API running on http://localhost:${PORT}`);
+  console.log(`Bourn Hill MOT API running on http://localhost:${PORT}`);
   // Debug: verify env vars (helps when "skipped" despite .env having them)
   const token = process.env.TELEGRAM_BOT_TOKEN || '';
   const chatId = process.env.TELEGRAM_CHAT_ID || '';

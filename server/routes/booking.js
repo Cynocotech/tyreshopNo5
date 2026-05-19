@@ -41,9 +41,46 @@ function loadEmailTemplate(data) {
   return html;
 }
 
-// Timetable: Mon–Sat 8am–6pm, 30-min slots
-const ALL_SLOTS = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 const SLOTS_FILE = path.join(__dirname, '../data/booking-slots.json');
+
+const Database = require('better-sqlite3');
+const DB_PATH = path.join(__dirname, '../../admin/database/database.sqlite');
+
+function getBookingSettings() {
+  try {
+    const db = new Database(DB_PATH, { readonly: true });
+    const rows = db.prepare("SELECT key, value FROM site_settings WHERE key IN ('opening_time','closing_time','slot_interval','opening_days','sunday_opening_time','sunday_closing_time')").all();
+    db.close();
+    const s = Object.fromEntries(rows.map(r => [r.key, r.value]));
+    return {
+      openingTime:       s.opening_time        || '08:00',
+      closingTime:       s.closing_time         || '19:00',
+      sundayOpeningTime: s.sunday_opening_time  || null,
+      sundayClosingTime: s.sunday_closing_time  || null,
+      intervalMins:      parseInt(s.slot_interval || '30', 10) || 30,
+      openingDays:       (s.opening_days || 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday')
+                           .split(',').map(d => d.trim().toLowerCase()),
+    };
+  } catch (e) {
+    return { openingTime: '08:00', closingTime: '19:00', sundayOpeningTime: null, sundayClosingTime: null,
+             intervalMins: 30, openingDays: ['monday','tuesday','wednesday','thursday','friday','saturday'] };
+  }
+}
+
+function generateSlots(openingTime, closingTime, intervalMins) {
+  const slots = [];
+  const [startH, startM] = openingTime.split(':').map(Number);
+  const [endH, endM]     = closingTime.split(':').map(Number);
+  let cur = startH * 60 + startM;
+  const end = endH * 60 + endM;
+  while (cur < end) {
+    const h = String(Math.floor(cur / 60)).padStart(2, '0');
+    const m = String(cur % 60).padStart(2, '0');
+    slots.push(`${h}:${m}`);
+    cur += intervalMins;
+  }
+  return slots;
+}
 
 function readBookedSlots() {
   try {
@@ -84,7 +121,7 @@ function getDefaultEmailHtml(d) {
       <p style="margin-top:24px;">Address: 6A Bourne Hill, Southgate, London N13 4LG</p>
       <p>Tel: 07895 859505</p>
       <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
-      <p style="color:#64748B;font-size:12px;">N05 Tyre & MOT Service · Palmers Green, North London</p>
+      <p style="color:#64748B;font-size:12px;">Bourn Hill Tyre & MOT | London · London</p>
     </div>`;
 }
 
@@ -110,7 +147,7 @@ router.post('/create-checkout-session', async (req, res) => {
   }
 
   const amount = totalAmount ? Math.round(parseFloat(totalAmount) * 100) : MOT_PRICE_GBP;
-  const bookingId = 'N05-' + Date.now();
+  const bookingId = 'BHTM-' + Date.now();
 
   if (!stripe) {
     return res.status(503).json({
@@ -208,7 +245,7 @@ router.post('/confirm-booking', async (req, res) => {
 // ── VoodooSMS helper ────────────────────────────────────────────────────────
 async function sendSms(to, message) {
   const apiKey = process.env.VOODOO_API_KEY;
-  const sender = process.env.VOODOO_SENDER || 'NO5Tyres';
+  const sender = process.env.VOODOO_SENDER || 'BournHill';
   if (!apiKey || !to) return;
 
   // Normalise to UK format without +
@@ -266,7 +303,7 @@ async function notifyAndEmail(metadata, email, opts = {}) {
   } = metadata || {};
 
   const data = {
-    bookingId: bookingId || 'N05-' + Date.now(),
+    bookingId: bookingId || 'BHTM-' + Date.now(),
     customerName: customerName || 'Customer',
     customerEmail: email,
     customerPhone: customerPhone || '-',
@@ -318,7 +355,7 @@ async function notifyAndEmail(metadata, email, opts = {}) {
       </table>
     `;
     await transporter.sendMail({
-      from: process.env.SMTP_FROM || '"N05 Tyre & MOT" <noreply@no5mot.co.uk>',
+      from: process.env.SMTP_FROM || '"Bourn Hill Tyre & MOT | London" <noreply@no5mot.co.uk>',
       to: adminEmail,
       subject: `New booking: ${data.bookingId} — ${data.customerName}`,
       html: adminHtml
@@ -327,7 +364,7 @@ async function notifyAndEmail(metadata, email, opts = {}) {
 
   const html = loadEmailTemplate(data);
   await transporter.sendMail({
-    from: process.env.SMTP_FROM || '"N05 Tyre & MOT" <noreply@no5mot.co.uk>',
+    from: process.env.SMTP_FROM || '"Bourn Hill Tyre & MOT | London" <noreply@no5mot.co.uk>',
     to: email,
     subject: `MOT Booking Confirmed - ${data.bookingId}`,
     html
@@ -336,7 +373,7 @@ async function notifyAndEmail(metadata, email, opts = {}) {
   // SMS confirmation to customer — only once (not from webhook, which fires after confirm-booking)
   if (shouldSendSms && data.customerPhone && data.customerPhone !== '-') {
     const serviceType = data.serviceType.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
-    const smsText = `Hi ${data.customerName}, your ${serviceType} at N05 Tyre & MOT is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
+    const smsText = `Hi ${data.customerName}, your ${serviceType} at Bourn Hill Tyre & MOT | London is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Ref: ${data.bookingId}. Questions? Call 07895 859505.`;
     await sendSms(data.customerPhone, smsText).catch(() => {});
   }
 }
@@ -346,14 +383,18 @@ router.get('/available-slots', (req, res) => {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return res.json({ available: [] });
   }
-  const d = new Date(date + 'T12:00:00');
-  const day = d.getDay();
-  if (day === 0) {
+  const { openingTime, closingTime, sundayOpeningTime, sundayClosingTime, intervalMins, openingDays } = getBookingSettings();
+  const dayName = new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
+  if (!openingDays.includes(dayName)) {
     return res.json({ available: [] });
   }
+  const isSunday = dayName === 'sunday';
+  const open  = isSunday && sundayOpeningTime ? sundayOpeningTime : openingTime;
+  const close = isSunday && sundayClosingTime ? sundayClosingTime : closingTime;
+  const allSlots = generateSlots(open, close, intervalMins);
   const booked = readBookedSlots()[date] || [];
-  const available = ALL_SLOTS.filter((t) => !booked.includes(t));
-  res.json({ available });
+  const available = allSlots.filter((t) => !booked.includes(t));
+  res.json({ available, openingTime: open, closingTime: close, intervalMins });
 });
 
 router.post('/mot-notify', async (req, res) => {

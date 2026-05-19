@@ -143,7 +143,7 @@ class SmsMarketingController extends Controller
     public static function credentialsStatic(): array
     {
         $apiKey = config('services.voodoo.api_key') ?: SiteSetting::get('voodoo_api_key');
-        $sender = config('services.voodoo.sender')  ?: SiteSetting::get('voodoo_sender', 'NO5Tyres');
+        $sender = config('services.voodoo.sender')  ?: SiteSetting::get('voodoo_sender', 'BournHill');
         return [$apiKey, $sender];
     }
 

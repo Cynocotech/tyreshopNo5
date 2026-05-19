@@ -13,7 +13,7 @@
 <!-- Header -->
 <tr>
 <td style="background:linear-gradient(135deg,#1B263B 0%,#2a3a52 100%);padding:24px 40px;">
-<span style="color:#fede00;font-size:20px;font-weight:700;">{{ $siteName ?? 'NO5' }} Admin</span>
+<span style="color:#fede00;font-size:20px;font-weight:700;">{{ $siteName ?? 'Bourn Hill' }} Admin</span>
 <span style="color:rgba(255,255,255,0.9);font-size:14px;margin-left:12px;">— New Booking</span>
 </td>
 </tr>
@@ -37,7 +37,7 @@
 <!-- Footer -->
 <tr>
 <td style="background:#1B263B;padding:16px 40px;text-align:center;">
-<p style="margin:0;font-size:12px;color:rgba(255,255,255,0.6);">Admin notification · {{ $siteName ?? 'NO5 Tyre & MOT' }}</p>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,0.6);">Admin notification · {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</p>
 </td>
 </tr>
 </table>

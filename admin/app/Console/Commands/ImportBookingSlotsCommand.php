@@ -27,7 +27,7 @@ class ImportBookingSlotsCommand extends Command
                 continue;
             }
             foreach ($times as $time) {
-                $bookingId = 'N05-import-' . $date . '-' . str_replace(':', '', $time);
+                $bookingId = 'BHTM-import-' . $date . '-' . str_replace(':', '', $time);
                 if (Booking::where('booking_id', $bookingId)->exists()) {
                     continue;
                 }
