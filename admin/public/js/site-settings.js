@@ -29,7 +29,7 @@
         '@type': 'PostalAddress',
         streetAddress: text(settings.address_street) || '6A Bourne Hill',
         addressLocality: text(settings.address_locality) || 'Southgate',
-        addressRegion: text(settings.address_region) || 'London',
+        addressRegion: text(settings.address_region),
         postalCode: text(settings.address_postcode) || 'N13 4LG',
         addressCountry: text(settings.address_country) || 'GB'
       },
