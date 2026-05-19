@@ -94,8 +94,8 @@ let SERVICES = [];
 const SERVICE_EXTRAS = {
   "full-service-mot": { badge:"SPECIAL OFFER", desc:"Full service plus official MOT in one visit. Oil & filter, safety checks, fluids — book together and save.", features:["Full MOT test included","Engine oil & filter change","Brake & tyre checks","Fluid top-ups & safety inspection","Free collection & delivery (within 2 miles)"] },
   "major-service-mot": { badge:"SPECIAL OFFER", desc:"Our deepest service plus MOT. Ideal when you want maximum peace of mind before your test.", features:["Full MOT test included","Everything in Major Service","Spark plugs & filters (as applicable)","Full system inspection","Free collection & delivery (within 2 miles)"] },
-  "mot-class-a": { badge:"MOT TEST", desc:"DVSA Class A MOT for cars — full legal safety inspection.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Class A (cars)","Free collection & delivery (within 2 miles)"] },
-  "mot-class-b-van": { badge:"VAN MOT", desc:"Class B MOT for light commercial vehicles.", features:["DVSA-approved","Light commercial vehicles","Same-day results","Free collection & delivery (within 2 miles)"] },
+  "mot-class-a": { badge:"MOT TEST", desc:"DVSA Class 4 MOT for cars — full legal safety inspection.", features:["DVSA-approved test centre","Pre-test vehicle check","Same-day results","Class 4 (cars)","Free collection & delivery (within 2 miles)"] },
+  "mot-class-b-van": { badge:"VAN MOT", desc:"Class 7 MOT for light commercial vehicles.", features:["DVSA-approved","Light commercial vehicles","Same-day results","Free collection & delivery (within 2 miles)"] },
   "full-service-only": { badge:"MOST POPULAR", desc:"Full annual service without MOT — oil, filters, brakes, tyres, fluids and safety checks.", features:["Oil & filter change","Air filter check/replace","Brake & tyre inspection","Battery test & lights check","Fluid top-ups"] },
   "major-service": { badge:"FULL COVERAGE", desc:"Major service — everything in Full Service plus plugs, fuel filter where applicable, cabin filter and deeper checks.", features:["All Full Service items","Spark plugs & deeper engine checks","Fuel & cabin filters (as applicable)","Full system inspection","Service book stamped"] },
   "van-servicing": { badge:"LIGHT VANS", desc:"Full and interim servicing for light commercial vans. Same quality and competitive pricing as our car servicing.", features:["Full & interim service","Light commercial vans","Competitive pricing","Service book stamp","Parts meet OEM standards","Free collection & delivery (3 miles max)"] },
@@ -157,7 +157,7 @@ const AREAS = [
 ];
 
 const FOOTER_SVCS = [
-  "MOT Class A & B","Full & Major Service","MOT + Service bundles",
+  "MOT Class 4 & 7","Full & Major Service","MOT + Service bundles",
   "Tyres & punctures","Brakes","Diagnostics","Gearbox","Air con regas",
   "Free health checks","Collection & delivery",
 ];
@@ -200,7 +200,7 @@ function MobileFAB(){
   );
   var btns=[
     {label:'Booking',href:'/mot-booking',icon:calendarIcon},
-    {label:'MOT',href:'/mot-booking?service='+encodeURIComponent('MOT Class A (cars)'),icon:motIcon},
+    {label:'MOT',href:'/mot-booking?service='+encodeURIComponent('MOT Class 4 (Cars)'),icon:motIcon},
     {label:'Tyres',href:'/mot-booking?service='+encodeURIComponent('New Tyre Replacement'),icon:tyreIcon},
   ];
   return h('div',{className:'mobile-fab-bar','aria-label':'Quick booking shortcuts'},
