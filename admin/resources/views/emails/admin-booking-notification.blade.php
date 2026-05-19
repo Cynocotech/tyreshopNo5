@@ -3,43 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Booking - {{ $bookingId }}</title>
+    <title>New Booking — {{ $bookingId }}</title>
 </head>
-<body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f1f5f9;">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f1f5f9;">
+<body style="margin:0;padding:0;font-family:'Instrument Sans','Segoe UI',Arial,sans-serif;background-color:#f4f4f4;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f4f4f4;">
 <tr>
 <td align="center" style="padding:32px 16px;">
-<table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width:600px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);overflow:hidden;">
-<!-- Header -->
-<tr>
-<td style="background:linear-gradient(135deg,#1B263B 0%,#2a3a52 100%);padding:24px 40px;">
-<span style="color:#fede00;font-size:20px;font-weight:700;">{{ $siteName ?? 'Bourn Hill' }} Admin</span>
-<span style="color:rgba(255,255,255,0.9);font-size:14px;margin-left:12px;">— New Booking</span>
-</td>
-</tr>
-<!-- Content -->
-<tr>
-<td style="padding:32px 40px;">
-<h2 style="margin:0 0 24px;font-size:18px;font-weight:700;color:#1B263B;">New MOT/Service Booking</h2>
+<table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.12);">
 
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
-<tr style="background:#f8fafc;"><td style="padding:12px 16px;font-weight:600;color:#64748B;font-size:13px;width:140px;">Booking ID</td><td style="padding:12px 16px;font-weight:600;color:#1B263B;">{{ $bookingId }}</td></tr>
-<tr><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Customer</td><td style="padding:12px 16px;color:#1B263B;">{{ $customerName }}</td></tr>
-<tr style="background:#f8fafc;"><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Email</td><td style="padding:12px 16px;color:#1B263B;"><a href="mailto:{{ $customerEmail }}" style="color:#1B263B;text-decoration:none;">{{ $customerEmail }}</a></td></tr>
-<tr><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Phone</td><td style="padding:12px 16px;color:#1B263B;">{{ $customerPhone }}</td></tr>
-<tr style="background:#f8fafc;"><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Vehicle</td><td style="padding:12px 16px;color:#1B263B;">{{ $vehicleMake }} {{ $vehicleModel }} ({{ $vehicleRegistration }})</td></tr>
-<tr><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Date & Time</td><td style="padding:12px 16px;color:#1B263B;">{{ $appointmentDate }} at {{ $appointmentTime }}</td></tr>
-<tr style="background:#f8fafc;"><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Service</td><td style="padding:12px 16px;color:#1B263B;">{{ $serviceType }}</td></tr>
-<tr><td style="padding:12px 16px;font-weight:500;color:#64748B;font-size:13px;">Amount</td><td style="padding:12px 16px;color:#1B263B;font-weight:600;">£{{ $totalAmount }}</td></tr>
-</table>
-</td>
-</tr>
-<!-- Footer -->
-<tr>
-<td style="background:#1B263B;padding:16px 40px;text-align:center;">
-<p style="margin:0;font-size:12px;color:rgba(255,255,255,0.6);">Admin notification · {{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</p>
-</td>
-</tr>
+  <!-- Header -->
+  <tr>
+    <td style="background:#000000;padding:20px 32px;">
+      <span style="color:#fede00;font-size:18px;font-weight:800;">{{ $siteName ?? 'Bourn Hill Tyre & MOT' }}</span>
+      <span style="color:rgba(255,255,255,0.6);font-size:14px;margin-left:10px;">· New Booking Alert</span>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#fede00;padding:0;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+  </tr>
+
+  <!-- Content -->
+  <tr>
+    <td style="background:#ffffff;padding:28px 32px 8px;">
+      <h2 style="margin:0 0 6px;font-size:20px;font-weight:800;color:#111111;">🛞 New Booking Received</h2>
+      <p style="margin:0 0 24px;font-size:14px;color:#666666;">A new booking has been submitted. Details below:</p>
+    </td>
+  </tr>
+
+  <!-- Details -->
+  <tr>
+    <td style="background:#ffffff;padding:0 32px 28px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-radius:12px;overflow:hidden;border:2px solid #fede00;">
+        <tr style="background:#fede00;">
+          <td colspan="2" style="padding:10px 18px;font-size:12px;font-weight:800;color:#111111;letter-spacing:0.08em;text-transform:uppercase;">Booking Summary</td>
+        </tr>
+        <tr style="background:#ffffff;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;width:38%;">Booking ID</td>
+          <td style="padding:11px 18px;font-weight:700;color:#111111;font-size:13px;">{{ $bookingId }}</td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Customer</td>
+          <td style="padding:11px 18px;font-weight:600;color:#111111;font-size:13px;">{{ $customerName }}</td>
+        </tr>
+        <tr style="background:#ffffff;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Email</td>
+          <td style="padding:11px 18px;font-size:13px;"><a href="mailto:{{ $customerEmail }}" style="color:#111111;font-weight:600;">{{ $customerEmail }}</a></td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Phone</td>
+          <td style="padding:11px 18px;font-weight:600;color:#111111;font-size:13px;">{{ $customerPhone }}</td>
+        </tr>
+        <tr style="background:#ffffff;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Vehicle</td>
+          <td style="padding:11px 18px;font-weight:600;color:#111111;font-size:13px;">{{ $vehicleMake ?? '' }} {{ $vehicleModel ?? '' }} · {{ $vehicleRegistration }}</td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Date & Time</td>
+          <td style="padding:11px 18px;font-weight:600;color:#111111;font-size:13px;">{{ $appointmentDate }} at {{ $appointmentTime }}</td>
+        </tr>
+        <tr style="background:#ffffff;">
+          <td style="padding:11px 18px;font-weight:600;color:#888888;font-size:13px;">Service</td>
+          <td style="padding:11px 18px;font-weight:600;color:#111111;font-size:13px;">{{ $serviceType }}</td>
+        </tr>
+        <tr style="background:#000000;">
+          <td style="padding:14px 18px;font-weight:700;color:#fede00;font-size:14px;">Amount</td>
+          <td style="padding:14px 18px;font-weight:800;color:#fede00;font-size:18px;">£{{ $totalAmount }}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="background:#000000;padding:20px 32px;text-align:center;">
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.5);">Admin notification · {{ $siteName ?? 'Bourn Hill Tyre & MOT' }} · {{ date('Y') }}</p>
+    </td>
+  </tr>
+
 </table>
 </td>
 </tr>
